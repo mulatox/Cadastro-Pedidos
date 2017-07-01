@@ -9,7 +9,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
 			<property name="javax.persistence.jdbc.user" value="admin"/>
 			<property name="javax.persistence.jdbc.password" value="admin"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/home/mulatox/DevWork/repositorios/SistemaVendas/DesktopTeste/base_dados/desktop;hsqldb.lock_file=false"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/Repositorios/Cadastro-Pedidos/DesktopTeste/base_dados/desktop;hsqldb.lock_file=false"/>
 			<property name="hibernate.show_sql" value = "true" />
 			<property name="hibernate.connection.pool_size" value = "20" />
 			<property name="hbm2ddl.auto" value="update" />

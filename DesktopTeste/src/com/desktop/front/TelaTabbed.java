@@ -389,10 +389,10 @@ public class TelaTabbed extends JFrame {
 		panel_6.setLayout(gl_panel_6);
 
 		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("RelatÃ³rio", null, panel_2, null);
+		tabbedPane.addTab("Relatório", null, panel_2, null);
 
 		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("ConfiguraÃ§Ã£o", null, panel_3, null);
+		tabbedPane.addTab("Configuração", null, panel_3, null);
 
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_C);
 

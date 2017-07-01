@@ -45,6 +45,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
+import javax.swing.SwingConstants;
 
 @Form(Cliente.class)
 public class Tela_Cliente extends JFrame {
@@ -55,7 +56,7 @@ public class Tela_Cliente extends JFrame {
 	private JPanel panel;
 	private JLabel lblEndereo;
 	private JLabel label_1;
-	private JLabel label_3;
+	private JLabel lblCidade;
 	private JLabel label_4;
 	private JLabel lblDataNascimento;
 	private JLabel label_6;
@@ -87,6 +88,8 @@ public class Tela_Cliente extends JFrame {
 	
 	//Indica se esta no modo de salvar ou de alterar cliente
 	public static String tipoTela= "";
+	private JLabel label;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -119,7 +122,7 @@ public class Tela_Cliente extends JFrame {
 		
 		tipoTela=SALVAR;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 626, 501);
+		setBounds(100, 100, 681, 569);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -128,23 +131,32 @@ public class Tela_Cliente extends JFrame {
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Cliente", TitledBorder.LEADING,
 				TitledBorder.TOP, null, new Color(51, 51, 51)));
 
-		lblEndereo = new JLabel("Endereço");
+		lblEndereo = new JLabel("Endere\u00E7o");
+		lblEndereo.setBounds(15, 123, 69, 15);
+		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		label_1 = new JLabel("Nome");
+		label_1.setBounds(15, 46, 34, 15);
+		label_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		textField = new JTextField();
+		textField.setBounds(105, 116, 513, 25);
 		textField.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField.setColumns(10);
 
 		textField_2 = new JTextField();
+		textField_2.setBounds(105, 38, 513, 25);
 		textField_2.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_2.setColumns(10);
 
-		label_3 = new JLabel("Bairro");
+		lblCidade = new JLabel("Cidade");
+		lblCidade.setBounds(15, 201, 56, 15);
+		lblCidade.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		
 
 		textField_3 = new JTextField();
+		textField_3.setBounds(105, 194, 513, 25);
 		textField_3.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_3.setColumns(10);
 		
@@ -166,6 +178,8 @@ public class Tela_Cliente extends JFrame {
 				textField_3.getActionMap().put("commit", autoComplete.new CommitAction());*/
 
 		label_4 = new JLabel("Telefone");
+		label_4.setBounds(15, 240, 64, 15);
+		label_4.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		MaskFormatter foneMask=null;
 		try {
@@ -176,10 +190,13 @@ public class Tela_Cliente extends JFrame {
 		}
 		
 		textField_4 = new JFormattedTextField(foneMask);
+		textField_4.setBounds(105, 233, 147, 25);
 		textField_4.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_4.setColumns(10);
 
 		lblDataNascimento = new JLabel("Data Nascimento");
+		lblDataNascimento.setBounds(269, 240, 103, 15);
+		lblDataNascimento.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		MaskFormatter dataMask=null;
 		try {
@@ -190,10 +207,14 @@ public class Tela_Cliente extends JFrame {
 		}
 		
 		textField_5 = new JFormattedTextField(dataMask);
+		textField_5.setBounds(385, 233, 147, 25);
+		textField_5.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_5.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_5.setColumns(10);
 
 		label_6 = new JLabel("CPF");
+		label_6.setBounds(15, 84, 56, 15);
+		label_6.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		MaskFormatter cpfMask=null;
 		try {
@@ -204,83 +225,21 @@ public class Tela_Cliente extends JFrame {
 		}
 
 		textField_6 = new JFormattedTextField(cpfMask);
+		textField_6.setBounds(105, 77, 147, 25);
 		textField_6.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_6.setColumns(10);
-		
-	
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(label_6, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-								.addComponent(label_1)
-								.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblEndereo))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(textField_3, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-								.addComponent(textField, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
-								.addComponent(textField_6, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField_2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
-							.addGap(2147482842))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblDataNascimento)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_1)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_6)
-						.addComponent(textField_6, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblEndereo))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_3)
-						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(74)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_4)
-						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDataNascimento)
-						.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(133))
-		);
-		panel.setLayout(gl_panel);
 
 		panel_1 = new JPanel();
 		panel_1.setBorder(null);
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane
-				.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-						gl_contentPane.createSequentialGroup()
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-										.addGroup(gl_contentPane.createSequentialGroup().addGap(12)
-												.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE))
-										.addComponent(panel, GroupLayout.PREFERRED_SIZE, 602, Short.MAX_VALUE))
-								.addContainerGap()));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 375, GroupLayout.PREFERRED_SIZE).addGap(18)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE).addContainerGap()));
+		
+		label = new JLabel("Bairro");
+		label.setBounds(15, 162, 56, 15);
+		label.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(105, 155, 513, 25);
+		textField_1.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_1.setColumns(10);
 
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
@@ -310,6 +269,37 @@ public class Tela_Cliente extends JFrame {
 								.addComponent(btnSalvar).addComponent(btnCancelar))
 						.addContainerGap(23, Short.MAX_VALUE)));
 		panel_1.setLayout(gl_panel_1);
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 645, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 624, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(10, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 409, GroupLayout.PREFERRED_SIZE)
+					.addGap(11)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		panel.setLayout(null);
+		panel.add(label_1);
+		panel.add(lblEndereo);
+		panel.add(label);
+		panel.add(label_4);
+		panel.add(label_6);
+		panel.add(lblCidade);
+		panel.add(textField_4);
+		panel.add(lblDataNascimento);
+		panel.add(textField_5);
+		panel.add(textField_3);
+		panel.add(textField_1);
+		panel.add(textField);
+		panel.add(textField_6);
+		panel.add(textField_2);
 		contentPane.setLayout(gl_contentPane);
 		HashSet conj = new HashSet(panel.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
 		conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
