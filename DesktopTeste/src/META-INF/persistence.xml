@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="desktop">
+		<class>com.desktop.model.Cliente</class>
+		<class>com.desktop.model.Venda</class>
+		<properties>
+			<property name="hibernate.archive.autodetection" value="class" />
+			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+			<property name="javax.persistence.jdbc.user" value="admin"/>
+			<property name="javax.persistence.jdbc.password" value="admin"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/home/mulatox/DevWork/repositorios/SistemaVendas/DesktopTeste/base_dados/desktop;hsqldb.lock_file=false"/>
+			<property name="hibernate.show_sql" value = "true" />
+			<property name="hibernate.connection.pool_size" value = "20" />
+			<property name="hbm2ddl.auto" value="update" />
+		</properties>
+	</persistence-unit>
+	
+	
+	
+	
+</persistence>
