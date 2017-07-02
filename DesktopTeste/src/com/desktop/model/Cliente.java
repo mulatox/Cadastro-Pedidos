@@ -14,24 +14,24 @@ public class Cliente {
 	
 	
 	
-	@Resolvable(colName="nome")
+	@Resolvable(colName="NOME")
 	private String nome;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Resolvable(colName="codigo")
+	@Resolvable(colName="CÓDIGO")
 	private int codigo;
 	
-	@Resolvable(colName="endereco")
+	@Resolvable(colName="ENDEREÇO")
 	private String endereco;
 	
-	@Resolvable(colName="bairro")
+	@Resolvable(colName="BAIRRO")
 	private String bairro;
 	
-	@Resolvable(colName="cpf")
+	@Resolvable(colName="CPF")
 	private String cpf;
 	
-	@Resolvable(colName="telefone")
+	@Resolvable(colName="TELEFONE")
 	private String telefone;
 	
 	private String observacao;
@@ -42,7 +42,7 @@ public class Cliente {
 	
 	private int status;
 	
-	private int cidade_estado;
+	private String cidade_estado;
 	
 	public String getNome() {
 		return nome;
@@ -92,10 +92,10 @@ public class Cliente {
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	public int getCidade_estado() {
+	public String getCidade_estado() {
 		return cidade_estado;
 	}
-	public void setCidade_estado(int cidade_estado) {
+	public void setCidade_estado(String cidade_estado) {
 		this.cidade_estado = cidade_estado;
 	}
 	public String getObservacao() {

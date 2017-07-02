@@ -77,7 +77,6 @@ public class TelaTabbed extends JFrame {
 	
 	private Tela_Venda telaVenda;
 
-	private Cliente clienteSelecionado;
 	
 	private Venda vendaSelecionada;
 	
@@ -103,6 +102,7 @@ public class TelaTabbed extends JFrame {
 				try {
 					TelaTabbed window = new TelaTabbed();
 					window.setVisible(true);
+					window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -219,6 +219,7 @@ public class TelaTabbed extends JFrame {
 			public void mouseExited(MouseEvent e) {
 			}
 		});
+		
 		scrollPane_1.setViewportView(tableVendas);
 		panel_7.setLayout(gl_panel_7);
 		

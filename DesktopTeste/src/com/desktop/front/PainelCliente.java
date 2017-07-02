@@ -5,9 +5,12 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
 import com.desktop.database.ClienteDao;
+import com.desktop.front.Tela_Venda.IntFormatter;
 import com.desktop.model.Cliente;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
@@ -35,7 +38,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -61,14 +66,22 @@ public class PainelCliente extends JPanel {
 	@Bindable(field = "telefone")
 	JFormattedTextField formattedTextField_1;
 	
+	@Bindable(field = "dataNascimento", formatter = DateFormatter.class)
+	JFormattedTextField formattedTextField_2;
+	
 	private Binder binder;
 	
 	private Tela_Cliente telaCliente;
-	private Cliente clienteSelecionado;
+	public static Cliente clienteSelecionado;
 	public static ArrayList<Cliente> clientes;
 	public static JTable table;
 	private static final int INATIVO = -1;
+	
+	@Bindable(field = "cidade_estado", formatter = CidadeFormatter.class)
 	private JTextField textField_3;
+	
+	@Bindable(field = "observacao")
+	private JTextField textField_4;
 
 	/**
 	 * Create the panel.
@@ -76,6 +89,7 @@ public class PainelCliente extends JPanel {
 	public PainelCliente(final Container container) {
 		
 		JButton button = new JButton("CADASTRAR");
+		button.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -87,8 +101,7 @@ public class PainelCliente extends JPanel {
 		});
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Lista de Clientes",
-						TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE CLIENTES", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -111,11 +124,12 @@ public class PainelCliente extends JPanel {
 		
 		AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
 		ObjectTableModel<Cliente> tableModel = new ObjectTableModel<Cliente>(resolver,
-				"codigo,nome,cpf,endereco,bairro,telefone");
+				"codigo,nome,cpf,endereco,telefone");
 		ClienteDao dao = new ClienteDao();
 		clientes =dao.listar();
 		tableModel.setData(clientes);
 		table = new JTable(tableModel);
+		table.setFont(new Font("Tahoma", Font.BOLD, 12));
 		table.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -145,31 +159,41 @@ public class PainelCliente extends JPanel {
 		panel.setLayout(gl_panel);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Cliente", TitledBorder.LEADING,
-						TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DADOS CLIENTE", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		
-		JLabel lblBairro = new JLabel("Endere√ßo");
+		JLabel lblBairro = new JLabel("ENDERE\u00C7O");
+		lblBairro.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBairro.setBounds(15, 71, 64, 14);
 		
-		JLabel label_1 = new JLabel("Nome");
+		JLabel lblNome = new JLabel("NOME");
+		lblNome.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNome.setBounds(15, 28, 45, 14);
 		
-		JLabel lblBairro_1 = new JLabel("Bairro");
+		JLabel lblBairro_1 = new JLabel("BAIRRO");
+		lblBairro_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBairro_1.setBounds(15, 112, 83, 14);
 		
 		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField.setBounds(102, 21, 1173, 25);
+		textField.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_1.setBounds(102, 64, 1173, 25);
+		textField_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
 		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_2.setBounds(102, 107, 1173, 21);
+		textField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		
 		JLabel lblCpf = new JLabel("CPF");
+		lblCpf.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblCpf.setBounds(15, 192, 56, 14);
 		MaskFormatter cpfMask=null;
 		try {
 			cpfMask = new MaskFormatter("###.###.###-##");
@@ -178,11 +202,14 @@ public class PainelCliente extends JPanel {
 			e1.printStackTrace();
 		}
 		formattedTextField = new JFormattedTextField(cpfMask);
-		formattedTextField.setFont(new Font("Dialog", Font.PLAIN, 14));
+		formattedTextField.setBounds(102, 187, 143, 21);
+		formattedTextField.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField.setEditable(false);
 		formattedTextField.setColumns(10);
 		
 		JLabel label_4 = new JLabel("Telefone");
+		label_4.setFont(new Font("Tahoma", Font.BOLD, 12));
+		label_4.setBounds(249, 192, 83, 14);
 		MaskFormatter foneMask=null;
 		try {
 			foneMask = new MaskFormatter("(##)#########");
@@ -191,11 +218,14 @@ public class PainelCliente extends JPanel {
 			e1.printStackTrace();
 		}
 		formattedTextField_1 = new JFormattedTextField(foneMask);
-		formattedTextField_1.setFont(new Font("Dialog", Font.PLAIN, 14));
+		formattedTextField_1.setBounds(342, 187, 175, 21);
+		formattedTextField_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField_1.setEditable(false);
 		formattedTextField_1.setColumns(10);
 		
 		JButton button_1 = new JButton("ALTERAR");
+		button_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		button_1.setBounds(15, 261, 111, 23);
 		
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -213,6 +243,8 @@ public class PainelCliente extends JPanel {
 		});
 		
 		JButton button_2 = new JButton("EXCLUIR");
+		button_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		button_2.setBounds(195, 261, 111, 23);
 		
 		button_2.addActionListener(new ActionListener() {
 			
@@ -220,8 +252,8 @@ public class PainelCliente extends JPanel {
 
 				if (clienteSelecionado != null) {
 					Object[] options = { "Confirmar", "Cancelar" };
-					int resposta =JOptionPane.showOptionDialog(getParent(),
-							"Deseja realmente excluir o cliente " + clienteSelecionado.getNome()+" ?", "Aten√ß√£o",
+					int resposta =JOptionPane.showOptionDialog(container,
+							"Deseja realmente excluir o cliente " + clienteSelecionado.getNome()+" ?", "AtenÁ„o",
 							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 					if(resposta==0)
 					{
@@ -239,10 +271,13 @@ public class PainelCliente extends JPanel {
 			}
 		});
 		
-		JLabel lblCidade = new JLabel("Cidade");
+		JLabel lblCidade = new JLabel("CIDADE");
+		lblCidade.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblCidade.setBounds(15, 153, 83, 14);
 		
 		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_3.setBounds(102, 148, 1173, 21);
+		textField_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_3.setEditable(false);
 		textField_3.setColumns(10);
 		
@@ -254,119 +289,75 @@ public class PainelCliente extends JPanel {
 			e1.printStackTrace();
 		}
 		
-		JFormattedTextField formattedTextField_2 = new JFormattedTextField(dataMask);
+		formattedTextField_2 = new JFormattedTextField(dataMask);
+		
+		formattedTextField_2.setBounds(636, 187, 175, 21);
 		formattedTextField_2.setHorizontalAlignment(SwingConstants.CENTER);
-		formattedTextField_2.setFont(new Font("Dialog", Font.PLAIN, 14));
+		formattedTextField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField_2.setEditable(false);
 		formattedTextField_2.setColumns(10);
 		
 		JLabel lblDataNasc = new JLabel("Data Nasc");
+		lblDataNasc.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblDataNasc.setBounds(535, 190, 83, 14);
 		
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblBairro)
-								.addComponent(label_1)
-								.addComponent(lblBairro_1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-								.addComponent(textField, GroupLayout.DEFAULT_SIZE, 1163, Short.MAX_VALUE)
-								.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 1163, Short.MAX_VALUE)
-								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 620, GroupLayout.PREFERRED_SIZE))
-							.addGap(90))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(button_1)
-							.addGap(18)
-							.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(1142, Short.MAX_VALUE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel_1.createSequentialGroup()
-									.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(formattedTextField, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(label_4, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(formattedTextField_1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(lblDataNasc, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_panel_1.createSequentialGroup()
-									.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 615, GroupLayout.PREFERRED_SIZE)))
-							.addContainerGap(528, Short.MAX_VALUE))))
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_1)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblBairro)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblBairro_1))
-					.addGap(20)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCidade)
-						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(formattedTextField, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-								.addComponent(label_4)
-								.addComponent(formattedTextField_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblCpf))
-							.addGap(18)
-							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-								.addComponent(button_1, Alignment.TRAILING)
-								.addComponent(button_2, Alignment.TRAILING)))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblDataNasc))
-						.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
-		);
-		panel_1.setLayout(gl_panel_1);
+		binder = new AnnotatedBinder(this);
+		panel_1.setLayout(null);
+		panel_1.add(lblBairro);
+		panel_1.add(lblNome);
+		panel_1.add(lblBairro_1);
+		panel_1.add(textField);
+		panel_1.add(textField_2);
+		panel_1.add(textField_1);
+		panel_1.add(button_1);
+		panel_1.add(button_2);
+		panel_1.add(lblCpf);
+		panel_1.add(formattedTextField);
+		panel_1.add(label_4);
+		panel_1.add(formattedTextField_1);
+		panel_1.add(lblDataNasc);
+		panel_1.add(formattedTextField_2);
+		panel_1.add(lblCidade);
+		panel_1.add(textField_3);
+		
+		textField_4 = new JTextField();
+		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
+		textField_4.setEditable(false);
+		textField_4.setColumns(10);
+		textField_4.setBounds(102, 226, 1173, 21);
+		panel_1.add(textField_4);
+		
+		JLabel lblReferncias = new JLabel("REFER\u00CANCIAS");
+		lblReferncias.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblReferncias.setBounds(15, 231, 83, 14);
+		panel_1.add(lblReferncias);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-					.addGap(12)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 1370, GroupLayout.PREFERRED_SIZE)
-						.addComponent(button, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)))
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 1382, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(20)
+							.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(12)
+							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 1362, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
-					.addGap(12)
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-					.addGap(56)
-					.addComponent(button)
-					.addGap(0))
+					.addGap(1)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+					.addGap(50)
+					.addComponent(button))
 		);
 		setLayout(groupLayout);
-		
-		binder = new AnnotatedBinder(this);
 		
 		table.addKeyListener(new KeyAdapter() {
 			@Override
@@ -374,6 +365,22 @@ public class PainelCliente extends JPanel {
 				if (arg0.getKeyCode() == KeyEvent.VK_INSERT) {
 					telaCliente = new Tela_Cliente();
 					telaCliente.setVisible(true);
+				}
+			}
+		});
+		
+		table.requestFocus();
+		table.changeSelection(0,0,false, false);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			public void valueChanged(ListSelectionEvent e) {
+				int indice = table.getSelectedRow();
+				if (indice != INATIVO) {
+					clienteSelecionado = clientes.get(indice);
+					binder.updateView(clienteSelecionado);
+					Cliente clienteTeste = new Cliente();
+					binder.updateModel(clienteTeste);
+					System.out.println(clienteTeste.getNome());
 				}
 			}
 		});
@@ -394,11 +401,6 @@ public class PainelCliente extends JPanel {
 		table.repaint();
 	}
 	
-	public static String formatarString(String texto, String mascara) throws ParseException {
-        MaskFormatter mf = new MaskFormatter(mascara);
-        mf.setValueContainsLiteralCharacters(false);
-        return mf.valueToString(texto);
-    }
 
 	// IntFormatter sera usado para transformar a String em numero.
 	public static class IntFormatter implements Formatter {
@@ -415,4 +417,45 @@ public class PainelCliente extends JPanel {
 			return "int";
 		}
 	}
+	
+	// IntFormatter sera usado para transformar o codigo da cidade em codigo da cidada junto com o nome da cidade.
+		public static class CidadeFormatter implements Formatter {
+			public Object format(Object obj) {
+				String d = (String) obj;
+				return (d  + " - "+clienteSelecionado.getBairro() ).toString();
+			}
+
+			public Object parse(Object obj) {
+				return ((String) obj);
+			}
+
+			public String getName() {
+				return "String";
+			}
+		}
+		
+		// DateFormatter sera usado para transformar a String em data.
+		public static class DateFormatter implements Formatter {
+			public Object format(Object obj) {
+				Date d = (Date) obj;
+				SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+				return sm.format(d);
+			}
+
+			public Object parse(Object obj) {
+				SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+				// Converting the String back to java.util.Date
+				try {
+					return sm.parse((String) obj);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return "";
+				}
+			}
+
+			public String getName() {
+				return "int";
+			}
+		}
 }
