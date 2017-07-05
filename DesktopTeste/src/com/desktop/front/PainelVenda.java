@@ -95,7 +95,7 @@ public class PainelVenda extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
+		AnnotationResolver resolver = new AnnotationResolver(Venda.class);
 		ObjectTableModel<Venda> tableModel = new ObjectTableModel<Venda>(resolver,
 				"pedido,cliente,valor,parcelas,data");
 		VendaDao dao = new VendaDao();

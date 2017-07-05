@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.towel.el.annotation.Resolvable;
 
@@ -32,6 +33,7 @@ public class Venda {
 	@Resolvable(colName="data")
 	private Date data;
 	
+	@Transient
 	private int status;
 
 	public int getCodigo() {

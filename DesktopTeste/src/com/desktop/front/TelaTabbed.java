@@ -70,7 +70,6 @@ import javax.swing.JFormattedTextField;
 public class TelaTabbed extends JFrame {
 
 	private static final int INATIVO = -1;
-	public static JTable tableVendas;
 
 
 	private Tela_Cliente telaCliente;
@@ -82,11 +81,6 @@ public class TelaTabbed extends JFrame {
 	
 	public static ArrayList<Cliente> clientes;
 	public static ArrayList<Venda> vendas;
-	private JTextField textField_7;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_12;
-	private JTextField textField_13;
 
 	/**
 	 * Launch the application.
@@ -137,232 +131,37 @@ public class TelaTabbed extends JFrame {
 		JPanel panel_6 = new JPanel();
 		tabbedPane.addTab("Venda", null, panel_6, null);
 		
-		JButton button = new JButton("CADASTRAR");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				telaVenda = new Tela_Venda();
-				telaVenda.setVisible(true);
-			}
-		});
-		
-		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Lista de Vendas", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		GroupLayout gl_panel_7 = new GroupLayout(panel_7);
-		gl_panel_7.setHorizontalGroup(
-			gl_panel_7.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 1382, Short.MAX_VALUE)
-				.addGroup(gl_panel_7.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 1348, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_panel_7.setVerticalGroup(
-			gl_panel_7.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 282, Short.MAX_VALUE)
-				.addGroup(gl_panel_7.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		
-		tableVendas = new JTable();
-		
 		
 		carregarVendas();
-		
-		tableVendas.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-
-			}
-
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				int indice = tableVendas.rowAtPoint(e.getPoint());
-				if (indice != INATIVO) {
-					vendaSelecionada = vendas.get(indice);
-					System.out.println( vendaSelecionada.getCliente());
-					selecionarVenda();
-				}
-			}
-
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			public void mouseExited(MouseEvent e) {
-			}
-		});
-		
-		scrollPane_1.setViewportView(tableVendas);
-		panel_7.setLayout(gl_panel_7);
-		
-		JPanel panel_8 = new JPanel();
-		panel_8.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Venda", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		
-		JLabel lblValor = new JLabel("Valor");
-		
-		JLabel lblCliente = new JLabel("Cliente");
-		
-		textField_7 = new JTextField();
-		textField_7.setFont(new Font("Dialog", Font.PLAIN, 14));
-		textField_7.setEditable(false);
-		textField_7.setColumns(10);
-		
-		textField_9 = new JTextField();
-		textField_9.setFont(new Font("Dialog", Font.PLAIN, 14));
-		textField_9.setEditable(false);
-		textField_9.setColumns(10);
-		
-		JLabel lblData_1 = new JLabel("Entrada");
-		
-		textField_10 = new JTextField();
-		textField_10.setFont(new Font("Dialog", Font.PLAIN, 14));
-		textField_10.setEditable(false);
-		textField_10.setColumns(10);
-		
-		JLabel lblData_2 = new JLabel("Parcelas");
-		
-		textField_12 = new JTextField();
-		textField_12.setFont(new Font("Dialog", Font.PLAIN, 14));
-		textField_12.setEditable(false);
-		textField_12.setColumns(10);
-		
-		JLabel lblData_3 = new JLabel("Data");
-		
-		textField_13 = new JTextField();
-		textField_13.setFont(new Font("Dialog", Font.PLAIN, 14));
-		textField_13.setEditable(false);
-		textField_13.setColumns(10);
-		
-		JButton button_1 = new JButton("ALTERAR");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (vendaSelecionada != null) {
-					telaVenda = new Tela_Venda(vendaSelecionada);
-					telaVenda.setVisible(true);
-
-				} else {
-					JOptionPane.showInternalMessageDialog(getContentPane(), "Nenhuma venda selecionada", "Aviso",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
-		});
-		
-		JButton button_2 = new JButton("EXCLUIR");
-		button_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (vendaSelecionada != null) {
-					Object[] options = { "Confirmar", "Cancelar" };
-					int resposta =JOptionPane.showOptionDialog(null,
-							"Deseja realmente excluir esta venda ?", "Atenção",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-					if(resposta==0)
-					{
-						VendaDao dao = new VendaDao();
-						dao.remover(vendaSelecionada);
-					}
-
-				} else {
-					JOptionPane.showInternalMessageDialog(getContentPane(), "Nenhuma venda selecionada", "Aviso",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
-		});
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		GroupLayout gl_panel_8 = new GroupLayout(panel_8);
-		gl_panel_8.setHorizontalGroup(
-			gl_panel_8.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_8.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_8.createSequentialGroup()
-							.addGroup(gl_panel_8.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblData_1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblValor)
-								.addComponent(lblCliente))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_panel_8.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel_8.createSequentialGroup()
-									.addComponent(textField_10, GroupLayout.DEFAULT_SIZE, 893, Short.MAX_VALUE)
-									.addGap(282))
-								.addGroup(gl_panel_8.createParallelGroup(Alignment.TRAILING)
-									.addComponent(textField_9, GroupLayout.DEFAULT_SIZE, 1208, Short.MAX_VALUE)
-									.addGroup(gl_panel_8.createSequentialGroup()
-										.addComponent(textField_7, GroupLayout.DEFAULT_SIZE, 1049, Short.MAX_VALUE)
-										.addGap(126))))
-							.addGap(90))
-						.addGroup(gl_panel_8.createSequentialGroup()
-							.addComponent(lblData_2, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_12, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(gl_panel_8.createSequentialGroup()
-							.addComponent(lblData_3, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_13, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(gl_panel_8.createSequentialGroup()
-							.addComponent(button_1)
-							.addGap(18)
-							.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(1154, Short.MAX_VALUE))))
+		
+		PainelVenda panel_4 = new PainelVenda(getContentPane());
+		
+		
+		panel_6.add(panel_4);
+		
+		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
+		gl_panel_4.setHorizontalGroup(
+			gl_panel_4.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 260, Short.MAX_VALUE)
 		);
-		gl_panel_8.setVerticalGroup(
-			gl_panel_8.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_8.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCliente)
-						.addComponent(textField_9, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblValor)
-						.addComponent(textField_7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_10, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblData_1))
-					.addGap(18)
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblData_2)
-						.addComponent(textField_12, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblData_3)
-						.addComponent(textField_13, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-					.addGroup(gl_panel_8.createParallelGroup(Alignment.LEADING)
-						.addComponent(button_1, Alignment.TRAILING)
-						.addComponent(button_2, Alignment.TRAILING))
-					.addContainerGap())
+		gl_panel_4.setVerticalGroup(
+			gl_panel_4.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 214, Short.MAX_VALUE)
 		);
-		panel_8.setLayout(gl_panel_8);
+		panel_4.setLayout(gl_panel_4);
 		GroupLayout gl_panel_6 = new GroupLayout(panel_6);
 		gl_panel_6.setHorizontalGroup(
 			gl_panel_6.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 1421, Short.MAX_VALUE)
 				.addGroup(gl_panel_6.createSequentialGroup()
-					.addGap(27)
-					.addGroup(gl_panel_6.createParallelGroup(Alignment.LEADING)
-						.addComponent(button)
-						.addComponent(panel_7, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 1382, Short.MAX_VALUE)
-						.addComponent(panel_8, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap())
+					.addGap(12)
+					.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 568, GroupLayout.PREFERRED_SIZE))
 		);
 		gl_panel_6.setVerticalGroup(
 			gl_panel_6.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 761, Short.MAX_VALUE)
 				.addGroup(gl_panel_6.createSequentialGroup()
-					.addGap(5)
-					.addComponent(panel_8, GroupLayout.PREFERRED_SIZE, 282, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel_7, GroupLayout.PREFERRED_SIZE, 282, GroupLayout.PREFERRED_SIZE)
-					.addGap(56)
-					.addComponent(button)
-					.addContainerGap(99, Short.MAX_VALUE))
+					.addGap(12)
+					.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 501, GroupLayout.PREFERRED_SIZE))
 		);
 		panel_6.setLayout(gl_panel_6);
 
@@ -430,17 +229,9 @@ public class TelaTabbed extends JFrame {
 		VendaDao dao = new VendaDao();
 		vendas =dao.listar();
 		tableModel.setData(vendas);
-		tableVendas.setModel(tableModel);
 		tableModel.fireTableDataChanged();
-		
-		tableVendas.repaint();
 	}
 	
-	public void selecionarVenda()
-	{
-		textField_9.setText(""+vendaSelecionada.getCliente());
-		textField_7.setText(""+vendaSelecionada.getValor());
-	}
 	
 	
 	public static String formatarString(String texto, String mascara) throws ParseException {
