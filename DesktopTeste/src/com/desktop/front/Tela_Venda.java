@@ -10,10 +10,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 
 import com.desktop.database.ClienteDao;
 import com.desktop.database.VendaDao;
 import com.desktop.front.TelaTabbed.IntFormatter;
+import com.desktop.front.Tela_Cliente.DateFormatter;
 import com.desktop.model.Cliente;
 import com.desktop.model.Venda;
 import com.towel.bean.Formatter;
@@ -34,12 +36,14 @@ import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
 import java.util.HashSet;
 
 import javax.swing.JButton;
 import java.awt.event.KeyAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JFormattedTextField;
 
 @Form(Venda.class)
 public class Tela_Venda extends JFrame {
@@ -63,9 +67,10 @@ public class Tela_Venda extends JFrame {
 	@Bindable(field = "cliente", formatter = IntFormatter.class)
 	private JTextField textField_2;
 
+	@Bindable(field = "pedido", formatter = IntFormatter.class)
 	private JTextField textField_3;
-
-	private JTextField textField_4;
+	@Bindable(field = "data", formatter = DateFormatter.class)
+	private JFormattedTextField textField_4;
 	
 	@Bindable(field = "parcelas", formatter = IntFormatter.class)
 	private JTextField textField_5;
@@ -118,8 +123,10 @@ public class Tela_Venda extends JFrame {
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Venda", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 
 		lblValor = new JLabel("Valor");
+		lblValor.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		lblCliente = new JLabel("Cliente");
+		lblCliente.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		textField = new JTextField();
 		textField.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -129,19 +136,31 @@ public class Tela_Venda extends JFrame {
 		textField_2.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_2.setColumns(10);
 
-		lblEntrada = new JLabel("Entrada");
+		lblEntrada = new JLabel("Pedido");
+		lblEntrada.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		textField_3 = new JTextField();
 		textField_3.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_3.setColumns(10);
 
 		lblData = new JLabel("Data");
+		lblData.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		textField_4 = new JTextField();
+		MaskFormatter dataMask = null;
+		try {
+			dataMask = new MaskFormatter("##/##/####");
+
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		textField_4 = new JFormattedTextField(dataMask);
 		textField_4.setFont(new Font("Dialog", Font.PLAIN, 14));
 		textField_4.setColumns(10);
 
 		lblParcelas = new JLabel("Parcelas");
+		lblParcelas.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		textField_5 = new JTextField();
 		textField_5.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -151,47 +170,45 @@ public class Tela_Venda extends JFrame {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblParcelas, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, 413, GroupLayout.PREFERRED_SIZE))
+									.addComponent(lblParcelas, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+									.addGap(31)
+									.addComponent(textField_5, GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblEntrada, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblValor)
-										.addComponent(lblCliente))
-									.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblCliente)
+										.addComponent(lblEntrada, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+									.addGap(31)
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(textField_2, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-										.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-											.addComponent(textField, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-											.addGap(126))
-										.addComponent(textField_3, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
-							.addGap(84))
-						.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-							.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+										.addComponent(textField_3, GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+										.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+										.addComponent(textField, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
+							.addGap(72))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+							.addGap(31)
+							.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(5)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCliente)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblValor)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblEntrada))
+					.addGap(13)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblCliente))
+					.addGap(18)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblValor))
 					.addGap(18)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE, false)
 						.addComponent(lblParcelas)
@@ -200,7 +217,7 @@ public class Tela_Venda extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblData)
 						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(171))
+					.addGap(169))
 		);
 		panel.setLayout(gl_panel);
 
@@ -277,7 +294,7 @@ public class Tela_Venda extends JFrame {
 					venda.setCodigo(codigoVenda);
 					dao.atualizar(venda);
 				}
-				TelaTabbed.carregarVendas();
+				PainelVenda.carregarVendas();
 				contentPane.setVisible(false);
 				dispose();
 			}

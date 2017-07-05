@@ -134,36 +134,11 @@ public class TelaTabbed extends JFrame {
 		
 		carregarVendas();
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		panel_6.setLayout(new BorderLayout(0, 0));
 		
 		PainelVenda panel_4 = new PainelVenda(getContentPane());
-		
-		
 		panel_6.add(panel_4);
 		
-		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
-		gl_panel_4.setHorizontalGroup(
-			gl_panel_4.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 260, Short.MAX_VALUE)
-		);
-		gl_panel_4.setVerticalGroup(
-			gl_panel_4.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 214, Short.MAX_VALUE)
-		);
-		panel_4.setLayout(gl_panel_4);
-		GroupLayout gl_panel_6 = new GroupLayout(panel_6);
-		gl_panel_6.setHorizontalGroup(
-			gl_panel_6.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_6.createSequentialGroup()
-					.addGap(12)
-					.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 568, GroupLayout.PREFERRED_SIZE))
-		);
-		gl_panel_6.setVerticalGroup(
-			gl_panel_6.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_6.createSequentialGroup()
-					.addGap(12)
-					.addComponent(panel_4, GroupLayout.PREFERRED_SIZE, 501, GroupLayout.PREFERRED_SIZE))
-		);
-		panel_6.setLayout(gl_panel_6);
 
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Relatório", null, panel_2, null);
