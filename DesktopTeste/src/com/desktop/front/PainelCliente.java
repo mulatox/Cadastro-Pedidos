@@ -104,23 +104,6 @@ public class PainelCliente extends JPanel {
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE CLIENTES", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 1382, Short.MAX_VALUE)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1348, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 282, Short.MAX_VALUE)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-					.addContainerGap())
-		);
 		
 		AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
 		ObjectTableModel<Cliente> tableModel = new ObjectTableModel<Cliente>(resolver,
@@ -156,44 +139,36 @@ public class PainelCliente extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(table);
-		panel.setLayout(gl_panel);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DADOS CLIENTE", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		
 		JLabel lblBairro = new JLabel("ENDERE\u00C7O");
 		lblBairro.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBairro.setBounds(15, 71, 64, 14);
 		
 		JLabel lblNome = new JLabel("NOME");
 		lblNome.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNome.setBounds(15, 28, 45, 14);
 		
 		JLabel lblBairro_1 = new JLabel("BAIRRO");
 		lblBairro_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblBairro_1.setBounds(15, 112, 83, 14);
 		
 		textField = new JTextField();
-		textField.setBounds(102, 21, 1173, 25);
 		textField.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField.setEditable(false);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(102, 64, 1173, 25);
 		textField_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(102, 107, 1173, 21);
 		textField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
 		
 		JLabel lblCpf = new JLabel("CPF");
 		lblCpf.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblCpf.setBounds(15, 192, 56, 14);
 		MaskFormatter cpfMask=null;
 		try {
 			cpfMask = new MaskFormatter("###.###.###-##");
@@ -202,14 +177,12 @@ public class PainelCliente extends JPanel {
 			e1.printStackTrace();
 		}
 		formattedTextField = new JFormattedTextField(cpfMask);
-		formattedTextField.setBounds(102, 187, 143, 21);
 		formattedTextField.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField.setEditable(false);
 		formattedTextField.setColumns(10);
 		
-		JLabel label_4 = new JLabel("Telefone");
-		label_4.setFont(new Font("Tahoma", Font.BOLD, 12));
-		label_4.setBounds(249, 192, 83, 14);
+		JLabel lblTelefone = new JLabel("TELEFONE");
+		lblTelefone.setFont(new Font("Tahoma", Font.BOLD, 12));
 		MaskFormatter foneMask=null;
 		try {
 			foneMask = new MaskFormatter("(##)#########");
@@ -218,14 +191,12 @@ public class PainelCliente extends JPanel {
 			e1.printStackTrace();
 		}
 		formattedTextField_1 = new JFormattedTextField(foneMask);
-		formattedTextField_1.setBounds(342, 187, 175, 21);
 		formattedTextField_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField_1.setEditable(false);
 		formattedTextField_1.setColumns(10);
 		
 		JButton button_1 = new JButton("ALTERAR");
 		button_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		button_1.setBounds(15, 261, 111, 23);
 		
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -244,7 +215,6 @@ public class PainelCliente extends JPanel {
 		
 		JButton button_2 = new JButton("EXCLUIR");
 		button_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		button_2.setBounds(195, 261, 111, 23);
 		
 		button_2.addActionListener(new ActionListener() {
 			
@@ -273,10 +243,8 @@ public class PainelCliente extends JPanel {
 		
 		JLabel lblCidade = new JLabel("CIDADE");
 		lblCidade.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblCidade.setBounds(15, 153, 83, 14);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(102, 148, 1173, 21);
 		textField_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_3.setEditable(false);
 		textField_3.setColumns(10);
@@ -290,62 +258,131 @@ public class PainelCliente extends JPanel {
 		}
 		
 		formattedTextField_2 = new JFormattedTextField(dataMask);
-		
-		formattedTextField_2.setBounds(636, 187, 175, 21);
 		formattedTextField_2.setHorizontalAlignment(SwingConstants.CENTER);
 		formattedTextField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField_2.setEditable(false);
 		formattedTextField_2.setColumns(10);
 		
-		JLabel lblDataNasc = new JLabel("Data Nasc");
+		JLabel lblDataNasc = new JLabel("DATA NASC");
 		lblDataNasc.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblDataNasc.setBounds(535, 190, 83, 14);
 		
 		binder = new AnnotatedBinder(this);
-		panel_1.setLayout(null);
-		panel_1.add(lblBairro);
-		panel_1.add(lblNome);
-		panel_1.add(lblBairro_1);
-		panel_1.add(textField);
-		panel_1.add(textField_2);
-		panel_1.add(textField_1);
-		panel_1.add(button_1);
-		panel_1.add(button_2);
-		panel_1.add(lblCpf);
-		panel_1.add(formattedTextField);
-		panel_1.add(label_4);
-		panel_1.add(formattedTextField_1);
-		panel_1.add(lblDataNasc);
-		panel_1.add(formattedTextField_2);
-		panel_1.add(lblCidade);
-		panel_1.add(textField_3);
 		
 		textField_4 = new JTextField();
 		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_4.setEditable(false);
 		textField_4.setColumns(10);
-		textField_4.setBounds(102, 226, 1173, 21);
-		panel_1.add(textField_4);
 		
 		JLabel lblReferncias = new JLabel("REFER\u00CANCIAS");
 		lblReferncias.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblReferncias.setBounds(15, 231, 83, 14);
-		panel_1.add(lblReferncias);
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(10)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+							.addGap(42)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 904, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblBairro)
+							.addGap(23)
+							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 906, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblBairro_1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 906, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 906, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+							.addGap(31)
+							.addComponent(formattedTextField, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(formattedTextField_1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(lblDataNasc, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblReferncias)
+							.addGap(4)
+							.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 905, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
+							.addGap(69)
+							.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(7)
+							.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(7)
+							.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblBairro_1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(20)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblCpf, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(formattedTextField, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblTelefone, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(formattedTextField_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblDataNasc, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblReferncias, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(14)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(button_1)
+						.addComponent(button_2)))
+		);
+		panel_1.setLayout(gl_panel_1);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(20)
-							.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 1362, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+					.addGap(20)
+					.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(12)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 1008, Short.MAX_VALUE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 1010, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -357,6 +394,20 @@ public class PainelCliente extends JPanel {
 					.addGap(50)
 					.addComponent(button))
 		);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(10)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1332, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(11)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE))
+		);
+		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
 		
 		table.addKeyListener(new KeyAdapter() {

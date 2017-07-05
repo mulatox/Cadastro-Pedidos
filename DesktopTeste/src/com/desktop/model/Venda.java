@@ -17,11 +17,11 @@ public class Venda {
 	@Resolvable(colName="codigo")
 	private int codigo;
 	
+	@Resolvable(colName="pedido")
 	private int pedido;
 	
 	@Resolvable(colName="valor")
 	private double valor;
-	
 	
 	@Resolvable(colName="parcelas")
 	private int parcelas;
@@ -31,6 +31,8 @@ public class Venda {
 	
 	@Resolvable(colName="data")
 	private Date data;
+	
+	private int status;
 
 	public int getCodigo() {
 		return codigo;
@@ -79,6 +81,14 @@ public class Venda {
 
 	public void setPedido(int pedido) {
 		this.pedido = pedido;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 	

@@ -126,37 +126,13 @@ public class TelaTabbed extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		GroupLayout groupLayout = new GroupLayout(this.getContentPane());
-		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap().addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 1428, Short.MAX_VALUE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap(47, Short.MAX_VALUE)
-						.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 788, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap()));
 
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("Cliente", null, panel, "Cadastro e Lista de Clientes");
+		panel.setLayout(new BorderLayout(0, 0));
 		
 		PainelCliente panel_1 = new PainelCliente(getContentPane());
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 1382, Short.MAX_VALUE)
-					.addGap(1132))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(29)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 703, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(29, Short.MAX_VALUE))
-		);
-
-
-		panel.setLayout(gl_panel);
+		panel.add(panel_1);
 		
 		JPanel panel_6 = new JPanel();
 		tabbedPane.addTab("Venda", null, panel_6, null);
@@ -295,6 +271,7 @@ public class TelaTabbed extends JFrame {
 				}
 			}
 		});
+		getContentPane().setLayout(new BorderLayout(0, 0));
 		GroupLayout gl_panel_8 = new GroupLayout(panel_8);
 		gl_panel_8.setHorizontalGroup(
 			gl_panel_8.createParallelGroup(Alignment.LEADING)
@@ -396,8 +373,7 @@ public class TelaTabbed extends JFrame {
 		tabbedPane.addTab("Configuração", null, panel_3, null);
 
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_C);
-
-		this.getContentPane().setLayout(groupLayout);
+		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		this.pack();
 
 		JMenuBar menuBar = new JMenuBar();
