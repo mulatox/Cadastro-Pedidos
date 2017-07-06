@@ -17,10 +17,19 @@ public class Parcela {
 	@Resolvable(colName="CÓDIGO")
 	private int codigo;
 	
+	@Resolvable(colName="VALOR")
 	private double valor;
+	
+	@Resolvable(colName="STATUS")
 	private int status;
+	
+	@Resolvable(colName="VENCIMENTO")
 	private Date vencimento;
+	
+	@Resolvable(colName="ALIAS")
 	private String alias;
+
+	@Resolvable(colName="VENDA")
 	private int venda;
 	
 	public int getCodigo() {
