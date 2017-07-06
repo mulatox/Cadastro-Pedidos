@@ -51,6 +51,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import java.util.Calendar;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 @Form(Venda.class)
 public class Tela_Venda extends JFrame {
@@ -67,7 +71,7 @@ public class Tela_Venda extends JFrame {
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	private JPanel panel_1;
-	
+
 	@Bindable(field = "valor", formatter = DoubleFormatter.class)
 	private JTextField textField;
 
@@ -78,17 +82,17 @@ public class Tela_Venda extends JFrame {
 	private JFormattedTextField textField_3;
 	@Bindable(field = "data", formatter = DateFormatter.class)
 	private JFormattedTextField textField_4;
-	
+
 	@Bindable(field = "parcelas", formatter = IntFormatter.class)
 	private JFormattedTextField textField_5;
-	
+
 	private Binder binder;
-	
+
 	private int codigoVenda;
-	
-	
-	//Indica se esta no modo de salvar ou de alterar cliente
-	public static String tipoTela= "";
+
+	// Indica se esta no modo de salvar ou de alterar cliente
+	public static String tipoTela = "";
+	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -109,24 +113,25 @@ public class Tela_Venda extends JFrame {
 	public Tela_Venda(Venda venda) {
 		this();
 		binder.updateView(venda);
-		codigoVenda=venda.getCodigo();
-		tipoTela=ALTERAR;
-		
+		codigoVenda = venda.getCodigo();
+		tipoTela = ALTERAR;
+
 	}
-	
+
 	/**
 	 * Create the frame.
 	 */
 	public Tela_Venda() {
-		
+
 		NumberFormat intFormat = NumberFormat.getIntegerInstance();
 		intFormat.setGroupingUsed(false);
 		NumberFormatter numberFormatter = new NumberFormatter(intFormat);
-		numberFormatter.setValueClass(Integer.class); //optional, ensures you will always get a long value
-		numberFormatter.setAllowsInvalid(false); //this is the key!!
+		numberFormatter.setValueClass(Integer.class); // optional, ensures you
+														// will always get a
+														// long value
+		numberFormatter.setAllowsInvalid(true); // this is the key!!
 		numberFormatter.setMinimum(0);
-		
-		tipoTela=SALVAR;
+		tipoTela = SALVAR;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 626, 501);
 		contentPane = new JPanel();
@@ -134,7 +139,8 @@ public class Tela_Venda extends JFrame {
 		setContentPane(contentPane);
 
 		panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Venda", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Venda", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(51, 51, 51)));
 
 		lblValor = new JLabel("Valor");
 		lblValor.setBounds(15, 104, 31, 15);
@@ -150,7 +156,7 @@ public class Tela_Venda extends JFrame {
 		textField.setColumns(10);
 
 		textField_2 = new JTextField();
-		textField_2.setBounds(102, 60, 423, 25);
+		textField_2.setBounds(102, 60, 157, 25);
 		textField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_2.setColumns(10);
 
@@ -175,7 +181,7 @@ public class Tela_Venda extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		textField_4 = new JFormattedTextField(dataMask);
 		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
 		textField_4.setBounds(102, 177, 143, 25);
@@ -186,8 +192,6 @@ public class Tela_Venda extends JFrame {
 		lblParcelas.setBounds(15, 143, 56, 15);
 		lblParcelas.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		
-		
 		textField_5 = new JFormattedTextField(numberFormatter);
 		textField_5.setBounds(102, 138, 423, 25);
 		textField_5.setFont(new Font("Dialog", Font.PLAIN, 16));
@@ -220,11 +224,41 @@ public class Tela_Venda extends JFrame {
 		panel.add(lblData);
 		panel.add(textField_4);
 
+		comboBox = new JComboBox();
+		comboBox.setFocusable(false);
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				ClienteDao dao = new ClienteDao();
+				try{
+					textField_2.setText(""+ ((Cliente)dao.consultar((String)e.getItem())).getCodigo());
+				}
+				
+				catch(Exception ex)
+				{
+					textField_2.setText("");
+				}
+				
+			}
+		});
+		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
+
+		String[] listaNomes = new String[PainelCliente.clientes.size() + 1];
+		listaNomes[0] = "Selecione Cliente";
+		int i = 1;
+		for (Cliente client : PainelCliente.clientes) {
+			listaNomes[i] = client.getNome();
+			i++;
+		}
+
+		comboBox.setModel(new DefaultComboBoxModel(listaNomes));
+		comboBox.setBounds(269, 60, 256, 25);
+		panel.add(comboBox);
+
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				salvarVenda();
-				
+
 			}
 		});
 		btnSalvar.addKeyListener(new KeyAdapter() {
@@ -254,117 +288,104 @@ public class Tela_Venda extends JFrame {
 		panel.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, conj);
 		binder = new AnnotatedBinder(this);
 	}
-	
-	private void salvarVenda ()
-	{
+
+	private void salvarVenda() {
 		Venda venda = new Venda();
 		binder.updateModel(venda);
-		if(validado(venda))
-		{
+		if (validado(venda)) {
 			VendaDao dao = new VendaDao();
 			Object[] options = { "CONFIRMAR", "CANCELAR" };
-			int resposta =JOptionPane.showOptionDialog(null,
-					"Confirma o cadastro da venda " + venda.getValor()+" ?", "Atenção",
-					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-			if(resposta==0)
-			{
-				if(tipoTela.equals(SALVAR))
-				{
-					venda =(Venda) dao.inserir(venda);
+			int resposta = JOptionPane.showOptionDialog(null, "Confirma o cadastro da venda " + venda.getValor() + " ?",
+					"Atenção", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+			if (resposta == 0) {
+				if (tipoTela.equals(SALVAR)) {
+					venda = (Venda) dao.inserir(venda);
 					gerarParcelas(venda);
-				}
-				else
-				{
+				} else {
 					venda.setCodigo(codigoVenda);
-					venda =(Venda) dao.atualizar(venda);
+					venda = (Venda) dao.atualizar(venda);
 					atualizarParcelas(venda);
 				}
-				
+
 				PainelVenda.carregarVendas();
 				contentPane.setVisible(false);
 				dispose();
 			}
-			
+
 		}
-		
-		
+
 	}
-	
-	private void gerarParcelas(Venda venda)
-	{
+
+	private void gerarParcelas(Venda venda) {
 		ParcelaDao dao = new ParcelaDao();
-		Parcela parcela=null;
+		Parcela parcela = null;
 		Calendar calendar = Calendar.getInstance();
-		for(int i=0;i<venda.getParcelas();i++)
-		{
+		for (int i = 0; i < venda.getParcelas(); i++) {
 			parcela = new Parcela();
-			parcela.setAlias(venda.getPedido()+"/"+i+1);
-			parcela.setValor(venda.getValor()/venda.getParcelas());
-			parcela.setVenda(venda.getCodigo());
+			parcela.setAlias(venda.getPedido() + "/" + i + 1);
+			parcela.setValor(venda.getValor() / venda.getParcelas());
+			parcela.setVenda(venda.getPedido());
 			calendar.setTime(venda.getData());
-			calendar.add(Calendar.MONTH, 1);
+			calendar.add(Calendar.MONTH, 1 + i);
 			parcela.setVencimento(calendar.getTime());
 			dao.inserir(parcela);
 		}
-		
+
 	}
-	
-	private void atualizarParcelas(Venda venda)
-	{
+
+	private void atualizarParcelas(Venda venda) {
 		ParcelaDao dao = new ParcelaDao();
-		Parcela parcela=null;
+		Parcela parcela = null;
 		Calendar calendar = Calendar.getInstance();
-		for(int i=0;i<venda.getParcelas();i++)
-		{
+		for (int i = 0; i < venda.getParcelas(); i++) {
 			parcela = new Parcela();
-			parcela.setAlias(venda.getPedido()+"/"+i+1);
-			parcela.setValor(venda.getValor()/venda.getParcelas());
-			parcela.setVenda(venda.getCodigo());
+			parcela.setAlias(venda.getPedido() + "/" + i + 1);
+			parcela.setValor(venda.getValor() / venda.getParcelas());
+			parcela.setVenda(venda.getPedido());
 			calendar.setTime(venda.getData());
 			calendar.add(Calendar.MONTH, 1);
 			parcela.setVencimento(calendar.getTime());
 			dao.atualizar(parcela);
 		}
-		
+
 	}
-	
-	public boolean validado(Venda venda)
-	{
-		if(venda.getCliente()==0)
-		{
-			JOptionPane.showMessageDialog(this,"Campo Cliente obrigatório","Campos Obrigatórios",JOptionPane.WARNING_MESSAGE);
+
+	public boolean validado(Venda venda) {
+		if (venda.getCliente() == 0) {
+			JOptionPane.showMessageDialog(this, "Campo Cliente obrigatório", "Campos Obrigatórios",
+					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		
-		if(venda.getValor()==0)
-		{
-			JOptionPane.showMessageDialog(this,"Campo Valor obrigatório","Campos Obrigatórios",JOptionPane.WARNING_MESSAGE);
+
+		if (venda.getValor() == 0) {
+			JOptionPane.showMessageDialog(this, "Campo Valor obrigatório", "Campos Obrigatórios",
+					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		
-		if(venda.getParcelas()==0)
-		{
-			JOptionPane.showMessageDialog(this,"Campo Parcelas obrigatório","Campos Obrigatórios",JOptionPane.WARNING_MESSAGE);
+
+		if (venda.getParcelas() == 0) {
+			JOptionPane.showMessageDialog(this, "Campo Parcelas obrigatório", "Campos Obrigatórios",
+					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		
-		
-		
+
 		return true;
 	}
-	
+
 	// IntFormatter sera usado para transformar a String em numero.
-		public static class IntFormatter implements Formatter {
-		    public Object format(Object obj) {
-		        Integer d = (Integer) obj;
-		        return d.toString();
-		    }
-		    public Object parse(Object obj) {
-		        return Integer.valueOf(Integer.parseInt((String) obj));
-		    }
-		    public String getName() {
-		        return "int";
-		    }
+	public static class IntFormatter implements Formatter {
+		public Object format(Object obj) {
+			Integer d = (Integer) obj;
+			return d.toString();
 		}
-		
+
+		public Object parse(Object obj) {
+			return Integer.valueOf(Integer.parseInt((String) obj));
+		}
+
+		public String getName() {
+			return "int";
+		}
+	}
+
 }

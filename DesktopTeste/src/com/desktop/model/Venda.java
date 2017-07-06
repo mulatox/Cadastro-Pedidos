@@ -33,7 +33,6 @@ public class Venda {
 	@Resolvable(colName="DATA")
 	private Date data;
 	
-	@Transient
 	private int status;
 
 	public int getCodigo() {

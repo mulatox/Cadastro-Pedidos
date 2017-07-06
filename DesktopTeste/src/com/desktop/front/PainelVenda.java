@@ -10,8 +10,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
 import com.desktop.database.ClienteDao;
+import com.desktop.database.ParcelaDao;
 import com.desktop.database.VendaDao;
 import com.desktop.model.Cliente;
+import com.desktop.model.Parcela;
 import com.desktop.model.Venda;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
@@ -187,7 +189,7 @@ public class PainelVenda extends JPanel {
 					telaVenda.setVisible(true);
 
 				} else {
-					JOptionPane.showInternalMessageDialog(container, "Nenhum cliente selecionado", "Aviso",
+					JOptionPane.showInternalMessageDialog(container, "Nenhum pedido selecionado", "Aviso",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 
@@ -204,19 +206,20 @@ public class PainelVenda extends JPanel {
 				if (vendaSelecionada != null) {
 					Object[] options = { "Confirmar", "Cancelar" };
 					int resposta = JOptionPane.showOptionDialog(container,
-							"Deseja realmente excluir a venda " + vendaSelecionada.getCodigo() + " do pedido "
+							"Deseja realmente excluir o pedido "
 									+ vendaSelecionada.getPedido() + " ?",
 							"Atenção", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
 							options[0]);
 					if (resposta == 0) {
-						ClienteDao dao = new ClienteDao();
+						VendaDao dao = new VendaDao();
 						vendaSelecionada.setStatus(INATIVO);
 						dao.atualizar(vendaSelecionada);
+						removerParcelas(vendaSelecionada);
 						carregarVendas();
 					}
 
 				} else {
-					JOptionPane.showInternalMessageDialog(container, "Nenhum cliente selecionado", "Aviso",
+					JOptionPane.showInternalMessageDialog(container, "Nenhum pedido selecionado", "Aviso",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 
@@ -380,10 +383,19 @@ public class PainelVenda extends JPanel {
 		tableModel.setData(vendas);
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
-
 		table.repaint();
 	}
 
+	public static void removerParcelas(Venda venda)
+	{
+		ParcelaDao dao = new ParcelaDao();
+		for(Parcela parcela:dao.listar(venda.getPedido()))
+		{
+			dao.remover(parcela);
+		}
+		
+	}
+	
 	// IntFormatter sera usado para transformar a String em numero.
 	public static class IntFormatter implements Formatter {
 		public Object format(Object obj) {

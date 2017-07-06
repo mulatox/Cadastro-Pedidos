@@ -13,5 +13,11 @@ public class ParcelaDao extends Base_Dao {
 		Query query = getGerenciadorEntidade().createQuery("FROM " + Parcela.class.getName());
 		return (ArrayList<Parcela>) query.getResultList();
 	}
+	
+	public ArrayList<Parcela> listar(int codigoVenda)
+	{
+		Query query = getGerenciadorEntidade().createQuery("FROM " + Parcela.class.getName()+" p where p.venda="+codigoVenda);
+		return (ArrayList<Parcela>) query.getResultList();
+	}
 
 }

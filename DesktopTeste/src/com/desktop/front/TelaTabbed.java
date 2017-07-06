@@ -108,21 +108,21 @@ public class TelaTabbed extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		this.setTitle("Sistema de Vendas");
+		this.setTitle("Sistema de Pedidos");
 		this.setBounds(100, 100, 781, 664);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
 		JPanel panel = new JPanel();
-		tabbedPane.addTab("Cliente", null, panel, "Cadastro e Lista de Clientes");
+		tabbedPane.addTab("CLIENTE", null, panel, "Cadastro e Lista de Clientes");
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		PainelCliente panel_1 = new PainelCliente(getContentPane());
 		panel.add(panel_1);
 		
 		JPanel panel_6 = new JPanel();
-		tabbedPane.addTab("Venda", null, panel_6, null);
+		tabbedPane.addTab("PEDIDO", null, panel_6, "Cadastro e Lista de Pedidos");
 		
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		panel_6.setLayout(new BorderLayout(0, 0));
@@ -132,12 +132,13 @@ public class TelaTabbed extends JFrame {
 		
 
 		JPanel panel_2 = new JPanel();
-		tabbedPane.addTab("Relatório", null, panel_2, null);
+		tabbedPane.addTab("RELATÓRIO", null, panel_2, null);
 
 		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("Configuração", null, panel_3, null);
+		tabbedPane.addTab("CONFIGURAÇÃO", null, panel_3, null);
 
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_C);
+		tabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		this.pack();
 
@@ -158,7 +159,7 @@ public class TelaTabbed extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem);
 		setJMenuBar(menuBar);
 		
-		JMenu mnVenda = new JMenu("Venda");
+		JMenu mnVenda = new JMenu("Pedido");
 		menuBar.add(mnVenda);
 		
 		JMenuItem menuItem = new JMenuItem("Cadastrar");

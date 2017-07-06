@@ -31,7 +31,7 @@ public class Base_Dao {
 
 		gerente.getTransaction().begin();
 		
-		gerente.remove(objeto);
+		gerente.remove(gerente.contains(objeto) ? objeto : gerente.merge(objeto));
 		
 		gerente.flush();
 		

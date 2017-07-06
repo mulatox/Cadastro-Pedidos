@@ -266,14 +266,16 @@ public class PainelCliente extends JPanel {
 		JLabel lblDataNasc = new JLabel("DATA NASC");
 		lblDataNasc.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		binder = new AnnotatedBinder(this);
+		
 		
 		textField_4 = new JTextField();
 		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_4.setEditable(false);
 		textField_4.setColumns(10);
 		
-		JLabel lblReferncias = new JLabel("REFER\u00CANCIAS");
+		binder = new AnnotatedBinder(this);
+		
+		JLabel lblReferncias = new JLabel("REFERÊNCIAS");
 		lblReferncias.setFont(new Font("Tahoma", Font.BOLD, 12));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(

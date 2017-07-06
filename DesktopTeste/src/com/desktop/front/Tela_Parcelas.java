@@ -64,17 +64,19 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
+@Form(Parcela.class)
 public class Tela_Parcelas extends JFrame {
 
 	private static final String SALVAR = "salvar";
 	private static final String ALTERAR = "alterar";
 	private JPanel contentPane;
 	private JPanel panel;
-	private JLabel lblTelefone;
 	private JButton btnSalvar;
-	private JPanel panel_1;
 	public static ArrayList<Parcela> parcelas;
+	public static Venda vendaSelecionada;
 
 	private JFormattedTextField textField_4;
 
@@ -84,7 +86,7 @@ public class Tela_Parcelas extends JFrame {
 
 	// Indica se esta no modo de salvar ou de alterar cliente
 	public static String tipoTela = "";
-	private JTable table;
+	public static JTable table;
 
 	/**
 	 * Launch the application.
@@ -125,26 +127,6 @@ public class Tela_Parcelas extends JFrame {
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "QUITAR PARCELAS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 
-		/*
-		 * // Without this, cursor always leaves text field
-		 * textField_3.setFocusTraversalKeysEnabled(false); // Our words to
-		 * complete ArrayList keywords = new ArrayList<String>(5);
-		 * keywords.add("fortaleza"); keywords.add("caucaia");
-		 * keywords.add("fortin"); keywords.add("pecem"); Autocomplete
-		 * autoComplete = new Autocomplete(textField_3, keywords);
-		 * textField_3.getDocument().addDocumentListener(autoComplete);
-		 * 
-		 * // Maps the tab key to the commit action, which finishes the
-		 * autocomplete // when given a suggestion
-		 * textField_3.getInputMap().put(KeyStroke.getKeyStroke("TAB"),
-		 * "commit"); textField_3.getActionMap().put("commit", autoComplete.new
-		 * CommitAction());
-		 */
-
-		lblTelefone = new JLabel("PEDIDO");
-		lblTelefone.setBounds(25, 66, 64, 15);
-		lblTelefone.setFont(new Font("Tahoma", Font.BOLD, 12));
-
 		// MaskFormatter foneMask = null;
 		// foneMask = new MaskFormatter("(##)#########");
 		NumberFormat longFormat = NumberFormat.getIntegerInstance();
@@ -154,42 +136,19 @@ public class Tela_Parcelas extends JFrame {
 		numberFormatter.setAllowsInvalid(false); //this is the key!!
 		numberFormatter.setMinimum(0l);
 		textField_4 = new JFormattedTextField(numberFormatter);
-		textField_4.setBounds(105, 59, 147, 25);
+		textField_4.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				carregarParcelas();
+			}
+		});
+		textField_4.setBounds(126, 59, 126, 25);
 		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_4.setColumns(10);
 
-		MaskFormatter dataMask = null;
-		try {
-			dataMask = new MaskFormatter("##/##/####");
-
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		MaskFormatter cpfMask = null;
-		try {
-			cpfMask = new MaskFormatter("###.###.###-##");
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		panel_1 = new JPanel();
-		panel_1.setBorder(null);
 
 		DocumentFilter filter = new UppercaseDocumentFilter();
 		((AbstractDocument) textField_4.getDocument()).setDocumentFilter(filter);
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 645, Short.MAX_VALUE)
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 57, Short.MAX_VALUE)
-		);
-		panel_1.setLayout(gl_panel_1);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE PARCELAS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
@@ -198,15 +157,13 @@ public class Tela_Parcelas extends JFrame {
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 564, Short.MAX_VALUE)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
-					.addContainerGap())
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 590, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(99, Short.MAX_VALUE))
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 238, Short.MAX_VALUE)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
@@ -235,42 +192,39 @@ public class Tela_Parcelas extends JFrame {
 				}
 			}
 		});
+		panel.setLayout(null);
+		panel.add(textField_4);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"PEDIDO", "CLIENTE"}));
+		comboBox.setBounds(24, 59, 88, 25);
+		panel.add(comboBox);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addContainerGap()
-									.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 564, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(218)
-									.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)))
-							.addGap(393)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 645, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 624, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+							.addGap(218)
+							.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 196, GroupLayout.PREFERRED_SIZE)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(224)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnSalvar)))
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnSalvar))
 		);
-		panel.setLayout(null);
-		panel.add(lblTelefone);
-		panel.add(textField_4);
 		contentPane.setLayout(gl_contentPane);
 		HashSet conj = new HashSet(panel.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
 		conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
@@ -278,6 +232,19 @@ public class Tela_Parcelas extends JFrame {
 		binder = new AnnotatedBinder(this);
 	}
 
+	public static void carregarParcelas() {
+		AnnotationResolver resolver = new AnnotationResolver(Parcela.class);
+		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
+				"alias,valor,vencimento");
+		ParcelaDao dao = new ParcelaDao();
+		parcelas = dao.listar();
+		tableModel.setData(parcelas);
+		table.setModel(tableModel);
+		tableModel.fireTableDataChanged();
+
+		table.repaint();
+	}
+	
 	private void salvarParcela() {
 		Parcela parcela = new Parcela();
 		binder.updateModel(parcela);

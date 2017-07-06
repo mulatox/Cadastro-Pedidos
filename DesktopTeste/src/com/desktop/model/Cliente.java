@@ -111,6 +111,11 @@ public class Cliente {
 		this.endereco = endereco;
 	}
 	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return nome;
+	}
 	
 	
 	

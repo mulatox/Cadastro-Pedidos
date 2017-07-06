@@ -201,7 +201,7 @@ public class Tela_Cliente extends JFrame {
 		longFormat.setGroupingUsed(false);
 		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
 		numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
-		numberFormatter.setAllowsInvalid(false); //this is the key!!
+		numberFormatter.setAllowsInvalid(true); //this is the key!!
 		numberFormatter.setMinimum(0l);
 		textField_4 = new JFormattedTextField(numberFormatter);
 		textField_4.setBounds(105, 233, 147, 25);
@@ -339,6 +339,7 @@ public class Tela_Cliente extends JFrame {
 		panel.add(lblObservaes);
 
 		JComboBox comboBox = new JComboBox();
+		comboBox.setFocusable(false);
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		comboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {

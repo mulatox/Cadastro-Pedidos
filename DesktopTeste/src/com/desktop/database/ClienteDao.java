@@ -15,4 +15,11 @@ public class ClienteDao extends Base_Dao {
 		return (ArrayList<Cliente>) query.getResultList();
 	}
 	
+	public Cliente consultar(String nome)
+	{
+		Query query = getGerenciadorEntidade().createQuery("FROM " + Cliente.class.getName()+" c where c.nome = :nomeParametro");
+		query.setParameter("nomeParametro", nome);
+		return (Cliente) query.getSingleResult();
+	}
+	
 }
