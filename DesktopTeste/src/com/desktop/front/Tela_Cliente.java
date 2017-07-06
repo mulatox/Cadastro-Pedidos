@@ -19,8 +19,6 @@ import javax.swing.text.NumberFormatter;
 
 import com.desktop.database.ClienteDao;
 import com.desktop.front.Autocomplete.CommitAction;
-import com.desktop.front.TelaTabbed.IntFormatter;
-import com.desktop.front.Tela_Venda.DoubleFormatter;
 import com.desktop.model.Cliente;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
@@ -348,7 +346,7 @@ public class Tela_Cliente extends JFrame {
 			}
 		});
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "SELECIONE CIDADE", "FORTALEZA", "FORTIM", "CAUCAIA",
-				"AQUIRAZ", "EUS\u00C9BIO", "ITAREMA", "PACAJUS" }));
+				"AQUIRAZ", "EUSÉBIO", "ITAREMA", "PACAJUS" }));
 		comboBox.setBounds(269, 194, 176, 25);
 		panel.add(comboBox);
 		contentPane.setLayout(gl_contentPane);
@@ -363,7 +361,7 @@ public class Tela_Cliente extends JFrame {
 		binder.updateModel(cliente);
 		if (validado(cliente)) {
 			ClienteDao dao = new ClienteDao();
-			Object[] options = { "Confirmar", "Cancelar" };
+			Object[] options = { "CONFIRMAR", "CANCELAR" };
 			int resposta = JOptionPane.showOptionDialog(null,
 					"Confirma o cadastro do cliente " + cliente.getNome() + " ?", "Atenção", JOptionPane.DEFAULT_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);

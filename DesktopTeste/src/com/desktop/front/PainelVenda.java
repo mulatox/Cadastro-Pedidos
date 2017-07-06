@@ -49,27 +49,27 @@ import javax.swing.SwingConstants;
 
 @Form(Venda.class)
 public class PainelVenda extends JPanel {
-	
+
 	@Bindable(field = "pedido", formatter = IntFormatter.class)
 	private JTextField textField;
-	
+
 	@Bindable(field = "cliente", formatter = IntFormatter.class)
 	private JTextField textField_1;
-	
-	@Bindable(field = "valor")
+
+	@Bindable(field = "valor", formatter = DoubleFormatter.class)
 	private JTextField textField_2;
-	
+
 	@Bindable(field = "data", formatter = DateFormatter.class)
 	JFormattedTextField formattedTextField_2;
-	
+
 	private Binder binder;
-	
+
 	private Tela_Venda telaVenda;
 	public static Venda vendaSelecionada;
 	public static ArrayList<Venda> vendas;
 	public static JTable table;
 	private static final int INATIVO = -1;
-	
+
 	@Bindable(field = "parcelas", formatter = IntFormatter.class)
 	private JTextField textField_3;
 
@@ -77,10 +77,10 @@ public class PainelVenda extends JPanel {
 	 * Create the panel.
 	 */
 	public PainelVenda(final Container container) {
-		
+
 		JButton button = new JButton("CADASTRAR");
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -89,17 +89,18 @@ public class PainelVenda extends JPanel {
 
 			}
 		});
-		
+
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE PEDIDOS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE PEDIDOS", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(51, 51, 51)));
+
 		JScrollPane scrollPane = new JScrollPane();
-		
+
 		AnnotationResolver resolver = new AnnotationResolver(Venda.class);
 		ObjectTableModel<Venda> tableModel = new ObjectTableModel<Venda>(resolver,
 				"pedido,cliente,valor,parcelas,data");
 		VendaDao dao = new VendaDao();
-		vendas =dao.listar();
+		vendas = dao.listar();
 		tableModel.setData(vendas);
 		table = new JTable(tableModel);
 		table.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -129,54 +130,55 @@ public class PainelVenda extends JPanel {
 			}
 		});
 		scrollPane.setViewportView(table);
-		
+
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DADOS PEDIDO", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		
+		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DADOS PEDIDO", TitledBorder.LEADING,
+				TitledBorder.TOP, null, new Color(51, 51, 51)));
+
 		JLabel lblBairro = new JLabel("CLIENTE");
 		lblBairro.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		JLabel lblNome = new JLabel("PEDIDO");
 		lblNome.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		JLabel lblBairro_1 = new JLabel("VALOR");
 		lblBairro_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		textField = new JTextField();
 		textField.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField.setEditable(false);
 		textField.setColumns(10);
-		
+
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_1.setEditable(false);
 		textField_1.setColumns(10);
-		
+
 		textField_2 = new JTextField();
 		textField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
-		MaskFormatter cpfMask=null;
+		MaskFormatter cpfMask = null;
 		try {
 			cpfMask = new MaskFormatter("###.###.###-##");
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		JLabel lblData = new JLabel("DATA");
 		lblData.setFont(new Font("Tahoma", Font.BOLD, 12));
-		MaskFormatter foneMask=null;
+		MaskFormatter foneMask = null;
 		try {
 			foneMask = new MaskFormatter("(##)#########");
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		JButton button_1 = new JButton("ALTERAR");
 		button_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -191,21 +193,22 @@ public class PainelVenda extends JPanel {
 
 			}
 		});
-		
+
 		JButton button_2 = new JButton("EXCLUIR");
 		button_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		button_2.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 
 				if (vendaSelecionada != null) {
 					Object[] options = { "Confirmar", "Cancelar" };
-					int resposta =JOptionPane.showOptionDialog(container,
-							"Deseja realmente excluir a venda " + vendaSelecionada.getCodigo()+" do pedido "+vendaSelecionada.getPedido()+" ?", "Atenção",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-					if(resposta==0)
-					{
+					int resposta = JOptionPane.showOptionDialog(container,
+							"Deseja realmente excluir a venda " + vendaSelecionada.getCodigo() + " do pedido "
+									+ vendaSelecionada.getPedido() + " ?",
+							"Atenção", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+							options[0]);
+					if (resposta == 0) {
 						ClienteDao dao = new ClienteDao();
 						vendaSelecionada.setStatus(INATIVO);
 						dao.atualizar(vendaSelecionada);
@@ -219,150 +222,127 @@ public class PainelVenda extends JPanel {
 
 			}
 		});
-		
+
 		JLabel lblCidade = new JLabel("PARCELAS");
 		lblCidade.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		textField_3 = new JTextField();
 		textField_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_3.setEditable(false);
 		textField_3.setColumns(10);
-		
-		MaskFormatter dataMask=null;
+
+		MaskFormatter dataMask = null;
 		try {
 			dataMask = new MaskFormatter("##/##/####");
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		formattedTextField_2 = new JFormattedTextField(dataMask);
 		formattedTextField_2.setHorizontalAlignment(SwingConstants.CENTER);
 		formattedTextField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		formattedTextField_2.setEditable(false);
 		formattedTextField_2.setColumns(10);
-		
+
 		binder = new AnnotatedBinder(this);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
+		gl_panel_1
+				.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_1
+						.createSequentialGroup().addGap(10).addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup()
+										.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 56,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(31).addComponent(textField, GroupLayout.PREFERRED_SIZE, 454,
+												GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 45,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(42).addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 175,
+												GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup()
+										.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 111,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(69).addComponent(button_2, GroupLayout.PREFERRED_SIZE, 111,
+												GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup()
+										.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 69,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18).addComponent(textField_3, 454, 454, 454))
+								.addGroup(gl_panel_1.createSequentialGroup()
+										.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(lblBairro_1, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(lblBairro, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addGap(38)
+										.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(textField_1).addComponent(textField_2,
+														GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE))))
+						.addGap(452)));
+		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(10)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-							.addGap(31)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 454, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-							.addGap(69)
-							.addComponent(button_2, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-							.addGroup(gl_panel_1.createSequentialGroup()
-								.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(textField_3))
-							.addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
-								.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-									.addComponent(lblBairro_1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addComponent(lblBairro))
-								.addGap(4)
-								.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(textField_1)
-									.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)))))
-					.addGap(452))
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(12)
-							.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(5)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(18)
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(23)
-							.addComponent(lblBairro_1, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(18)
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(20)
-							.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
-					.addGap(18)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-						.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(51)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addComponent(button_1)
-						.addComponent(button_2)))
-		);
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(12).addComponent(lblNome,
+										GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(5).addComponent(textField,
+										GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(25).addComponent(lblBairro,
+										GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(18).addComponent(textField_1,
+										GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(18).addComponent(textField_2,
+										GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(23).addComponent(lblBairro_1,
+										GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(20).addComponent(textField_3,
+										GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel_1.createSequentialGroup().addGap(25).addComponent(lblCidade,
+										GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)))
+						.addGap(18)
+						.addGroup(
+								gl_panel_1.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 14,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(formattedTextField_2, GroupLayout.PREFERRED_SIZE, 21,
+												GroupLayout.PREFERRED_SIZE))
+						.addGap(51).addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addComponent(button_1)
+								.addComponent(button_2))));
 		panel_1.setLayout(gl_panel_1);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(20).addComponent(button,
+						GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(20)
-					.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel, 0, 0, Short.MAX_VALUE))
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(446, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(1)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-					.addGap(50)
-					.addComponent(button))
-		);
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addGroup(Alignment.LEADING,
+										groupLayout.createSequentialGroup().addContainerGap().addComponent(panel, 0, 0,
+												Short.MAX_VALUE))
+								.addGroup(Alignment.LEADING,
+										groupLayout.createSequentialGroup().addGap(12).addComponent(panel_1,
+												GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(446, Short.MAX_VALUE)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(1)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE).addGap(18)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE).addGap(50)
+						.addComponent(button)));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
+				gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup().addContainerGap()
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+								.addContainerGap()));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup().addContainerGap()
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
-		
+
 		table.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -372,11 +352,11 @@ public class PainelVenda extends JPanel {
 				}
 			}
 		});
-		
+
 		table.requestFocus();
-		table.changeSelection(0,0,false, false);
+		table.changeSelection(0, 0, false, false);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
+
 			public void valueChanged(ListSelectionEvent e) {
 				int indice = table.getSelectedRow();
 				if (indice != INATIVO) {
@@ -390,21 +370,19 @@ public class PainelVenda extends JPanel {
 		});
 
 	}
-	
-	public static void carregarVendas()
-	{
+
+	public static void carregarVendas() {
 		AnnotationResolver resolver = new AnnotationResolver(Venda.class);
 		ObjectTableModel<Venda> tableModel = new ObjectTableModel<Venda>(resolver,
-				"codigo,cliente,valor,parcelas,data");
+				"pedido,cliente,valor,parcelas,data");
 		VendaDao dao = new VendaDao();
-		vendas =dao.listar();
+		vendas = dao.listar();
 		tableModel.setData(vendas);
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
-		
+
 		table.repaint();
 	}
-	
 
 	// IntFormatter sera usado para transformar a String em numero.
 	public static class IntFormatter implements Formatter {
@@ -421,30 +399,49 @@ public class PainelVenda extends JPanel {
 			return "int";
 		}
 	}
-	
-		
-		// DateFormatter sera usado para transformar a String em data.
-		public static class DateFormatter implements Formatter {
-			public Object format(Object obj) {
-				Date d = (Date) obj;
-				SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
-				return sm.format(d);
-			}
 
-			public Object parse(Object obj) {
-				SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
-				// Converting the String back to java.util.Date
-				try {
-					return sm.parse((String) obj);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return "";
-				}
-			}
+	// IntFormatter sera usado para transformar a String em numero.
+	public static class DoubleFormatter implements Formatter {
+		public Object format(Object obj) {
+			Double d = (Double) obj;
+			return d.toString().replace(".", ",");
+		}
 
-			public String getName() {
-				return "int";
+		public Object parse(Object obj) {
+			
+			String doubleFormatado=(String) obj;
+			doubleFormatado=doubleFormatado.replace(".", "");
+			doubleFormatado=doubleFormatado.replace(",", ".");
+			return Double.valueOf(Double.parseDouble(doubleFormatado));
+		}
+
+		public String getName() {
+			return "double";
+		}
+	}
+
+	// DateFormatter sera usado para transformar a String em data.
+	public static class DateFormatter implements Formatter {
+		public Object format(Object obj) {
+			Date d = (Date) obj;
+			SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+			return sm.format(d);
+		}
+
+		public Object parse(Object obj) {
+			SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
+			// Converting the String back to java.util.Date
+			try {
+				return sm.parse((String) obj);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return "";
 			}
 		}
+
+		public String getName() {
+			return "int";
+		}
+	}
 }

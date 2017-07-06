@@ -69,15 +69,8 @@ import javax.swing.JFormattedTextField;
 
 public class TelaTabbed extends JFrame {
 
-	private static final int INATIVO = -1;
-
-
 	private Tela_Cliente telaCliente;
-	
 	private Tela_Venda telaVenda;
-
-	
-	private Venda vendaSelecionada;
 	
 	public static ArrayList<Cliente> clientes;
 	public static ArrayList<Venda> vendas;
@@ -131,8 +124,6 @@ public class TelaTabbed extends JFrame {
 		JPanel panel_6 = new JPanel();
 		tabbedPane.addTab("Venda", null, panel_6, null);
 		
-		
-		carregarVendas();
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		panel_6.setLayout(new BorderLayout(0, 0));
 		
@@ -195,39 +186,4 @@ public class TelaTabbed extends JFrame {
 		
 	}
 	
-	
-	public static void carregarVendas()
-	{
-		AnnotationResolver resolver = new AnnotationResolver(Venda.class);
-		ObjectTableModel<Venda> tableModel = new ObjectTableModel<Venda>(resolver,
-				"codigo,cliente,valor,parcelas,data");
-		VendaDao dao = new VendaDao();
-		vendas =dao.listar();
-		tableModel.setData(vendas);
-		tableModel.fireTableDataChanged();
-	}
-	
-	
-	
-	public static String formatarString(String texto, String mascara) throws ParseException {
-        MaskFormatter mf = new MaskFormatter(mascara);
-        mf.setValueContainsLiteralCharacters(false);
-        return mf.valueToString(texto);
-    }
-
-	// IntFormatter sera usado para transformar a String em numero.
-	public static class IntFormatter implements Formatter {
-		public Object format(Object obj) {
-			Integer d = (Integer) obj;
-			return d.toString();
-		}
-
-		public Object parse(Object obj) {
-			return Integer.valueOf(Integer.parseInt((String) obj));
-		}
-
-		public String getName() {
-			return "int";
-		}
-	}
 }

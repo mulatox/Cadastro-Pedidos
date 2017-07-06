@@ -15,22 +15,22 @@ public class Venda {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Resolvable(colName="codigo")
+	@Resolvable(colName="CÓDIGO")
 	private int codigo;
 	
-	@Resolvable(colName="pedido")
+	@Resolvable(colName="PEDIDO")
 	private int pedido;
 	
-	@Resolvable(colName="valor")
+	@Resolvable(colName="VALOR")
 	private double valor;
 	
-	@Resolvable(colName="parcelas")
+	@Resolvable(colName="PARCELAS")
 	private int parcelas;
 	
-	@Resolvable(colName="cliente")
+	@Resolvable(colName="CLIENTE")
 	private int cliente;
 	
-	@Resolvable(colName="data")
+	@Resolvable(colName="DATA")
 	private Date data;
 	
 	@Transient

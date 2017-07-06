@@ -2,9 +2,21 @@ package com.desktop.model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.towel.el.annotation.Resolvable;
+
+@Entity
 public class Parcela {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Resolvable(colName="CÓDIGO")
 	private int codigo;
+	
 	private double valor;
 	private int status;
 	private Date vencimento;

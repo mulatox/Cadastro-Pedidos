@@ -10,7 +10,7 @@ import com.desktop.model.Cliente;
 public class Base_Dao {
 
 
-	public void inserir(Object objeto) {
+	public Object inserir(Object objeto) {
 
 		EntityManager gerente = getGerenciadorEntidade();
 
@@ -23,6 +23,7 @@ public class Base_Dao {
 		gerente.getTransaction().commit();
 		
 		gerente.close();
+		return objeto;
 	}
 
 	public void remover(Object objeto) {
@@ -39,7 +40,7 @@ public class Base_Dao {
 		gerente.close();
 	}
 
-	public void atualizar(Object objeto) {
+	public Object atualizar(Object objeto) {
 		EntityManager gerente = getGerenciadorEntidade();
 
 		gerente.getTransaction().begin();
@@ -51,6 +52,7 @@ public class Base_Dao {
 		gerente.getTransaction().commit();
 		
 		gerente.close();
+		return objeto;
 	}
 
 	public Object consultarCodigo(int codigo) {

@@ -11,12 +11,16 @@ import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 
+import com.desktop.database.Base_Dao;
 import com.desktop.database.ClienteDao;
+import com.desktop.database.ParcelaDao;
 import com.desktop.database.VendaDao;
-import com.desktop.front.TelaTabbed.IntFormatter;
+import com.desktop.front.PainelVenda.DoubleFormatter;
 import com.desktop.front.Tela_Cliente.DateFormatter;
 import com.desktop.model.Cliente;
+import com.desktop.model.Parcela;
 import com.desktop.model.Venda;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
@@ -36,6 +40,7 @@ import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashSet;
 
@@ -44,6 +49,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JFormattedTextField;
+import javax.swing.SwingConstants;
+import java.util.Calendar;
 
 @Form(Venda.class)
 public class Tela_Venda extends JFrame {
@@ -68,12 +75,12 @@ public class Tela_Venda extends JFrame {
 	private JTextField textField_2;
 
 	@Bindable(field = "pedido", formatter = IntFormatter.class)
-	private JTextField textField_3;
+	private JFormattedTextField textField_3;
 	@Bindable(field = "data", formatter = DateFormatter.class)
 	private JFormattedTextField textField_4;
 	
 	@Bindable(field = "parcelas", formatter = IntFormatter.class)
-	private JTextField textField_5;
+	private JFormattedTextField textField_5;
 	
 	private Binder binder;
 	
@@ -112,6 +119,13 @@ public class Tela_Venda extends JFrame {
 	 */
 	public Tela_Venda() {
 		
+		NumberFormat intFormat = NumberFormat.getIntegerInstance();
+		intFormat.setGroupingUsed(false);
+		NumberFormatter numberFormatter = new NumberFormatter(intFormat);
+		numberFormatter.setValueClass(Integer.class); //optional, ensures you will always get a long value
+		numberFormatter.setAllowsInvalid(false); //this is the key!!
+		numberFormatter.setMinimum(0);
+		
 		tipoTela=SALVAR;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 626, 501);
@@ -123,27 +137,34 @@ public class Tela_Venda extends JFrame {
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Venda", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 
 		lblValor = new JLabel("Valor");
+		lblValor.setBounds(15, 104, 31, 15);
 		lblValor.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		lblCliente = new JLabel("Cliente");
+		lblCliente.setBounds(15, 65, 42, 15);
 		lblCliente.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField.setBounds(102, 99, 423, 25);
+		textField.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField.setColumns(10);
 
 		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_2.setBounds(102, 60, 423, 25);
+		textField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_2.setColumns(10);
 
 		lblEntrada = new JLabel("Pedido");
+		lblEntrada.setBounds(15, 26, 56, 15);
 		lblEntrada.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_3 = new JFormattedTextField(numberFormatter);
+		textField_3.setBounds(102, 21, 423, 25);
+		textField_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_3.setColumns(10);
 
 		lblData = new JLabel("Data");
+		lblData.setBounds(15, 182, 56, 15);
 		lblData.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		MaskFormatter dataMask = null;
@@ -156,70 +177,21 @@ public class Tela_Venda extends JFrame {
 		}
 		
 		textField_4 = new JFormattedTextField(dataMask);
-		textField_4.setFont(new Font("Dialog", Font.PLAIN, 14));
+		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_4.setBounds(102, 177, 143, 25);
+		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_4.setColumns(10);
 
 		lblParcelas = new JLabel("Parcelas");
+		lblParcelas.setBounds(15, 143, 56, 15);
 		lblParcelas.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		textField_5 = new JTextField();
-		textField_5.setFont(new Font("Dialog", Font.PLAIN, 14));
+		
+		
+		textField_5 = new JFormattedTextField(numberFormatter);
+		textField_5.setBounds(102, 138, 423, 25);
+		textField_5.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_5.setColumns(10);
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblParcelas, GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
-									.addGap(31)
-									.addComponent(textField_5, GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblValor)
-										.addComponent(lblCliente)
-										.addComponent(lblEntrada, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
-									.addGap(31)
-									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addComponent(textField_3, GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
-										.addComponent(textField_2, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
-										.addComponent(textField, GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))))
-							.addGap(72))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-							.addGap(31)
-							.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblEntrada))
-					.addGap(13)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCliente))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblValor))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE, false)
-						.addComponent(lblParcelas)
-						.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblData)
-						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(169))
-		);
-		panel.setLayout(gl_panel);
 
 		panel_1 = new JPanel();
 		panel_1.setBorder(null);
@@ -236,6 +208,17 @@ public class Tela_Venda extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 375, GroupLayout.PREFERRED_SIZE).addGap(18)
 						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE).addContainerGap()));
+		panel.setLayout(null);
+		panel.add(lblParcelas);
+		panel.add(textField_5);
+		panel.add(lblValor);
+		panel.add(lblCliente);
+		panel.add(lblEntrada);
+		panel.add(textField_3);
+		panel.add(textField_2);
+		panel.add(textField);
+		panel.add(lblData);
+		panel.add(textField_4);
 
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
@@ -279,21 +262,24 @@ public class Tela_Venda extends JFrame {
 		if(validado(venda))
 		{
 			VendaDao dao = new VendaDao();
-			Object[] options = { "Confirmar", "Cancelar" };
+			Object[] options = { "CONFIRMAR", "CANCELAR" };
 			int resposta =JOptionPane.showOptionDialog(null,
-					"Confirma o cadastro da venda " + venda.getValor()+" ?", "Aten莽茫o",
+					"Confirma o cadastro da venda " + venda.getValor()+" ?", "Aten玢o",
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if(resposta==0)
 			{
 				if(tipoTela.equals(SALVAR))
 				{
-					dao.inserir(venda);
+					venda =(Venda) dao.inserir(venda);
+					gerarParcelas(venda);
 				}
 				else
 				{
 					venda.setCodigo(codigoVenda);
-					dao.atualizar(venda);
+					venda =(Venda) dao.atualizar(venda);
+					atualizarParcelas(venda);
 				}
+				
 				PainelVenda.carregarVendas();
 				contentPane.setVisible(false);
 				dispose();
@@ -304,23 +290,61 @@ public class Tela_Venda extends JFrame {
 		
 	}
 	
+	private void gerarParcelas(Venda venda)
+	{
+		ParcelaDao dao = new ParcelaDao();
+		Parcela parcela=null;
+		Calendar calendar = Calendar.getInstance();
+		for(int i=0;i<venda.getParcelas();i++)
+		{
+			parcela = new Parcela();
+			parcela.setAlias(venda.getPedido()+"/"+i+1);
+			parcela.setValor(venda.getValor()/venda.getParcelas());
+			parcela.setVenda(venda.getCodigo());
+			calendar.setTime(venda.getData());
+			calendar.add(Calendar.MONTH, 1);
+			parcela.setVencimento(calendar.getTime());
+			dao.inserir(parcela);
+		}
+		
+	}
+	
+	private void atualizarParcelas(Venda venda)
+	{
+		ParcelaDao dao = new ParcelaDao();
+		Parcela parcela=null;
+		Calendar calendar = Calendar.getInstance();
+		for(int i=0;i<venda.getParcelas();i++)
+		{
+			parcela = new Parcela();
+			parcela.setAlias(venda.getPedido()+"/"+i+1);
+			parcela.setValor(venda.getValor()/venda.getParcelas());
+			parcela.setVenda(venda.getCodigo());
+			calendar.setTime(venda.getData());
+			calendar.add(Calendar.MONTH, 1);
+			parcela.setVencimento(calendar.getTime());
+			dao.atualizar(parcela);
+		}
+		
+	}
+	
 	public boolean validado(Venda venda)
 	{
 		if(venda.getCliente()==0)
 		{
-			JOptionPane.showMessageDialog(this,"Campo Cliente obrigat贸rio","Campos Obrigat贸rios",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this,"Campo Cliente obrigat髍io","Campos Obrigat髍ios",JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		
 		if(venda.getValor()==0)
 		{
-			JOptionPane.showMessageDialog(this,"Campo Valor obrigat贸rio","Campos Obrigat贸rios",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this,"Campo Valor obrigat髍io","Campos Obrigat髍ios",JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		
 		if(venda.getParcelas()==0)
 		{
-			JOptionPane.showMessageDialog(this,"Campo Parcelas obrigat贸rio","Campos Obrigat贸rios",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this,"Campo Parcelas obrigat髍io","Campos Obrigat髍ios",JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		
@@ -343,17 +367,4 @@ public class Tela_Venda extends JFrame {
 		    }
 		}
 		
-		// IntFormatter sera usado para transformar a String em numero.
-				public static class DoubleFormatter implements Formatter {
-				    public Object format(Object obj) {
-				        Double d = (Double) obj;
-				        return d.toString();
-				    }
-				    public Object parse(Object obj) {
-				        return Double.valueOf(Double.parseDouble((String) obj));
-				    }
-				    public String getName() {
-				        return "double";
-				    }
-				}
 }
