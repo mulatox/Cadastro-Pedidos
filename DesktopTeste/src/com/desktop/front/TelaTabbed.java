@@ -176,14 +176,27 @@ public class TelaTabbed extends JFrame {
 		    public void stateChanged(javax.swing.event.ChangeEvent e) {
 		        if (tabbedPane.getSelectedIndex() == 0) {
 		        	PainelCliente.table.requestFocus();
+		        	if(PainelCliente.table.getRowCount()>0)
+		        	{
+		        		PainelCliente.table.addRowSelectionInterval(0,0);
+		        	}
 		        }
 		        
 		        else if (tabbedPane.getSelectedIndex() == 1) {
+		        	PainelVenda.table.requestFocus();
+		        	if(PainelVenda.table.getRowCount()>0)
+		        	{
+		        		PainelVenda.table.addRowSelectionInterval(0,0);
+		        	}
 		        	
 		        }
 		    }
 		});
-		
+		PainelCliente.table.requestFocus();
+    	if(PainelCliente.table.getRowCount()>0)
+    	{
+    		PainelCliente.table.addRowSelectionInterval(0,0);
+    	}
 		
 	}
 	
