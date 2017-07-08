@@ -75,7 +75,7 @@ public class Tela_Venda extends JFrame {
 	@Bindable(field = "valor", formatter = DoubleFormatter.class)
 	private JTextField textField;
 
-	@Bindable(field = "cliente", formatter = IntFormatter.class)
+	@Bindable(field = "cliente", formatter = ClienteFormatter.class)
 	private JTextField textField_2;
 
 	@Bindable(field = "pedido", formatter = IntFormatter.class)
@@ -324,7 +324,7 @@ public class Tela_Venda extends JFrame {
 			parcela = new Parcela();
 			parcela.setAlias(venda.getPedido() + "/" + i + 1);
 			parcela.setValor(venda.getValor() / venda.getParcelas());
-			parcela.setVenda(venda.getPedido());
+			parcela.setVenda(venda);
 			calendar.setTime(venda.getData());
 			calendar.add(Calendar.MONTH, 1 + i);
 			parcela.setVencimento(calendar.getTime());
@@ -341,7 +341,7 @@ public class Tela_Venda extends JFrame {
 			parcela = new Parcela();
 			parcela.setAlias(venda.getPedido() + "/" + i + 1);
 			parcela.setValor(venda.getValor() / venda.getParcelas());
-			parcela.setVenda(venda.getPedido());
+			parcela.setVenda(venda);
 			calendar.setTime(venda.getData());
 			calendar.add(Calendar.MONTH, 1);
 			parcela.setVencimento(calendar.getTime());
@@ -351,7 +351,7 @@ public class Tela_Venda extends JFrame {
 	}
 
 	public boolean validado(Venda venda) {
-		if (venda.getCliente() == 0) {
+		if (venda.getCliente() == null) {
 			JOptionPane.showMessageDialog(this, "Campo Cliente obrigatório", "Campos Obrigatórios",
 					JOptionPane.WARNING_MESSAGE);
 			return false;
@@ -387,5 +387,40 @@ public class Tela_Venda extends JFrame {
 			return "int";
 		}
 	}
+	
+	// ClienteFormatter sera usado para transformar a String em Cliente.
+				public static class ClienteFormatter implements Formatter {
+					public Object format(Object obj) {
+						Cliente c =(Cliente) obj;
+						return ""+c.getCodigo();
+					}
+
+					public Object parse(Object obj) {
+						ClienteDao dao = new ClienteDao();
+						Cliente d =  dao.consultarCodigo(Integer.parseInt((String)obj));
+						return d;
+					}
+
+					public String getName() {
+						return "Cliente";
+					}
+				}
+				
+				public static class VendaFormatter implements Formatter {
+					public Object format(Object obj) {
+						Venda c =(Venda) obj;
+						return ""+c.getCodigo();
+					}
+
+					public Object parse(Object obj) {
+						VendaDao dao = new VendaDao();
+						Venda d =  dao.consultarCodigo(Integer.parseInt((String)obj));
+						return d;
+					}
+
+					public String getName() {
+						return "Venda";
+					}
+				}
 
 }

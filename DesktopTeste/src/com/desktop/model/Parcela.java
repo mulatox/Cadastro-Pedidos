@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.towel.el.annotation.Resolvable;
 
@@ -30,7 +32,10 @@ public class Parcela {
 	private String alias;
 
 	@Resolvable(colName="VENDA")
-	private int venda;
+	@ManyToOne
+	@JoinColumn(name="venda")
+	private Venda venda;
+	
 	
 	public int getCodigo() {
 		return codigo;
@@ -62,10 +67,10 @@ public class Parcela {
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
-	public int getVenda() {
+	public Venda getVenda() {
 		return venda;
 	}
-	public void setVenda(int venda) {
+	public void setVenda(Venda venda) {
 		this.venda = venda;
 	}
 	

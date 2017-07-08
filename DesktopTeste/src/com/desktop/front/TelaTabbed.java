@@ -133,12 +133,37 @@ public class TelaTabbed extends JFrame {
 
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("RELATÓRIO", null, panel_2, null);
+		
+		JButton btnNewButton = new JButton("Relat\u00F3rio Cobran\u00E7a");
+		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(btnNewButton)
+					.addContainerGap())
+		);
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnNewButton)
+					.addContainerGap(26, Short.MAX_VALUE))
+		);
+		panel_2.setLayout(gl_panel_2);
 
 		JPanel panel_3 = new JPanel();
-		tabbedPane.addTab("CONFIGURAÇÃO", null, panel_3, null);
+		tabbedPane.addTab("CIDADES", null, panel_3, null);
+		panel_3.setLayout(new BorderLayout(0, 0));
 
+		
+		PainelCidades panelCidades = new PainelCidades(getContentPane());
+		panel_3.add(panelCidades);
+		
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_C);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
+		tabbedPane.setMnemonicAt(2, KeyEvent.VK_R);
+		tabbedPane.setMnemonicAt(3, KeyEvent.VK_I);
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		this.pack();
 
@@ -147,7 +172,7 @@ public class TelaTabbed extends JFrame {
 		menuBar.add(mnNewMenu);
 
 		JMenuItem mntmNewMenuItem = new JMenuItem("Cadastrar");
-		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+		mntmNewMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -157,21 +182,23 @@ public class TelaTabbed extends JFrame {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
-		setJMenuBar(menuBar);
+		
 		
 		JMenu mnVenda = new JMenu("Pedido");
 		menuBar.add(mnVenda);
 		
 		JMenuItem menuItem = new JMenuItem("Cadastrar");
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				telaVenda = new Tela_Venda();
 				telaVenda.setVisible(true);
+
 			}
 		});
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		mnVenda.add(menuItem);
-		
+		setJMenuBar(menuBar);
 		tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
 		    public void stateChanged(javax.swing.event.ChangeEvent e) {
 		        if (tabbedPane.getSelectedIndex() == 0) {
@@ -199,5 +226,4 @@ public class TelaTabbed extends JFrame {
     	}
 		
 	}
-	
 }

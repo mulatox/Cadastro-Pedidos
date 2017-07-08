@@ -55,9 +55,7 @@ public class Base_Dao {
 		return objeto;
 	}
 
-	public Object consultarCodigo(int codigo) {
-		return getGerenciadorEntidade().find(this.getClass(), codigo);
-	}
+	
 	
 
 

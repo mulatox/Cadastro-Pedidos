@@ -22,4 +22,8 @@ public class ClienteDao extends Base_Dao {
 		return (Cliente) query.getSingleResult();
 	}
 	
+	public Cliente consultarCodigo(int codigo) {
+		return getGerenciadorEntidade().find(Cliente.class, codigo);
+	}
+	
 }

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.towel.el.annotation.Resolvable;
@@ -28,10 +30,13 @@ public class Venda {
 	private int parcelas;
 	
 	@Resolvable(colName="CLIENTE")
-	private int cliente;
+	@ManyToOne
+	@JoinColumn(name="cliente")
+	private Cliente cliente;
 	
 	@Resolvable(colName="DATA")
 	private Date data;
+	
 	
 	private int status;
 
@@ -60,11 +65,11 @@ public class Venda {
 		this.parcelas = parcelas;
 	}
 
-	public int getCliente() {
+	public Cliente getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(int cliente) {
+	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 
@@ -91,6 +96,7 @@ public class Venda {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
 	
 	
 	

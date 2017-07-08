@@ -13,7 +13,13 @@ public class VendaDao extends Base_Dao {
 	public ArrayList<Venda> listar()
 	{
 		Query query = getGerenciadorEntidade().createQuery("FROM " + Venda.class.getName()+" v where v.status!=-1");
-		return (ArrayList<Venda>) query.getResultList();
+		ArrayList<Venda> vendas =(ArrayList<Venda>) query.getResultList();
+		return vendas;
+		
+	}
+	
+	public Venda consultarCodigo(int codigo) {
+		return getGerenciadorEntidade().find(Venda.class, codigo);
 	}
 	
 }

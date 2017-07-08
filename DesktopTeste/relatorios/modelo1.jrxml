@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modelo1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5efe3cee-e36d-4b26-9b40-97ca88b13710">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="alias" class="java.lang.String">
+		<fieldDescription><![CDATA[alias]]></fieldDescription>
+	</field>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[codigo]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.Integer">
+		<fieldDescription><![CDATA[status]]></fieldDescription>
+	</field>
+	<field name="valor" class="java.lang.Double">
+		<fieldDescription><![CDATA[valor]]></fieldDescription>
+	</field>
+	<field name="vencimento" class="java.util.Date">
+		<fieldDescription><![CDATA[vencimento]]></fieldDescription>
+	</field>
+	<field name="venda" class="com.desktop.model.Venda">
+		<fieldDescription><![CDATA[venda]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="26" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="100" height="20" uuid="6832bda0-47b8-4051-8d25-6318dc9a850c"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[alias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="41" width="100" height="20" uuid="946d31fb-41b5-42eb-b561-5db1d116c4f9"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="41" width="100" height="20" uuid="f04d61e3-d8f9-4246-ab66-71f14b520a0b"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="41" width="100" height="20" uuid="18b5f20d-7241-4725-ae35-2e206d9d7549"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="41" width="100" height="20" uuid="23948b78-e921-4b70-ac6f-b8d0cc8c977f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[cidade]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="55653153-31fb-4dda-86f3-67d7f92ec049"/>
+				<textFieldExpression><![CDATA[$F{alias}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="20" uuid="76dcf67f-50b4-4627-9836-4070d75befae"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="100" height="20" uuid="42126b1d-eb36-4786-bb4c-bed34fd39737"/>
+				<textFieldExpression><![CDATA[$F{vencimento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="100" height="20" uuid="6c64f2ca-3876-4cb8-bec5-d0fe918f40fc"/>
+				<textFieldExpression><![CDATA[$F{venda}.getCliente().getNome()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="100" height="20" uuid="7ec99f52-09c2-46b2-ac8f-716f6d940cfc"/>
+				<textFieldExpression><![CDATA[$F{venda}.getCliente().getNome()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

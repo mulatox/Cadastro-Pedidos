@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.towel.el.annotation.Resolvable;
 
@@ -42,7 +45,9 @@ public class Cliente {
 	
 	private int status;
 	
-	private String cidade_estado;
+	@ManyToOne
+	@JoinColumn(name="cidade_estado")
+	private CidadeEstado cidade_estado;
 	
 	public String getNome() {
 		return nome;
@@ -92,10 +97,10 @@ public class Cliente {
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	public String getCidade_estado() {
+	public CidadeEstado getCidade_estado() {
 		return cidade_estado;
 	}
-	public void setCidade_estado(String cidade_estado) {
+	public void setCidade_estado(CidadeEstado cidade_estado) {
 		this.cidade_estado = cidade_estado;
 	}
 	public String getObservacao() {

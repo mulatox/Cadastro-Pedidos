@@ -55,7 +55,7 @@ public class PainelVenda extends JPanel {
 	@Bindable(field = "pedido", formatter = IntFormatter.class)
 	private JTextField textField;
 
-	@Bindable(field = "cliente", formatter = IntFormatter.class)
+	@Bindable(field = "cliente", formatter = ClienteFormatter.class)
 	private JTextField textField_1;
 
 	@Bindable(field = "valor", formatter = DoubleFormatter.class)
@@ -206,10 +206,8 @@ public class PainelVenda extends JPanel {
 				if (vendaSelecionada != null) {
 					Object[] options = { "Confirmar", "Cancelar" };
 					int resposta = JOptionPane.showOptionDialog(container,
-							"Deseja realmente excluir o pedido "
-									+ vendaSelecionada.getPedido() + " ?",
-							"Atenção", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
-							options[0]);
+							"Deseja realmente excluir o pedido " + vendaSelecionada.getPedido() + " ?", "Atenção",
+							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 					if (resposta == 0) {
 						VendaDao dao = new VendaDao();
 						vendaSelecionada.setStatus(INATIVO);
@@ -386,16 +384,14 @@ public class PainelVenda extends JPanel {
 		table.repaint();
 	}
 
-	public static void removerParcelas(Venda venda)
-	{
+	public static void removerParcelas(Venda venda) {
 		ParcelaDao dao = new ParcelaDao();
-		for(Parcela parcela:dao.listar(venda.getPedido()))
-		{
+		for (Parcela parcela : dao.listar(venda.getPedido())) {
 			dao.remover(parcela);
 		}
-		
+
 	}
-	
+
 	// IntFormatter sera usado para transformar a String em numero.
 	public static class IntFormatter implements Formatter {
 		public Object format(Object obj) {
@@ -420,10 +416,10 @@ public class PainelVenda extends JPanel {
 		}
 
 		public Object parse(Object obj) {
-			
-			String doubleFormatado=(String) obj;
-			doubleFormatado=doubleFormatado.replace(".", "");
-			doubleFormatado=doubleFormatado.replace(",", ".");
+
+			String doubleFormatado = (String) obj;
+			doubleFormatado = doubleFormatado.replace(".", "");
+			doubleFormatado = doubleFormatado.replace(",", ".");
 			return Double.valueOf(Double.parseDouble(doubleFormatado));
 		}
 
@@ -454,6 +450,41 @@ public class PainelVenda extends JPanel {
 
 		public String getName() {
 			return "int";
+		}
+	}
+
+	// IntFormatter sera usado para transformar a String em numero.
+	public static class ClienteFormatter implements Formatter {
+		public Object format(Object obj) {
+			Cliente c = (Cliente) obj;
+			return "" + c.getCodigo();
+		}
+
+		public Object parse(Object obj) {
+			ClienteDao dao = new ClienteDao();
+			Cliente d = dao.consultarCodigo(Integer.parseInt((String) obj));
+			return d;
+		}
+
+		public String getName() {
+			return "Cliente";
+		}
+	}
+
+	public static class VendaFormatter implements Formatter {
+		public Object format(Object obj) {
+			Venda c = (Venda) obj;
+			return "" + c.getCodigo();
+		}
+
+		public Object parse(Object obj) {
+			VendaDao dao = new VendaDao();
+			Venda d = dao.consultarCodigo(Integer.parseInt((String) obj));
+			return d;
+		}
+
+		public String getName() {
+			return "Venda";
 		}
 	}
 }

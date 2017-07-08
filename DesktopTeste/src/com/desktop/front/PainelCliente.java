@@ -9,8 +9,10 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
 
+import com.desktop.database.CidadeEstadoDao;
 import com.desktop.database.ClienteDao;
 import com.desktop.front.Tela_Venda.IntFormatter;
+import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
@@ -474,12 +476,14 @@ public class PainelCliente extends JPanel {
 	// IntFormatter sera usado para transformar o codigo da cidade em codigo da cidada junto com o nome da cidade.
 		public static class CidadeFormatter implements Formatter {
 			public Object format(Object obj) {
-				String d = (String) obj;
-				return (d  + " - "+clienteSelecionado.getBairro() ).toString();
+				CidadeEstado d = (CidadeEstado) obj;
+				return d.getCidade()+"-"+d.getEstado();
 			}
 
 			public Object parse(Object obj) {
-				return ((String) obj);
+				int codigo = Integer.parseInt((String)obj);
+				CidadeEstadoDao dao = new CidadeEstadoDao();
+				return dao.consultarCodigo(codigo);
 			}
 
 			public String getName() {
