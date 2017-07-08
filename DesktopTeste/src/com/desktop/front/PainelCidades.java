@@ -23,6 +23,8 @@ import com.towel.el.annotation.AnnotationResolver;
 import com.towel.swing.table.ObjectTableModel;
 
 import javax.swing.border.LineBorder;
+
+import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Container;
 
@@ -33,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -43,6 +46,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -251,8 +255,12 @@ public class PainelCidades extends JPanel {
 		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
 		
+		HashSet conj = new HashSet(panel_1.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+		conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
+		panel_1.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, conj);
+		
 		table.requestFocus();
-		table.changeSelection(0,0,false, false);
+		table.addRowSelectionInterval(0,0);
 
 	}
 	

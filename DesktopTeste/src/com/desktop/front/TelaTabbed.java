@@ -71,9 +71,11 @@ public class TelaTabbed extends JFrame {
 
 	private Tela_Cliente telaCliente;
 	private Tela_Venda telaVenda;
-	
+
 	public static ArrayList<Cliente> clientes;
 	public static ArrayList<Venda> vendas;
+	
+	public static JTabbedPane tabbedPane;
 
 	/**
 	 * Launch the application.
@@ -112,54 +114,44 @@ public class TelaTabbed extends JFrame {
 		this.setBounds(100, 100, 781, 664);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("CLIENTE", null, panel, "Cadastro e Lista de Clientes");
 		panel.setLayout(new BorderLayout(0, 0));
-		
+
 		PainelCliente panel_1 = new PainelCliente(getContentPane());
 		panel.add(panel_1);
-		
+
 		JPanel panel_6 = new JPanel();
 		tabbedPane.addTab("PEDIDO", null, panel_6, "Cadastro e Lista de Pedidos");
-		
+
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		panel_6.setLayout(new BorderLayout(0, 0));
-		
+
 		PainelVenda panel_4 = new PainelVenda(getContentPane());
 		panel_6.add(panel_4);
-		
 
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("RELATÓRIO", null, panel_2, null);
-		
+
 		JButton btnNewButton = new JButton("Relat\u00F3rio Cobran\u00E7a");
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_2.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(btnNewButton)
-					.addContainerGap())
-		);
+		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
+				gl_panel_2.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnNewButton).addContainerGap()));
 		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(btnNewButton)
-					.addContainerGap(26, Short.MAX_VALUE))
-		);
+				gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_2.createSequentialGroup()
+						.addContainerGap().addComponent(btnNewButton).addContainerGap(26, Short.MAX_VALUE)));
 		panel_2.setLayout(gl_panel_2);
 
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("CIDADES", null, panel_3, null);
 		panel_3.setLayout(new BorderLayout(0, 0));
 
-		
 		PainelCidades panelCidades = new PainelCidades(getContentPane());
 		panel_3.add(panelCidades);
-		
+
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_C);
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_P);
 		tabbedPane.setMnemonicAt(2, KeyEvent.VK_R);
@@ -182,11 +174,10 @@ public class TelaTabbed extends JFrame {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
-		
-		
+
 		JMenu mnVenda = new JMenu("Pedido");
 		menuBar.add(mnVenda);
-		
+
 		JMenuItem menuItem = new JMenuItem("Cadastrar");
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		menuItem.addActionListener(new ActionListener() {
@@ -200,30 +191,49 @@ public class TelaTabbed extends JFrame {
 		mnVenda.add(menuItem);
 		setJMenuBar(menuBar);
 		tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
-		    public void stateChanged(javax.swing.event.ChangeEvent e) {
-		        if (tabbedPane.getSelectedIndex() == 0) {
-		        	PainelCliente.table.requestFocus();
-		        	if(PainelCliente.table.getRowCount()>0)
-		        	{
-		        		PainelCliente.table.addRowSelectionInterval(0,0);
-		        	}
-		        }
-		        
-		        else if (tabbedPane.getSelectedIndex() == 1) {
-		        	PainelVenda.table.requestFocus();
-		        	if(PainelVenda.table.getRowCount()>0)
-		        	{
-		        		PainelVenda.table.addRowSelectionInterval(0,0);
-		        	}
-		        	
-		        }
-		    }
+			public void stateChanged(javax.swing.event.ChangeEvent e) {
+				if (tabbedPane.getSelectedIndex() == 0) {
+					PainelCliente.table.requestFocus();
+					if (PainelCliente.table.getRowCount() > 0) {
+						PainelCliente.table.addRowSelectionInterval(0, 0);
+					}
+				}
+
+				else if (tabbedPane.getSelectedIndex() == 1) {
+					PainelVenda.table.requestFocus();
+					if (PainelVenda.table.getRowCount() > 0) {
+						PainelVenda.table.addRowSelectionInterval(0, 0);
+					}
+
+				}
+
+				else if (tabbedPane.getSelectedIndex() == 3) {
+					PainelCidades.table.requestFocus();
+					if (PainelCidades.table.getRowCount() > 0) {
+						PainelCidades.table.addRowSelectionInterval(0, 0);
+					}
+
+				}
+			}
 		});
 		PainelCliente.table.requestFocus();
-    	if(PainelCliente.table.getRowCount()>0)
-    	{
-    		PainelCliente.table.addRowSelectionInterval(0,0);
-    	}
-		
+		if (PainelCliente.table.getRowCount() > 0) {
+			PainelCliente.table.addRowSelectionInterval(0, 0);
+		}
+		tabbedPane.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if(tabbedPane.getSelectedIndex()<3)
+					tabbedPane.setSelectedIndex(tabbedPane.getSelectedIndex() + 1);
+				}
+
+				if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+					if(tabbedPane.getSelectedIndex()>0)
+					tabbedPane.setSelectedIndex(tabbedPane.getSelectedIndex() - 1);
+				}
+			}
+		});
+
 	}
 }

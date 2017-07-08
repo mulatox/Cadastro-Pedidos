@@ -39,6 +39,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -92,7 +93,7 @@ public class Tela_Venda extends JFrame {
 
 	// Indica se esta no modo de salvar ou de alterar cliente
 	public static String tipoTela = "";
-	private JComboBox comboBox;
+	public static JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -254,7 +255,8 @@ public class Tela_Venda extends JFrame {
 		comboBox.setBounds(269, 60, 256, 25);
 		panel.add(comboBox);
 
-		btnSalvar = new JButton("Salvar");
+		btnSalvar = new JButton("SALVAR");
+		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				salvarVenda();
@@ -270,7 +272,13 @@ public class Tela_Venda extends JFrame {
 			}
 		});
 
-		btnCancelar = new JButton("Cancelar");
+		btnCancelar = new JButton("CANCELAR");
+		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup().addContainerGap().addComponent(btnSalvar).addGap(59)
@@ -287,6 +295,34 @@ public class Tela_Venda extends JFrame {
 		conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
 		panel.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, conj);
 		binder = new AnnotatedBinder(this);
+		this.addWindowListener(new WindowAdapter()
+		{
+		    public void windowClosing(WindowEvent e)
+		    {
+		    	if (TelaTabbed.tabbedPane.getSelectedIndex() == 0) {
+					PainelCliente.table.requestFocus();
+					if (PainelCliente.table.getRowCount() > 0) {
+						PainelCliente.table.addRowSelectionInterval(0, 0);
+					}
+				}
+
+				else if (TelaTabbed.tabbedPane.getSelectedIndex() == 1) {
+					PainelVenda.table.requestFocus();
+					if (PainelVenda.table.getRowCount() > 0) {
+						PainelVenda.table.addRowSelectionInterval(0, 0);
+					}
+
+				}
+
+				else if (TelaTabbed.tabbedPane.getSelectedIndex() == 3) {
+					PainelCidades.table.requestFocus();
+					if (PainelCidades.table.getRowCount() > 0) {
+						PainelCidades.table.addRowSelectionInterval(0, 0);
+					}
+
+				}
+		    }
+		});
 	}
 
 	private void salvarVenda() {
@@ -368,6 +404,8 @@ public class Tela_Venda extends JFrame {
 					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
+		
+		
 
 		return true;
 	}

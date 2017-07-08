@@ -18,7 +18,7 @@ public class CidadeEstadoDao extends Base_Dao {
 	
 	public CidadeEstado consultar(String nome)
 	{
-		Query query = getGerenciadorEntidade().createQuery("FROM " + CidadeEstado.class.getName()+" c where c.nome = :nomeParametro");
+		Query query = getGerenciadorEntidade().createQuery("FROM " + CidadeEstado.class.getName()+" c where c.cidade = :nomeParametro");
 		query.setParameter("nomeParametro", nome);
 		return (CidadeEstado) query.getSingleResult();
 	}

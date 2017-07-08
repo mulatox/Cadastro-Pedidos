@@ -17,8 +17,10 @@ import javax.swing.text.DocumentFilter;
 import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
 
+import com.desktop.database.CidadeEstadoDao;
 import com.desktop.database.ClienteDao;
 import com.desktop.front.Autocomplete.CommitAction;
+import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
@@ -37,6 +39,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -289,6 +292,11 @@ public class Tela_Cliente extends JFrame {
 		});
 
 		btnCancelar = new JButton("CANCELAR");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnCancelar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -343,11 +351,27 @@ public class Tela_Cliente extends JFrame {
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		comboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				textField_3.setText((String) e.getItem());
+				CidadeEstadoDao dao = new CidadeEstadoDao();
+				try{
+					textField_3.setText(""+ ((CidadeEstado)dao.consultar((String)e.getItem())).getCodigo());
+				}
+				
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+					textField_3.setText("");
+				}
+				
 			}
 		});
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "SELECIONE CIDADE", "FORTALEZA", "FORTIM", "CAUCAIA",
-				"AQUIRAZ", "EUSÉBIO", "ITAREMA", "PACAJUS" }));
+		String[] listaNomes = new String[PainelCidades.cidades.size() + 1];
+		listaNomes[0] = "Selecione Cliente";
+		int i = 1;
+		for (CidadeEstado cidade : PainelCidades.cidades) {
+			listaNomes[i] = cidade.getCidade();
+			i++;
+		}
+		comboBox.setModel(new DefaultComboBoxModel(listaNomes));
 		comboBox.setBounds(269, 194, 176, 25);
 		panel.add(comboBox);
 		contentPane.setLayout(gl_contentPane);
@@ -355,6 +379,35 @@ public class Tela_Cliente extends JFrame {
 		conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
 		panel.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, conj);
 		binder = new AnnotatedBinder(this);
+		
+		this.addWindowListener(new WindowAdapter()
+		{
+		    public void windowClosing(WindowEvent e)
+		    {
+		    	if (TelaTabbed.tabbedPane.getSelectedIndex() == 0) {
+					PainelCliente.table.requestFocus();
+					if (PainelCliente.table.getRowCount() > 0) {
+						PainelCliente.table.addRowSelectionInterval(0, 0);
+					}
+				}
+
+				else if (TelaTabbed.tabbedPane.getSelectedIndex() == 1) {
+					PainelVenda.table.requestFocus();
+					if (PainelVenda.table.getRowCount() > 0) {
+						PainelVenda.table.addRowSelectionInterval(0, 0);
+					}
+
+				}
+
+				else if (TelaTabbed.tabbedPane.getSelectedIndex() == 3) {
+					PainelCidades.table.requestFocus();
+					if (PainelCidades.table.getRowCount() > 0) {
+						PainelCidades.table.addRowSelectionInterval(0, 0);
+					}
+
+				}
+		    }
+		});
 	}
 
 	private void salvarCliente() {
@@ -374,6 +427,11 @@ public class Tela_Cliente extends JFrame {
 					dao.atualizar(cliente);
 				}
 				PainelCliente.carregarClientes();
+				if(Tela_Venda.comboBox!=null)
+				{
+					Tela_Venda.comboBox.repaint();
+				}
+				
 				contentPane.setVisible(false);
 				dispose();
 			}
@@ -407,6 +465,20 @@ public class Tela_Cliente extends JFrame {
 			return false;
 		}
 
+		for(Cliente clienteIndice:PainelCliente.clientes)
+		{
+			if(tipoTela.equals(ALTERAR))
+			{
+				cliente.setCodigo(CodigoCliente);
+			}
+			if((cliente.getCodigo()!=clienteIndice.getCodigo()) && (clienteIndice.getCpf().equals(cliente.getCpf())))
+			{
+				JOptionPane.showMessageDialog(this, "Campo CPF não pode ser repetido! Usuário: "+clienteIndice.getNome()+" já possui este CPF", "Campos Obrigatórios",
+						JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}
+		
 		return true;
 	}
 

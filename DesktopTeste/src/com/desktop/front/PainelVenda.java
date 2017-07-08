@@ -347,15 +347,24 @@ public class PainelVenda extends JPanel {
 		table.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyCode() == KeyEvent.VK_INSERT) {
-					telaVenda = new Tela_Venda();
+				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+					telaVenda = new Tela_Venda(vendaSelecionada);
 					telaVenda.setVisible(true);
+				}
+				else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if(TelaTabbed.tabbedPane.getSelectedIndex()<3)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() + 1);
+				}
+
+				else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+					if(TelaTabbed.tabbedPane.getSelectedIndex()>0)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() - 1);
 				}
 			}
 		});
 
 		table.requestFocus();
-		table.changeSelection(0, 0, false, false);
+		table.addRowSelectionInterval(0,0);
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
