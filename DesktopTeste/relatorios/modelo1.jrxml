@@ -92,7 +92,7 @@
 			</textField>
 			<textField>
 				<reportElement x="400" y="0" width="100" height="20" uuid="7ec99f52-09c2-46b2-ac8f-716f6d940cfc"/>
-				<textFieldExpression><![CDATA[$F{venda}.getCliente().getNome()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{venda}.getCliente().getCidade_estado()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

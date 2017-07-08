@@ -135,16 +135,8 @@ public class TelaTabbed extends JFrame {
 
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("RELATÓRIO", null, panel_2, null);
-
-		JButton btnNewButton = new JButton("Relat\u00F3rio Cobran\u00E7a");
-		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-				gl_panel_2.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnNewButton).addContainerGap()));
-		gl_panel_2.setVerticalGroup(
-				gl_panel_2.createParallelGroup(Alignment.LEADING).addGroup(gl_panel_2.createSequentialGroup()
-						.addContainerGap().addComponent(btnNewButton).addContainerGap(26, Short.MAX_VALUE)));
-		panel_2.setLayout(gl_panel_2);
+		PainelRelatorio panel_relatorio = new PainelRelatorio(getContentPane());
+		panel_2.add(panel_relatorio);
 
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("CIDADES", null, panel_3, null);

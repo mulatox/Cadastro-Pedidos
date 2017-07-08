@@ -20,6 +20,7 @@ import javax.swing.text.NumberFormatter;
 import com.desktop.database.CidadeEstadoDao;
 import com.desktop.database.ClienteDao;
 import com.desktop.front.Autocomplete.CommitAction;
+import com.desktop.front.PainelCliente.CidadeFormatter;
 import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
 import com.towel.bean.Formatter;
@@ -83,7 +84,7 @@ public class Tela_Cliente extends JFrame {
 	@Bindable(field = "nome")
 	private JTextField textField_2;
 
-	@Bindable(field = "cidade_estado")
+	@Bindable(field = "cidade_estado", formatter = CidadeFormatter.class)
 	private JTextField textField_3;
 
 	@Bindable(field = "telefone")
@@ -346,14 +347,14 @@ public class Tela_Cliente extends JFrame {
 		lblObservaes.setBounds(15, 279, 90, 15);
 		panel.add(lblObservaes);
 
-		JComboBox comboBox = new JComboBox();
+		final JComboBox comboBox = new JComboBox();
 		comboBox.setFocusable(false);
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		comboBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				CidadeEstadoDao dao = new CidadeEstadoDao();
 				try{
-					textField_3.setText(""+ ((CidadeEstado)dao.consultar((String)e.getItem())).getCodigo());
+					textField_3.setText(""+ ((CidadeEstado)dao.consultar((String)comboBox.getSelectedItem())).getCodigo());
 				}
 				
 				catch(Exception ex)

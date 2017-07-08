@@ -45,6 +45,7 @@ public class Cliente {
 	
 	private int status;
 	
+	@Resolvable(colName="cidade_estado")
 	@ManyToOne
 	@JoinColumn(name="cidade_estado")
 	private CidadeEstado cidade_estado;

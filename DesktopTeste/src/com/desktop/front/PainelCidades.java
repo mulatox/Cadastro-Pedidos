@@ -261,6 +261,21 @@ public class PainelCidades extends JPanel {
 		
 		table.requestFocus();
 		table.addRowSelectionInterval(0,0);
+		
+		table.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if(TelaTabbed.tabbedPane.getSelectedIndex()<3)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() + 1);
+				}
+
+				if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+					if(TelaTabbed.tabbedPane.getSelectedIndex()>0)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() - 1);
+				}
+			}
+		});
 
 	}
 	

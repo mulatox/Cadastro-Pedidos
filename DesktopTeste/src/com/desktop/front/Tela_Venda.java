@@ -41,6 +41,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashSet;
@@ -359,8 +360,9 @@ public class Tela_Venda extends JFrame {
 		Calendar calendar = Calendar.getInstance();
 		for (int i = 0; i < venda.getParcelas(); i++) {
 			parcela = new Parcela();
-			parcela.setAlias(venda.getPedido() + "/" + i + 1);
-			parcela.setValor(venda.getValor() / venda.getParcelas());
+			parcela.setAlias(venda.getPedido() + "/" + (i + 1));
+			BigDecimal big = new BigDecimal(venda.getValor()/venda.getParcelas());
+			parcela.setValor(big.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			parcela.setVenda(venda);
 			calendar.setTime(venda.getData());
 			calendar.add(Calendar.MONTH, 1 + i);
