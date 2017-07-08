@@ -12,6 +12,8 @@ import javax.swing.KeyStroke;
 
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.MaskFormatter;
@@ -24,6 +26,7 @@ import com.desktop.front.Autocomplete.CommitAction;
 import com.desktop.model.Cliente;
 import com.desktop.model.Parcela;
 import com.desktop.model.Venda;
+import com.sun.xml.internal.ws.api.server.Container;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
 import com.towel.bind.annotation.AnnotatedBinder;
@@ -73,12 +76,9 @@ public class Tela_Parcelas extends JFrame {
 	private static final String SALVAR = "salvar";
 	private static final String ALTERAR = "alterar";
 	private JPanel contentPane;
-	private JPanel panel;
 	private JButton btnSalvar;
 	public static ArrayList<Parcela> parcelas;
-	public static Venda vendaSelecionada;
-
-	private JFormattedTextField textField_4;
+	public static Parcela parcelaSelecionada;
 
 	private Binder binder;
 
@@ -119,13 +119,10 @@ public class Tela_Parcelas extends JFrame {
 
 		tipoTela = SALVAR;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 681, 569);
+		setBounds(100, 100, 778, 569);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-
-		panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "QUITAR PARCELAS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 
 		// MaskFormatter foneMask = null;
 		// foneMask = new MaskFormatter("(##)#########");
@@ -135,20 +132,9 @@ public class Tela_Parcelas extends JFrame {
 		numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
 		numberFormatter.setAllowsInvalid(false); //this is the key!!
 		numberFormatter.setMinimum(0l);
-		textField_4 = new JFormattedTextField(numberFormatter);
-		textField_4.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				carregarParcelas();
-			}
-		});
-		textField_4.setBounds(126, 59, 126, 25);
-		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
-		textField_4.setColumns(10);
 
 
 		DocumentFilter filter = new UppercaseDocumentFilter();
-		((AbstractDocument) textField_4.getDocument()).setDocumentFilter(filter);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE PARCELAS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
@@ -159,8 +145,8 @@ public class Tela_Parcelas extends JFrame {
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 590, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(99, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_panel_2.setVerticalGroup(
 			gl_panel_2.createParallelGroup(Alignment.LEADING)
@@ -171,14 +157,17 @@ public class Tela_Parcelas extends JFrame {
 		);
 		AnnotationResolver resolver = new AnnotationResolver(Parcela.class);
 		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
-				"alias,valor,vencimento");
+				"alias,valor,vencimento,venda,status");
 		ParcelaDao dao = new ParcelaDao();
 		parcelas = dao.listar();
 		tableModel.setData(parcelas);
 		table = new JTable(tableModel);
+		table.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		
 		scrollPane.setViewportView(table);
 		panel_2.setLayout(gl_panel_2);
-		btnSalvar = new JButton("SALVAR");
+		btnSalvar = new JButton("QUITAR");
 		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -189,60 +178,93 @@ public class Tela_Parcelas extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+					if(parcelaSelecionada!=null)
+					{
+						parcelaSelecionada.setStatus(2);
+						ParcelaDao dao = new ParcelaDao();
+						dao.atualizar(parcelaSelecionada);
+						carregarParcelas();
+						
+					}
 				}
 			}
 		});
-		panel.setLayout(null);
-		panel.add(textField_4);
-		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"PEDIDO", "CLIENTE"}));
-		comboBox.setBounds(24, 59, 88, 25);
-		panel.add(comboBox);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(273)
+							.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-							.addGap(218)
-							.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)))
-					.addContainerGap())
+							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(59, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 196, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addContainerGap()
 					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(btnSalvar))
+					.addGap(47)
+					.addComponent(btnSalvar)
+					.addGap(201))
 		);
 		contentPane.setLayout(gl_contentPane);
-		HashSet conj = new HashSet(panel.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-		conj.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_ENTER, 0));
-		panel.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, conj);
 		binder = new AnnotatedBinder(this);
+		
+		table.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+					Object[] options = { "Confirmar", "Cancelar" };
+					int resposta = JOptionPane.showOptionDialog(null,
+							"Deseja realmente liberar a parcela " + parcelaSelecionada.getAlias()+ " ?", "Atenção",
+							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					if (resposta == 0) {
+						parcelaSelecionada.setStatus(2);
+						ParcelaDao dao = new ParcelaDao();
+						dao.atualizar(parcelaSelecionada);
+						carregarParcelas();
+					}
+					
+				}
+				
+				else if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+					Object[] options = { "Confirmar", "Cancelar" };
+					int resposta = JOptionPane.showOptionDialog(null,
+							"Deseja realmente voltar a parcela " + parcelaSelecionada.getAlias()+ " ?", "Atenção",
+							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					if (resposta == 0) {
+						parcelaSelecionada.setStatus(0);
+						ParcelaDao dao = new ParcelaDao();
+						dao.atualizar(parcelaSelecionada);
+						carregarParcelas();
+					}
+					
+				}
+				
+			}
+		});
+		
+		table.requestFocus();
+		table.addRowSelectionInterval(0,0);
+	table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			public void valueChanged(ListSelectionEvent e) {
+				int indice = table.getSelectedRow();
+				if (indice != -1) {
+					parcelaSelecionada = parcelas.get(indice);
+				}
+			}
+		});
+		
+	if(parcelaSelecionada==null && parcelas!=null && parcelas.size()>0)
+	{
+		parcelaSelecionada=parcelas.get(0);
 	}
-
-	public static void carregarParcelas() {
-		AnnotationResolver resolver = new AnnotationResolver(Parcela.class);
-		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
-				"alias,valor,vencimento");
-		ParcelaDao dao = new ParcelaDao();
-		parcelas = dao.listar();
-		tableModel.setData(parcelas);
-		table.setModel(tableModel);
-		tableModel.fireTableDataChanged();
-
-		table.repaint();
+	
 	}
 	
 	private void salvarParcela() {
@@ -264,6 +286,18 @@ public class Tela_Parcelas extends JFrame {
 
 	}
 
+	public static void carregarParcelas() {
+		AnnotationResolver resolver = new AnnotationResolver(Parcela.class);
+		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
+				"alias,valor,vencimento,venda,status");
+		ParcelaDao dao = new ParcelaDao();
+		parcelas = dao.listar();
+		tableModel.setData(parcelas);
+		table.setModel(tableModel);
+		tableModel.fireTableDataChanged();
+		table.repaint();
+	}
+	
 	public boolean validado(Parcela parcelas) {
 
 		return true;

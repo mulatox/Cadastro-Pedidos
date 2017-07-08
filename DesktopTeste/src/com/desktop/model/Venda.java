@@ -97,6 +97,11 @@ public class Venda {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getPedido()+"";
+	}
 	
 	
 	

@@ -105,7 +105,7 @@ public class PainelVenda extends JPanel {
 		vendas = dao.listar();
 		tableModel.setData(vendas);
 		table = new JTable(tableModel);
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table.setFont(new Font("Tahoma", Font.BOLD, 14));
 		table.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -314,23 +314,31 @@ public class PainelVenda extends JPanel {
 								.addComponent(button_2))));
 		panel_1.setLayout(gl_panel_1);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(20).addComponent(button,
-						GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addGroup(Alignment.LEADING,
-										groupLayout.createSequentialGroup().addContainerGap().addComponent(panel, 0, 0,
-												Short.MAX_VALUE))
-								.addGroup(Alignment.LEADING,
-										groupLayout.createSequentialGroup().addGap(12).addComponent(panel_1,
-												GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(446, Short.MAX_VALUE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(1)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE).addGap(18)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE).addGap(50)
-						.addComponent(button)));
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(20)
+							.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(12)
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(1)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+					.addGap(50)
+					.addComponent(button))
+		);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
@@ -378,6 +386,12 @@ public class PainelVenda extends JPanel {
 				}
 			}
 		});
+		
+		if(vendaSelecionada==null && vendas!=null && vendas.size()>0)
+		{
+			vendaSelecionada=vendas.get(0);
+			binder.updateView(vendaSelecionada);
+		}
 
 	}
 
@@ -466,7 +480,7 @@ public class PainelVenda extends JPanel {
 	public static class ClienteFormatter implements Formatter {
 		public Object format(Object obj) {
 			Cliente c = (Cliente) obj;
-			return "" + c.getCodigo();
+			return "" + c.getCodigo()+" - "+c.getNome();
 		}
 
 		public Object parse(Object obj) {

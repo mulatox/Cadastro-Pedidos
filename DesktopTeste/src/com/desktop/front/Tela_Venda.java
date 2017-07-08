@@ -323,6 +323,7 @@ public class Tela_Venda extends JFrame {
 				}
 		    }
 		});
+		
 	}
 
 	private void salvarVenda() {
@@ -427,22 +428,22 @@ public class Tela_Venda extends JFrame {
 	}
 	
 	// ClienteFormatter sera usado para transformar a String em Cliente.
-				public static class ClienteFormatter implements Formatter {
-					public Object format(Object obj) {
-						Cliente c =(Cliente) obj;
-						return ""+c.getCodigo();
-					}
+	public static class ClienteFormatter implements Formatter {
+		public Object format(Object obj) {
+			Cliente c = (Cliente) obj;
+			return "" + c.getCodigo();
+		}
 
-					public Object parse(Object obj) {
-						ClienteDao dao = new ClienteDao();
-						Cliente d =  dao.consultarCodigo(Integer.parseInt((String)obj));
-						return d;
-					}
+		public Object parse(Object obj) {
+			ClienteDao dao = new ClienteDao();
+			Cliente d = dao.consultarCodigo(Integer.parseInt((String) obj));
+			return d;
+		}
 
-					public String getName() {
-						return "Cliente";
-					}
-				}
+		public String getName() {
+			return "Cliente";
+		}
+	}
 				
 				public static class VendaFormatter implements Formatter {
 					public Object format(Object obj) {

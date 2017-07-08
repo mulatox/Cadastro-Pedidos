@@ -114,7 +114,7 @@ public class PainelCliente extends JPanel {
 		clientes =dao.listar();
 		tableModel.setData(clientes);
 		table = new JTable(tableModel);
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table.setFont(new Font("Tahoma", Font.BOLD, 14));
 		table.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 
@@ -452,6 +452,12 @@ public class PainelCliente extends JPanel {
 				}
 			}
 		});
+		
+		if(clienteSelecionado==null && clientes!=null && clientes.size()>0)
+		{
+			clienteSelecionado=clientes.get(0);
+			binder.updateView(clienteSelecionado);
+		}
 
 	}
 	

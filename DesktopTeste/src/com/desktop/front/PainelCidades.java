@@ -87,7 +87,7 @@ public class PainelCidades extends JPanel {
 		cidades =dao.listar();
 		tableModel.setData(cidades);
 		table = new JTable(tableModel);
-		table.setFont(new Font("Tahoma", Font.BOLD, 12));
+		table.setFont(new Font("Tahoma", Font.BOLD, 14));
 		table.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 

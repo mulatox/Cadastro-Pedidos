@@ -71,6 +71,7 @@ public class TelaTabbed extends JFrame {
 
 	private Tela_Cliente telaCliente;
 	private Tela_Venda telaVenda;
+	private Tela_Parcelas telaParcelas;
 
 	public static ArrayList<Cliente> clientes;
 	public static ArrayList<Venda> vendas;
@@ -190,6 +191,21 @@ public class TelaTabbed extends JFrame {
 		});
 		mnVenda.add(menuItem);
 		setJMenuBar(menuBar);
+		
+		JMenu mnParcelas = new JMenu("Parcelas");
+		menuBar.add(mnParcelas);
+		
+		JMenuItem mntmQuitar = new JMenuItem("Quitar");
+		mntmQuitar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+		mntmQuitar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				telaParcelas = new Tela_Parcelas();
+				telaParcelas.setVisible(true);
+
+			}
+		});
+		mnParcelas.add(mntmQuitar);
 		tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
 			public void stateChanged(javax.swing.event.ChangeEvent e) {
 				if (tabbedPane.getSelectedIndex() == 0) {
