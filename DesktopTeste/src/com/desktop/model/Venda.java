@@ -1,5 +1,6 @@
 package com.desktop.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class Venda {
 	private int pedido;
 	
 	@Resolvable(colName="VALOR")
-	private double valor;
+	private BigDecimal valor;
 	
 	@Resolvable(colName="PARCELAS")
 	private int parcelas;
@@ -48,11 +49,11 @@ public class Venda {
 		this.codigo = codigo;
 	}
 
-	public double getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(double valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
 

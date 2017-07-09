@@ -159,7 +159,7 @@ public class Tela_Parcelas extends JFrame {
 		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
 				"alias,valor,vencimento,venda,status");
 		ParcelaDao dao = new ParcelaDao();
-		parcelas = dao.listar();
+		parcelas = dao.listarAtivas();
 		tableModel.setData(parcelas);
 		table = new JTable(tableModel);
 		table.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -291,7 +291,7 @@ public class Tela_Parcelas extends JFrame {
 		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
 				"alias,valor,vencimento,venda,status");
 		ParcelaDao dao = new ParcelaDao();
-		parcelas = dao.listar();
+		parcelas = dao.listarAtivas();
 		tableModel.setData(parcelas);
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();

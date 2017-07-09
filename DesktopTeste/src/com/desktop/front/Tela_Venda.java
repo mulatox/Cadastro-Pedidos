@@ -360,8 +360,9 @@ public class Tela_Venda extends JFrame {
 		Calendar calendar = Calendar.getInstance();
 		for (int i = 0; i < venda.getParcelas(); i++) {
 			parcela = new Parcela();
-			parcela.setAlias(venda.getPedido() + "/" + (i + 1));
-			BigDecimal big = new BigDecimal(venda.getValor()/venda.getParcelas());
+			int numeroParcela = (i + 1);
+			parcela.setAlias(venda.getPedido() + "/" + numeroParcela);
+			BigDecimal big = new BigDecimal(venda.getValor().doubleValue()/venda.getParcelas());
 			parcela.setValor(big.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			parcela.setVenda(venda);
 			calendar.setTime(venda.getData());
@@ -376,16 +377,19 @@ public class Tela_Venda extends JFrame {
 		ParcelaDao dao = new ParcelaDao();
 		Parcela parcela = null;
 		Calendar calendar = Calendar.getInstance();
+		//dao.removerParcelas(venda.getCodigo());
 		for (int i = 0; i < venda.getParcelas(); i++) {
 			parcela = new Parcela();
 			parcela.setAlias(venda.getPedido() + "/" + i + 1);
-			parcela.setValor(venda.getValor() / venda.getParcelas());
+			BigDecimal big = new BigDecimal(venda.getValor().doubleValue()/venda.getParcelas());
+			parcela.setValor(big.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			parcela.setVenda(venda);
 			calendar.setTime(venda.getData());
 			calendar.add(Calendar.MONTH, 1);
 			parcela.setVencimento(calendar.getTime());
 			dao.atualizar(parcela);
 		}
+		
 
 	}
 
@@ -396,7 +400,7 @@ public class Tela_Venda extends JFrame {
 			return false;
 		}
 
-		if (venda.getValor() == 0) {
+		if (venda.getValor() == null) {
 			JOptionPane.showMessageDialog(this, "Campo Valor obrigatório", "Campos Obrigatórios",
 					JOptionPane.WARNING_MESSAGE);
 			return false;

@@ -39,6 +39,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -372,7 +373,11 @@ public class PainelVenda extends JPanel {
 		});
 
 		table.requestFocus();
-		table.addRowSelectionInterval(0,0);
+		if(table.getRowCount()>0)
+		{
+			table.addRowSelectionInterval(0,0);
+		}
+		
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
@@ -434,8 +439,8 @@ public class PainelVenda extends JPanel {
 	// IntFormatter sera usado para transformar a String em numero.
 	public static class DoubleFormatter implements Formatter {
 		public Object format(Object obj) {
-			Double d = (Double) obj;
-			return d.toString().replace(".", ",");
+			BigDecimal d = (BigDecimal) obj;
+			return ( (d.doubleValue()+"").replace(".", ",") );
 		}
 
 		public Object parse(Object obj) {
@@ -443,11 +448,11 @@ public class PainelVenda extends JPanel {
 			String doubleFormatado = (String) obj;
 			doubleFormatado = doubleFormatado.replace(".", "");
 			doubleFormatado = doubleFormatado.replace(",", ".");
-			return Double.valueOf(Double.parseDouble(doubleFormatado));
+			return new BigDecimal(Double.valueOf(Double.parseDouble(doubleFormatado))).setScale(2, BigDecimal.ROUND_HALF_UP);
 		}
 
 		public String getName() {
-			return "double";
+			return "BigDecimal";
 		}
 	}
 
