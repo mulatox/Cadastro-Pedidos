@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
 import javax.swing.text.MaskFormatter;
 
 import com.desktop.database.CidadeEstadoDao;
@@ -131,6 +133,11 @@ public class PainelCidades extends JPanel {
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_1.setColumns(10);
+		
+		DocumentFilter filter = new UppercaseDocumentFilter();
+		((AbstractDocument) textField_1.getDocument()).setDocumentFilter(filter);
+		((AbstractDocument) textField.getDocument()).setDocumentFilter(filter);
+		
 		MaskFormatter cpfMask=null;
 		try {
 			cpfMask = new MaskFormatter("###.###.###-##");
@@ -219,14 +226,14 @@ public class PainelCidades extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel, 0, 0, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addGap(12)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 480, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(panel_1, 0, 0, Short.MAX_VALUE))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 552, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(57, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -235,15 +242,15 @@ public class PainelCidades extends JPanel {
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-					.addGap(73))
+					.addGap(72))
 		);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(197, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

@@ -264,7 +264,7 @@ public class Tela_Parcelas extends JFrame {
 	{
 		parcelaSelecionada=parcelas.get(0);
 	}
-	
+	Tela_Cliente.installEscapeCloseOperation(this);
 	}
 	
 	private void salvarParcela() {

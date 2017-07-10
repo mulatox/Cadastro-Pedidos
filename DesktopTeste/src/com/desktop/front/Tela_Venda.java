@@ -324,7 +324,7 @@ public class Tela_Venda extends JFrame {
 				}
 		    }
 		});
-		
+		Tela_Cliente.installEscapeCloseOperation(this);
 	}
 
 	private void salvarVenda() {

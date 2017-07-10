@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -57,6 +58,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -409,8 +414,12 @@ public class Tela_Cliente extends JFrame {
 				}
 		    }
 		});
+		
+		installEscapeCloseOperation(this);
 	}
 
+	
+	
 	private void salvarCliente() {
 		Cliente cliente = new Cliente();
 		binder.updateModel(cliente);
@@ -523,4 +532,24 @@ public class Tela_Cliente extends JFrame {
 			return "int";
 		}
 	}
+	
+	private static final KeyStroke escapeStroke = 
+		    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0); 
+		public static final String dispatchWindowClosingActionMapKey = 
+		    "com.spodding.tackline.dispatch:WINDOW_CLOSING"; 
+		public static void installEscapeCloseOperation(final JFrame dialog) { 
+		    Action dispatchClosing = new AbstractAction() { 
+		        public void actionPerformed(ActionEvent event) { 
+		            dialog.dispatchEvent(new WindowEvent( 
+		                dialog, WindowEvent.WINDOW_CLOSING 
+		            )); 
+		        } 
+		    }; 
+		    JRootPane root = dialog.getRootPane(); 
+		    root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put( 
+		        escapeStroke, dispatchWindowClosingActionMapKey 
+		    ); 
+		    root.getActionMap().put( dispatchWindowClosingActionMapKey, dispatchClosing 
+		    ); 
+		}
 }

@@ -85,6 +85,7 @@ public class PainelCliente extends JPanel {
 	@Bindable(field = "observacao")
 	private JTextField textField_4;
 
+	private JPanel panel_1;
 	/**
 	 * Create the panel.
 	 */
@@ -142,7 +143,7 @@ public class PainelCliente extends JPanel {
 		});
 		scrollPane.setViewportView(table);
 		
-		JPanel panel_1 = new JPanel();
+		panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "DADOS CLIENTE", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		
 		JLabel lblBairro = new JLabel("ENDERE\u00C7O");
@@ -471,7 +472,6 @@ public class PainelCliente extends JPanel {
 		tableModel.setData(clientes);
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
-		
 		table.repaint();
 	}
 	

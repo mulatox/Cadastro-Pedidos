@@ -1,58 +1,59 @@
 package com.desktop.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Iterator;
 
-import java.util.ArrayList;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.desktop.database.CidadeEstadoDao;
 import com.desktop.database.ClienteDao;
+import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
-import com.towel.el.FieldResolver;
-import com.towel.el.annotation.AnnotationResolver;
-import com.towel.swing.event.ObjectSelectListener;
-import com.towel.swing.event.SelectEvent;
-import com.towel.swing.table.SelectTable;
 
 public class TesteHibernate {
 
-	public static void main (String args[])
-	{
-		
-		/*try{
-		ClienteDao dao = new ClienteDao();
-		Cliente cliente = new Cliente();
-		cliente.setNome("Nomeasasd Teste");
-		cliente.setBairro("Nome Teste");
-		cliente.setCpf("Nome Testeasdasd");
-		cliente.setEmail("Nome Teste");
-		cliente.setLogradouro("Nome Teste");
-		
-		dao.inserir(cliente);
-		
-		}
-		
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		*/
-		ClienteDao dao = new ClienteDao();
-		;
-		
-		FieldResolver[] cols = new AnnotationResolver(Cliente.class)
-			    .resolve("nome:Nome");
-			SelectTable st =new SelectTable<Cliente>(cols,dao.listar());
-			st.addObjectSelectListener(new ObjectSelectListener() {
+	public static void main(String args[]) throws IOException, InvalidFormatException {
+		File file = new File("./DesktopTeste/relatorios/Cidades.xlsx");
+		FileInputStream inputStream = new FileInputStream(file);
+		OPCPackage pkg = OPCPackage.open(inputStream);
 
-				public void notifyObjectSelected(SelectEvent selectevent) {
-					 Cliente p = (Cliente) selectevent.getObject();
-			            System.out.println(p.getNome());					
+		XSSFWorkbook wb = new XSSFWorkbook(pkg);
+		XSSFSheet plan1 = wb.getSheetAt(0);
+		XSSFRow row = null;
+		CidadeEstado cidade = null;
+		CidadeEstadoDao dao = new CidadeEstadoDao();
+		for (int i = 1; i <= 55; i++) {
+			row = plan1.getRow(i);
+			Iterator<Cell> cellIterator = row.cellIterator();
+			cidade = new CidadeEstado();
+			while (cellIterator.hasNext()) {
+				Cell cell = cellIterator.next();
+				
+				if (cell != null) {
+					
+					 
+					 if(cell.getColumnIndex()==1)
+					 {
+						 cidade.setCidade(cell.getStringCellValue());
+					 }
+					 
+					 else if(cell.getColumnIndex()==2)
+					 {
+						 cidade.setEstado(cell.getStringCellValue());
+					 }
+					
 				}
-
-			});
-			st.showSelectTable();
-
-
-
+			}
+			 dao.inserir(cidade);
+		}
 
 	}
-	
+
 }
