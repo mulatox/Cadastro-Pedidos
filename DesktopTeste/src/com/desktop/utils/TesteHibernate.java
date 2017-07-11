@@ -29,28 +29,29 @@ public class TesteHibernate {
 		XSSFRow row = null;
 		CidadeEstado cidade = null;
 		CidadeEstadoDao dao = new CidadeEstadoDao();
-		for (int i = 1; i <= 55; i++) {
+		for (int i = 1; i <= 65; i++) {
 			row = plan1.getRow(i);
 			Iterator<Cell> cellIterator = row.cellIterator();
 			cidade = new CidadeEstado();
 			while (cellIterator.hasNext()) {
 				Cell cell = cellIterator.next();
-				
 				if (cell != null) {
 					
 					 
-					 if(cell.getColumnIndex()==1)
-					 {
-						 cidade.setCidade(cell.getStringCellValue());
-					 }
-					 
-					 else if(cell.getColumnIndex()==2)
-					 {
-						 cidade.setEstado(cell.getStringCellValue());
-					 }
+						 if(cell.getColumnIndex()==1)
+						 {
+							 cidade.setCidade(cell.getStringCellValue());
+						 }
+						 
+						 else if(cell.getColumnIndex()==2)
+						 {
+							 cidade.setEstado(cell.getStringCellValue());
+						 }
+					
 					
 				}
 			}
+			
 			 dao.inserir(cidade);
 		}
 

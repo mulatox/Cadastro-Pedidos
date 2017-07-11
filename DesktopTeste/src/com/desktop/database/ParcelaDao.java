@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.desktop.model.Parcela;
+import com.desktop.model.Venda;
 
 public class ParcelaDao extends Base_Dao {
 
@@ -31,24 +32,5 @@ public class ParcelaDao extends Base_Dao {
 		return (ArrayList<Parcela>) query.getResultList();
 	}
 
-	public void removerParcelas(int codigoVenda) {
-		EntityManager gerente = getGerenciadorEntidade();
-		try {
-			gerente.getTransaction().begin();
-			Query query = getGerenciadorEntidade()
-					.createQuery("delete FROM " + Parcela.class.getName() + " p where p.venda.codigo=" + codigoVenda);
-			query.executeUpdate();
-		} catch (Exception e) {
-			System.out.println("Deu erro!" + e);
-			gerente.getTransaction().rollback(); // desfaz transacao se ocorrer
-													// erro ao persitir
-		} finally {
-			if (gerente.getTransaction().isActive()) {
-				gerente.getTransaction().commit();
-			}
-
-			gerente.close();
-		}
-	}
 
 }

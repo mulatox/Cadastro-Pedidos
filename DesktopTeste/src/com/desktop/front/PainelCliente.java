@@ -439,7 +439,10 @@ public class PainelCliente extends JPanel {
 		});
 		
 		table.requestFocus();
+		if(table.getRowCount()>0)
+		{
 		table.addRowSelectionInterval(0,0);
+		}
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			public void valueChanged(ListSelectionEvent e) {

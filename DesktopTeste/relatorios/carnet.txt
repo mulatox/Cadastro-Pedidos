@@ -1,0 +1,24 @@
+
+
+
+       #NOME          
+       #ENDERECO              
+       #BAIRRO                                         #PEDIDO       #N
+       #CIDADE                  
+       #PEDIDO     #N                   #VENC          #DATAVE  #VENC
+
+
+
+                                         #PARC                  #PARC
+
+
+
+
+
+
+
+
+
+
+
+       

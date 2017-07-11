@@ -377,10 +377,14 @@ public class Tela_Venda extends JFrame {
 		ParcelaDao dao = new ParcelaDao();
 		Parcela parcela = null;
 		Calendar calendar = Calendar.getInstance();
-		//dao.removerParcelas(venda.getCodigo());
+		for(Parcela parc :dao.listarAtivas(venda.getCodigo()))
+		{
+			dao.remover(parc);
+		}
 		for (int i = 0; i < venda.getParcelas(); i++) {
 			parcela = new Parcela();
-			parcela.setAlias(venda.getPedido() + "/" + i + 1);
+			int numeroParcela = (i + 1);
+			parcela.setAlias(venda.getPedido() + "/" + numeroParcela);
 			BigDecimal big = new BigDecimal(venda.getValor().doubleValue()/venda.getParcelas());
 			parcela.setValor(big.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			parcela.setVenda(venda);
