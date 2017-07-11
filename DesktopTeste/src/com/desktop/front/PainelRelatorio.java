@@ -15,6 +15,7 @@ import com.desktop.database.ParcelaDao;
 import com.desktop.front.Tela_Venda.IntFormatter;
 import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
+import com.desktop.utils.CarneUtilitario;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
 import com.towel.bind.annotation.AnnotatedBinder;
@@ -74,6 +75,7 @@ public class PainelRelatorio extends JPanel {
 	public static Cliente clienteSelecionado;
 	public static ArrayList<Cliente> clientes;
 	private static final int INATIVO = -1;
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -88,7 +90,7 @@ public class PainelRelatorio extends JPanel {
 		tableModel.setData(clientes);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "RELAT\u00D3RIOS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "RELAT\u00D3RIO COBRAN\u00C7A", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		MaskFormatter cpfMask=null;
 		try {
 			cpfMask = new MaskFormatter("###.###.###-##");
@@ -103,16 +105,6 @@ public class PainelRelatorio extends JPanel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		JButton btnGerarBoleto = new JButton("GERAR CARN\u00CA");
-		btnGerarBoleto.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		btnGerarBoleto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-
-			}
-		});
 		
 		JButton btnGerarCobrana = new JButton("GERAR COBRAN\u00C7A");
 		btnGerarCobrana.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -172,43 +164,53 @@ public class PainelRelatorio extends JPanel {
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnGerarBoleto, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnGerarCobrana, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-					.addContainerGap(192, Short.MAX_VALUE))
+					.addComponent(btnGerarCobrana, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+					.addGap(371))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(39)
-					.addComponent(btnGerarBoleto)
-					.addGap(36)
+					.addGap(29)
 					.addComponent(btnGerarCobrana)
-					.addGap(147))
+					.addContainerGap(140, Short.MAX_VALUE))
 		);
 		panel_1.setLayout(gl_panel_1);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "RELAT\u00D3RIO CARN\u00CAS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(12)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 1008, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 528, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(1)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
-					.addGap(329))
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(23, Short.MAX_VALUE))
 		);
-		setLayout(groupLayout);
 		
-		if(clienteSelecionado==null && clientes!=null && clientes.size()>0)
-		{
-			clienteSelecionado=clientes.get(0);
-			binder.updateView(clienteSelecionado);
-		}
+		JButton btnGerarBoleto = new JButton("GERAR CARN\u00CA");
+		btnGerarBoleto.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		btnGerarBoleto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(textField.getText()!=null)
+				{
+					CarneUtilitario.imprimirCarne(Integer.parseInt(textField.getText()));
+				}
+				
+
+			}
+		});
 		
 		btnGerarBoleto.addKeyListener(new KeyAdapter() {
 			@Override
@@ -224,6 +226,37 @@ public class PainelRelatorio extends JPanel {
 				}
 			}
 		});
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Dialog", Font.BOLD, 16));
+		textField.setColumns(10);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnGerarBoleto, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
+					.addGap(26)
+					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(227, Short.MAX_VALUE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(36, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnGerarBoleto, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(44))
+		);
+		panel.setLayout(gl_panel);
+		setLayout(groupLayout);
+		
+		if(clienteSelecionado==null && clientes!=null && clientes.size()>0)
+		{
+			clienteSelecionado=clientes.get(0);
+			binder.updateView(clienteSelecionado);
+		}
 
 	}
 	
