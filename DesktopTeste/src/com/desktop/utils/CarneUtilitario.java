@@ -52,7 +52,7 @@ public class CarneUtilitario {
 			ParcelaDao dao = new ParcelaDao();
 			int indc = 1;
 			String resultadoCarne = "";
-			for (Parcela parcela : dao.listarAtivas(pedido)) {
+			for (Parcela parcela : dao.listarAtivasPedido(pedido)) {
 				resultadoCarne += modeloCarne.replace("#NOME", parcela.getVenda().getCliente().getNome())
 						.replace("#ENDERECO", parcela.getVenda().getCliente().getEndereco())
 						.replace("#BAIRRO", parcela.getVenda().getCliente().getBairro())
