@@ -226,20 +226,31 @@ public class PainelRelatorio extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "RELAT\u00D3RIO CARN\u00CAS",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		
+		JLabel label = new JLabel("F1 NOVO PEDIDO  F3 NOVO CLIENTE  F5 QUITAR PARCELAS");
+		label.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(12)
-				.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)
-						.addComponent(panel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 528,
-								GroupLayout.PREFERRED_SIZE))
-				.addContainerGap(18, Short.MAX_VALUE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(1)
-						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE).addGap(18)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(23, Short.MAX_VALUE)));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(12)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(label, GroupLayout.PREFERRED_SIZE, 979, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 528, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(1)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(label)
+					.addContainerGap())
+		);
 
 		JButton btnGerarBoleto = new JButton("GERAR CARN\u00CA");
 		btnGerarBoleto.setFont(new Font("Tahoma", Font.BOLD, 12));

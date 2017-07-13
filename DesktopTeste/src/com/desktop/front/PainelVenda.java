@@ -314,6 +314,9 @@ public class PainelVenda extends JPanel {
 						.addGap(51).addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addComponent(button_1)
 								.addComponent(button_2))));
 		panel_1.setLayout(gl_panel_1);
+		
+		JLabel label = new JLabel("F1 NOVO PEDIDO  F3 NOVO CLIENTE  F5 QUITAR PARCELAS");
+		label.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -327,7 +330,10 @@ public class PainelVenda extends JPanel {
 							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)))
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 979, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -337,7 +343,9 @@ public class PainelVenda extends JPanel {
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-					.addGap(50)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(label)
+					.addGap(40)
 					.addComponent(button))
 		);
 		GroupLayout gl_panel = new GroupLayout(panel);

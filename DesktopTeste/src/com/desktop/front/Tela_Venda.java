@@ -81,7 +81,7 @@ public class Tela_Venda extends JFrame {
 	private JTextField textField_2;
 
 	@Bindable(field = "pedido", formatter = IntFormatter.class)
-	private JFormattedTextField textField_3;
+	private JTextField textField_3;
 	@Bindable(field = "data", formatter = DateFormatter.class)
 	private JFormattedTextField textField_4;
 
@@ -166,7 +166,7 @@ public class Tela_Venda extends JFrame {
 		lblEntrada.setBounds(15, 26, 56, 15);
 		lblEntrada.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-		textField_3 = new JFormattedTextField(numberFormatter);
+		textField_3 = new JTextField();
 		textField_3.setBounds(102, 21, 423, 25);
 		textField_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_3.setColumns(10);
