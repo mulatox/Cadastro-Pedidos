@@ -49,8 +49,18 @@ public class Parcela {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	public int getStatus() {
-		return status;
+	public String getStatus() {
+		
+		if(status==0)
+		{
+			return "NÃO PAGA";
+		}
+		
+		else
+		{
+			return "PAGA";
+		}
+		
 	}
 	public void setStatus(int status) {
 		this.status = status;

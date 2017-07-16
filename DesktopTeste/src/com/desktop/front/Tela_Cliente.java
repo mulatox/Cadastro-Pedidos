@@ -22,6 +22,7 @@ import com.desktop.database.CidadeEstadoDao;
 import com.desktop.database.ClienteDao;
 import com.desktop.front.Autocomplete.CommitAction;
 import com.desktop.front.PainelCliente.CidadeFormatter;
+import com.desktop.front.Tela_Venda.ClienteFormatter;
 import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
 import com.towel.bean.Formatter;
@@ -530,6 +531,24 @@ public class Tela_Cliente extends JFrame {
 
 		public String getName() {
 			return "int";
+		}
+	}
+	
+	// ClienteFormatter sera usado para transformar a String em Cliente.
+	public static class CidadeFormatter implements Formatter {
+		public Object format(Object obj) {
+			CidadeEstado c = (CidadeEstado) obj;
+			return "" + c.getCodigo();
+		}
+
+		public Object parse(Object obj) {
+			CidadeEstadoDao dao = new CidadeEstadoDao();
+			CidadeEstado d = dao.consultarCodigo(Integer.parseInt((String) obj));
+			return d;
+		}
+
+		public String getName() {
+			return "Cliente";
 		}
 	}
 	
