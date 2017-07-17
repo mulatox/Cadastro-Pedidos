@@ -416,7 +416,22 @@ public class Tela_Venda extends JFrame {
 					JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
-		
+		if(venda.getCodigo()==0)
+		{
+			for(Venda vendaIndice:PainelVenda.vendas)
+			{
+				if(tipoTela.equals(ALTERAR))
+				{
+					venda.setCodigo(codigoVenda);
+				}
+				if((venda.getCodigo()!=vendaIndice.getCodigo()) && (vendaIndice.getPedido()!=0 && ( vendaIndice.getPedido()==venda.getPedido()) ) )
+				{
+					JOptionPane.showMessageDialog(this, "Campo PEDIDO não pode ser repetido! Pedido: "+vendaIndice.getPedido()+" já possui este número", "Campos Obrigatórios",
+							JOptionPane.WARNING_MESSAGE);
+					return false;
+				}
+			}
+		}
 		
 
 		return true;
