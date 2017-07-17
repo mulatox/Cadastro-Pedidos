@@ -198,6 +198,22 @@ public class TelaTabbed extends JFrame {
 			}
 		});
 		mnParcelas.add(mntmQuitar);
+		
+		JMenu mnAjuda = new JMenu("Ajuda");
+		menuBar.add(mnAjuda);
+		
+		JMenuItem mntmSobre = new JMenuItem("Sobre");
+		mntmSobre.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
+		mntmSobre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				TelaContato telaCOntato = new TelaContato();
+				telaCOntato.setVisible(true);
+
+			}
+		});
+		mnAjuda.add(mntmSobre);
+		
 		tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
 			public void stateChanged(javax.swing.event.ChangeEvent e) {
 				if (tabbedPane.getSelectedIndex() == 0) {
