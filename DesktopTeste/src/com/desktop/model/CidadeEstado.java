@@ -41,5 +41,18 @@ public class CidadeEstado {
 		this.estado = estado;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(((CidadeEstado) obj).getCodigo()==this.codigo)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
 
 }

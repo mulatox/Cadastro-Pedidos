@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.towel.el.annotation.Resolvable;
 
@@ -36,7 +37,6 @@ public class Parcela {
 	@JoinColumn(name="venda")
 	private Venda venda;
 	
-	
 	public int getCodigo() {
 		return codigo;
 	}
@@ -49,17 +49,9 @@ public class Parcela {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	public String getStatus() {
+	public int getStatus() {
 		
-		if(status==0)
-		{
-			return "NÃO PAGA";
-		}
-		
-		else
-		{
-			return "PAGA";
-		}
+	 return status;
 		
 	}
 	public void setStatus(int status) {

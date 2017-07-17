@@ -53,9 +53,20 @@ public class CarneUtilitario {
 			int indc = 1;
 			String resultadoCarne = "";
 			for (Parcela parcela : dao.listarAtivasPedido(pedido)) {
+				
+				String bairro= parcela.getVenda().getCliente().getBairro();
+				if(bairro==null || bairro.isEmpty())
+				{
+					bairro="   ";
+				}
+				String endereco= parcela.getVenda().getCliente().getEndereco();
+				if(endereco==null || endereco.isEmpty())
+				{
+					endereco="   ";
+				}
 				resultadoCarne += modeloCarne.replace("#NOME", parcela.getVenda().getCliente().getNome())
-						.replace("#ENDERECO", parcela.getVenda().getCliente().getEndereco())
-						.replace("#BAIRRO", parcela.getVenda().getCliente().getBairro())
+						.replace("#ENDERECO", endereco)
+						.replace("#BAIRRO",bairro)
 						.replace("#CIDADE", parcela.getVenda().getCliente().getCidade_estado().getCidade())
 						.replace("#PEDIDO", "" + parcela.getVenda().getPedido()).replace("#N", indc + "")
 						.replace("#VENC", "" + new SimpleDateFormat("dd/MM/yyyy").format(parcela.getVencimento()))
@@ -96,10 +107,25 @@ public class CarneUtilitario {
 			ParcelaDao dao = new ParcelaDao();
 			int indc = 1;
 			String resultadoCarne = "";
+			
+			
+			
 			for (Parcela parcela : dao.listarAtivas()) {
+				
+				String bairro= parcela.getVenda().getCliente().getBairro();
+				if(bairro==null || bairro.isEmpty())
+				{
+					bairro="   ";
+				}
+				String endereco= parcela.getVenda().getCliente().getEndereco();
+				if(endereco==null || endereco.isEmpty())
+				{
+					endereco="   ";
+				}
+				
 				resultadoCarne += modeloCarne.replace("#NOME", parcela.getVenda().getCliente().getNome())
-						.replace("#ENDERECO", parcela.getVenda().getCliente().getEndereco())
-						.replace("#BAIRRO", parcela.getVenda().getCliente().getBairro())
+						.replace("#ENDERECO", endereco)
+						.replace("#BAIRRO",bairro)
 						.replace("#CIDADE", parcela.getVenda().getCliente().getCidade_estado().getCidade())
 						.replace("#PEDIDO", "" + parcela.getVenda().getPedido()).replace("#N", indc + "")
 						.replace("#VENC", "" + new SimpleDateFormat("dd/MM/yyyy").format(parcela.getVencimento()))

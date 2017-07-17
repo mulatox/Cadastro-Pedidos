@@ -444,6 +444,26 @@ public class PainelCliente extends JPanel {
 						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() - 1);
 				}
 				
+				else if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+					if (clienteSelecionado != null) {
+						Object[] options = { "Confirmar", "Cancelar" };
+						int resposta =JOptionPane.showOptionDialog(container,
+								"Deseja realmente excluir o cliente " + clienteSelecionado.getNome()+" ?", "Atenção",
+								JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if(resposta==0)
+						{
+							ClienteDao dao = new ClienteDao();
+							clienteSelecionado.setStatus(INATIVO);
+							dao.atualizar(clienteSelecionado);
+							carregarClientes();
+						}
+
+					} else {
+						JOptionPane.showInternalMessageDialog(container, "Nenhum cliente selecionado", "Aviso",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+				
 			}
 		});
 		

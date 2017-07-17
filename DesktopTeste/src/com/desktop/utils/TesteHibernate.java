@@ -38,7 +38,7 @@ public class TesteHibernate {
 		//XSSFSheet plan1 = wb.getSheetAt(0);
 	//	XSSFRow row = null;
 		//Venda pedido = null;
-		//ClienteDao dao = new ClienteDao();
+		ClienteDao daoCliente = new ClienteDao();
 		VendaDao daoVenda = new VendaDao();
 		ParcelaDao parcelaDao = new ParcelaDao();
 		int indice = 0;
@@ -82,24 +82,20 @@ public class TesteHibernate {
 		 * 
 		 * }
 		 */
-		for (Venda venda : daoVenda.listar()) {
-			Parcela parcela = null;
-			Calendar calendar = Calendar.getInstance();
-			for (int i = 0; i < venda.getParcelas(); i++) {
-				parcela = new Parcela();
-				int numeroParcela = (i + 1);
-				parcela.setAlias(venda.getPedido() + "/" + numeroParcela);
-				BigDecimal big = new BigDecimal(venda.getValor().doubleValue() / venda.getParcelas());
-				parcela.setValor(big.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-				parcela.setVenda(venda);
-				calendar.setTime(venda.getData());
-				calendar.add(Calendar.MONTH, 1 + i);
-				parcela.setVencimento(calendar.getTime());
-				parcelaDao.inserir(parcela);
-
+		for (Cliente cliente : daoCliente.listar()) {
+			
+			if(cliente.getCpf()!=null && !cliente.getCpf().trim().isEmpty())
+			{
+				cliente.setCpf(cliente.getCpf().replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4"));
+				daoCliente.atualizar(cliente);
 			}
+			
 		}
 
+		String cpf ="09551130401";
+		cpf = cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+		System.out.println(cpf);
+		
 	}
 
 }

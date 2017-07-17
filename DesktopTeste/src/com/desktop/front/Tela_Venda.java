@@ -117,6 +117,7 @@ public class Tela_Venda extends JFrame {
 		binder.updateView(venda);
 		codigoVenda = venda.getCodigo();
 		tipoTela = ALTERAR;
+		comboBox.setSelectedItem((venda.getCliente().getNome()));
 
 	}
 

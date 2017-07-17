@@ -117,6 +117,8 @@ public class Tela_Cliente extends JFrame {
 
 	@Bindable(field = "observacao")
 	private JTextField textField_7;
+	
+	final JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -139,6 +141,8 @@ public class Tela_Cliente extends JFrame {
 		binder.updateView(cliente);
 		CodigoCliente = cliente.getCodigo();
 		tipoTela = ALTERAR;
+		comboBox.setSelectedItem((cliente.getCidade_estado().getCidade()));
+		comboBox.repaint();
 
 	}
 
@@ -147,6 +151,20 @@ public class Tela_Cliente extends JFrame {
 	 */
 	public Tela_Cliente() {
 
+		NumberFormat longFormatTel = NumberFormat.getIntegerInstance();
+		longFormatTel.setGroupingUsed(false);
+		NumberFormatter numberFormatterTel = new NumberFormatter(longFormatTel);
+		numberFormatterTel.setValueClass(Long.class); //optional, ensures you will always get a long value
+		numberFormatterTel.setMinimum(0l);
+		
+		NumberFormat longFormatCPF = NumberFormat.getIntegerInstance();
+		longFormatCPF.setGroupingUsed(false);
+		longFormatCPF.setMaximumIntegerDigits(11);
+		NumberFormatter numberFormatterCPF = new NumberFormatter(longFormatCPF);
+		numberFormatterCPF.setValueClass(Long.class); //optional, ensures you will always get a long value
+		numberFormatterCPF.setMinimum(0l);
+		
+		
 		tipoTela = SALVAR;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 681, 569);
@@ -207,13 +225,8 @@ public class Tela_Cliente extends JFrame {
 
 		// MaskFormatter foneMask = null;
 		// foneMask = new MaskFormatter("(##)#########");
-		NumberFormat longFormat = NumberFormat.getIntegerInstance();
-		longFormat.setGroupingUsed(false);
-		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
-		numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
-		numberFormatter.setAllowsInvalid(true); //this is the key!!
-		numberFormatter.setMinimum(0l);
-		textField_4 = new JFormattedTextField(numberFormatter);
+		
+		textField_4 = new JFormattedTextField(numberFormatterTel);
 		textField_4.setBounds(105, 233, 147, 25);
 		textField_4.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_4.setColumns(10);
@@ -353,7 +366,7 @@ public class Tela_Cliente extends JFrame {
 		lblObservaes.setBounds(15, 279, 90, 15);
 		panel.add(lblObservaes);
 
-		final JComboBox comboBox = new JComboBox();
+		 comboBox = new JComboBox();
 		comboBox.setFocusable(false);
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		comboBox.addItemListener(new ItemListener() {
@@ -372,7 +385,7 @@ public class Tela_Cliente extends JFrame {
 			}
 		});
 		String[] listaNomes = new String[PainelCidades.cidades.size() + 1];
-		listaNomes[0] = "Selecione Cliente";
+		listaNomes[0] = "Selecione Cidade";
 		int i = 1;
 		for (CidadeEstado cidade : PainelCidades.cidades) {
 			listaNomes[i] = cidade.getCidade();
@@ -424,6 +437,7 @@ public class Tela_Cliente extends JFrame {
 	private void salvarCliente() {
 		Cliente cliente = new Cliente();
 		binder.updateModel(cliente);
+		cliente.setCodigo(CodigoCliente);
 		if (validado(cliente)) {
 			ClienteDao dao = new ClienteDao();
 			Object[] options = { "CONFIRMAR", "CANCELAR" };
@@ -476,19 +490,23 @@ public class Tela_Cliente extends JFrame {
 			return false;
 		}
 
-		for(Cliente clienteIndice:PainelCliente.clientes)
+		if(cliente.getCodigo()==0)
 		{
-			if(tipoTela.equals(ALTERAR))
+			for(Cliente clienteIndice:PainelCliente.clientes)
 			{
-				cliente.setCodigo(CodigoCliente);
-			}
-			if((cliente.getCodigo()!=clienteIndice.getCodigo()) && (clienteIndice.getCpf().equals(cliente.getCpf())))
-			{
-				JOptionPane.showMessageDialog(this, "Campo CPF não pode ser repetido! Usuário: "+clienteIndice.getNome()+" já possui este CPF", "Campos Obrigatórios",
-						JOptionPane.WARNING_MESSAGE);
-				return false;
+				if(tipoTela.equals(ALTERAR))
+				{
+					cliente.setCodigo(CodigoCliente);
+				}
+				if((cliente.getCodigo()!=clienteIndice.getCodigo()) && (clienteIndice.getCpf()!=null && clienteIndice.getCpf().equals(cliente.getCpf())))
+				{
+					JOptionPane.showMessageDialog(this, "Campo CPF não pode ser repetido! Usuário: "+clienteIndice.getNome()+" já possui este CPF", "Campos Obrigatórios",
+							JOptionPane.WARNING_MESSAGE);
+					return false;
+				}
 			}
 		}
+		
 		
 		return true;
 	}

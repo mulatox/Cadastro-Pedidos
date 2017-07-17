@@ -314,40 +314,33 @@ public class PainelVenda extends JPanel {
 						.addGap(51).addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addComponent(button_1)
 								.addComponent(button_2))));
 		panel_1.setLayout(gl_panel_1);
-		
+
 		JLabel label = new JLabel("F1 NOVO PEDIDO  F3 NOVO CLIENTE  F5 QUITAR PARCELAS");
 		label.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(20)
-							.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(label, GroupLayout.PREFERRED_SIZE, 979, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(1)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(label)
-					.addGap(40)
-					.addComponent(button))
-		);
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(20).addComponent(button,
+										GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup().addGap(12).addComponent(panel_1,
+										GroupLayout.PREFERRED_SIZE, 562, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+										.addComponent(panel, GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
+								.addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(label,
+										GroupLayout.PREFERRED_SIZE, 979, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap()));
+		groupLayout
+				.setVerticalGroup(
+						groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(1)
+										.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED).addComponent(label).addGap(40)
+										.addComponent(button)));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 				gl_panel.createParallelGroup(Alignment.LEADING)
@@ -367,25 +360,44 @@ public class PainelVenda extends JPanel {
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 					telaVenda = new Tela_Venda(vendaSelecionada);
 					telaVenda.setVisible(true);
-				}
-				else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
-					if(TelaTabbed.tabbedPane.getSelectedIndex()<3)
+				} else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if (TelaTabbed.tabbedPane.getSelectedIndex() < 3)
 						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() + 1);
 				}
 
 				else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
-					if(TelaTabbed.tabbedPane.getSelectedIndex()>0)
+					if (TelaTabbed.tabbedPane.getSelectedIndex() > 0)
 						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() - 1);
 				}
+
+				else if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+					if (vendaSelecionada != null) {
+						Object[] options = { "Confirmar", "Cancelar" };
+						int resposta = JOptionPane.showOptionDialog(container,
+								"Deseja realmente excluir o pedido " + vendaSelecionada.getPedido() + " ?", "Atenção",
+								JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+						if (resposta == 0) {
+							VendaDao dao = new VendaDao();
+							vendaSelecionada.setStatus(INATIVO);
+							dao.atualizar(vendaSelecionada);
+							removerParcelas(vendaSelecionada);
+							carregarVendas();
+						}
+
+					} else {
+						JOptionPane.showInternalMessageDialog(container, "Nenhum pedido selecionado", "Aviso",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
+
 			}
 		});
 
 		table.requestFocus();
-		if(table.getRowCount()>0)
-		{
-			table.addRowSelectionInterval(0,0);
+		if (table.getRowCount() > 0) {
+			table.addRowSelectionInterval(0, 0);
 		}
-		
+
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent e) {
@@ -399,10 +411,9 @@ public class PainelVenda extends JPanel {
 				}
 			}
 		});
-		
-		if(vendaSelecionada==null && vendas!=null && vendas.size()>0)
-		{
-			vendaSelecionada=vendas.get(0);
+
+		if (vendaSelecionada == null && vendas != null && vendas.size() > 0) {
+			vendaSelecionada = vendas.get(0);
 			binder.updateView(vendaSelecionada);
 		}
 
@@ -448,7 +459,7 @@ public class PainelVenda extends JPanel {
 	public static class DoubleFormatter implements Formatter {
 		public Object format(Object obj) {
 			BigDecimal d = (BigDecimal) obj;
-			return ( (d.doubleValue()+"").replace(".", ",") );
+			return ((d.doubleValue() + "").replace(".", ","));
 		}
 
 		public Object parse(Object obj) {
@@ -456,7 +467,8 @@ public class PainelVenda extends JPanel {
 			String doubleFormatado = (String) obj;
 			doubleFormatado = doubleFormatado.replace(".", "");
 			doubleFormatado = doubleFormatado.replace(",", ".");
-			return new BigDecimal(Double.valueOf(Double.parseDouble(doubleFormatado))).setScale(2, BigDecimal.ROUND_HALF_UP);
+			return new BigDecimal(Double.valueOf(Double.parseDouble(doubleFormatado))).setScale(2,
+					BigDecimal.ROUND_HALF_UP);
 		}
 
 		public String getName() {
@@ -493,7 +505,7 @@ public class PainelVenda extends JPanel {
 	public static class ClienteFormatter implements Formatter {
 		public Object format(Object obj) {
 			Cliente c = (Cliente) obj;
-			return "" + c.getCodigo()+" - "+c.getNome();
+			return "" + c.getCodigo() + " - " + c.getNome();
 		}
 
 		public Object parse(Object obj) {

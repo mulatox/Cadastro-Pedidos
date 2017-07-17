@@ -257,7 +257,7 @@ public class PainelRelatorio extends JPanel {
 
 		btnGerarBoleto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (textField.getText() != null && textField.getText().isEmpty()) {
+				if (textField.getText() != null && !textField.getText().isEmpty()) {
 					CarneUtilitario.imprimirCarne(Integer.parseInt(textField.getText()));
 				}
 
@@ -268,7 +268,7 @@ public class PainelRelatorio extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (textField.getText() != null && textField.getText().isEmpty() ) {
+					if (textField.getText() != null && !textField.getText().isEmpty() ) {
 						CarneUtilitario.imprimirCarne(Integer.parseInt(textField.getText()));
 					}
 				}

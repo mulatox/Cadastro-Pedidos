@@ -1,15 +1,15 @@
 
 
 
-       JASKLDJASLJD          
-       ASDADAD              
-       ASDAD                                         4533       1
+       LEVY PINHEIRO MULATO          
+       ASDASDASD              
+       DAAS                                         1599       1
        FORTALEZA                  
-       4533     1                   12/01/2013          12/12/2012  12/01/2013
+       1599     1                   12/01/2013          12/12/2012  12/01/2013
 
 
 
-                                         13.15                  13.15
+                                         14.9                  14.9
 
 
 
@@ -26,15 +26,15 @@
 
 
 
-       JASKLDJASLJD          
-       ASDADAD              
-       ASDAD                                         4533       2
+       LEVY PINHEIRO MULATO          
+       ASDASDASD              
+       DAAS                                         1599       2
        FORTALEZA                  
-       4533     2                   12/01/2013          12/12/2012  12/01/2013
+       1599     2                   12/02/2013          12/12/2012  12/02/2013
 
 
 
-                                         13.15                  13.15
+                                         14.9                  14.9
 
 
 
@@ -51,15 +51,15 @@
 
 
 
-       JASKLDJASLJD          
-       ASDADAD              
-       ASDAD                                         4533       3
+       LEVY PINHEIRO MULATO          
+       ASDASDASD              
+       DAAS                                         1599       3
        FORTALEZA                  
-       4533     3                   12/01/2013          12/12/2012  12/01/2013
+       1599     3                   12/03/2013          12/12/2012  12/03/2013
 
 
 
-                                         13.15                  13.15
+                                         14.9                  14.9
 
 
 
@@ -76,65 +76,15 @@
 
 
 
-       JASKLDJASLJD          
-       ASDADAD              
-       ASDAD                                         4533       4
+       LEVY PINHEIRO MULATO          
+       ASDASDASD              
+       DAAS                                         1599       4
        FORTALEZA                  
-       4533     4                   12/01/2013          12/12/2012  12/01/2013
+       1599     4                   12/04/2013          12/12/2012  12/04/2013
 
 
 
-                                         13.15                  13.15
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
-       JASKLDJASLJD          
-       ASDADAD              
-       ASDAD                                         4533       5
-       FORTALEZA                  
-       4533     5                   12/01/2013          12/12/2012  12/01/2013
-
-
-
-                                         13.15                  13.15
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
-       JASKLDJASLJD          
-       ASDADAD              
-       ASDAD                                         4533       6
-       FORTALEZA                  
-       4533     6                   12/01/2013          12/12/2012  12/01/2013
-
-
-
-                                         13.15                  13.15
+                                         14.9                  14.9
 
 
 
