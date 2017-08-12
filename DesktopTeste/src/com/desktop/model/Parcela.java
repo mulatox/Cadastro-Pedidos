@@ -1,5 +1,6 @@
 package com.desktop.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -13,8 +14,13 @@ import javax.persistence.Transient;
 import com.towel.el.annotation.Resolvable;
 
 @Entity
-public class Parcela {
+public class Parcela implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1357087576041000002L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Resolvable(colName="CÓDIGO")

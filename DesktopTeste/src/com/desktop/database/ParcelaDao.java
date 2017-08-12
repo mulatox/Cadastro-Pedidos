@@ -33,7 +33,7 @@ public class ParcelaDao extends Base_Dao {
 	public ArrayList<Parcela> listarAtivasPedido(int pedido) {
 		EntityManager gerente = getGerenciadorEntidade();
 		Query query = gerente
-				.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0 and p.venda.pedido=" + pedido);
+				.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0 and p.venda.pedido="+pedido);
 		return (ArrayList<Parcela>) query.getResultList();
 	}
 

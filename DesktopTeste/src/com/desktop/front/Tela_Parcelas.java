@@ -12,6 +12,8 @@ import javax.swing.KeyStroke;
 
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AbstractDocument;
@@ -69,6 +71,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 @Form(Parcela.class)
 public class Tela_Parcelas extends JFrame {
@@ -80,13 +84,15 @@ public class Tela_Parcelas extends JFrame {
 	public static ArrayList<Parcela> parcelas;
 	public static Parcela parcelaSelecionada;
 
-	private Binder binder;
+	private Tela_Parcela telaParcela;
 
-	private int CodigoCliente;
+	private int codigoParcela;
 
 	// Indica se esta no modo de salvar ou de alterar cliente
 	public static String tipoTela = "";
 	public static JTable table;
+	private JTextField textField;
+	AnnotationResolver resolver;
 
 	/**
 	 * Launch the application.
@@ -104,10 +110,9 @@ public class Tela_Parcelas extends JFrame {
 		});
 	}
 
-	public Tela_Parcelas(Cliente cliente) {
+	public Tela_Parcelas(Parcela parcela) {
 		this();
-		binder.updateView(cliente);
-		CodigoCliente = cliente.getCodigo();
+		codigoParcela = parcela.getCodigo();
 		tipoTela = ALTERAR;
 
 	}
@@ -129,33 +134,29 @@ public class Tela_Parcelas extends JFrame {
 		NumberFormat longFormat = NumberFormat.getIntegerInstance();
 		longFormat.setGroupingUsed(false);
 		NumberFormatter numberFormatter = new NumberFormatter(longFormat);
-		numberFormatter.setValueClass(Long.class); //optional, ensures you will always get a long value
-		numberFormatter.setAllowsInvalid(false); //this is the key!!
+		numberFormatter.setValueClass(Long.class); // optional, ensures you will
+													// always get a long value
+		numberFormatter.setAllowsInvalid(false); // this is the key!!
 		numberFormatter.setMinimum(0l);
 
-
 		DocumentFilter filter = new UppercaseDocumentFilter();
-		
+
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE PARCELAS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		
+		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "LISTA DE PARCELAS",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
-		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		AnnotationResolver resolver = new AnnotationResolver(Parcela.class);
+		gl_panel_2
+				.setHorizontalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_2.createSequentialGroup().addContainerGap()
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+								.addContainerGap()));
+		gl_panel_2.setVerticalGroup(gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup().addContainerGap()
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 195, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		resolver = new AnnotationResolver(Parcela.class);
 		ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
 				"alias,valor,vencimento,venda,status");
 		ParcelaDao dao = new ParcelaDao();
@@ -163,8 +164,7 @@ public class Tela_Parcelas extends JFrame {
 		tableModel.setData(parcelas);
 		table = new JTable(tableModel);
 		table.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		
+
 		scrollPane.setViewportView(table);
 		panel_2.setLayout(gl_panel_2);
 		btnSalvar = new JButton("QUITAR");
@@ -178,63 +178,114 @@ public class Tela_Parcelas extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-					if(parcelaSelecionada!=null)
-					{
+					if (parcelaSelecionada != null) {
 						parcelaSelecionada.setStatus(2);
 						ParcelaDao dao = new ParcelaDao();
 						dao.atualizar(parcelaSelecionada);
 						carregarParcelas();
-						
+
 					}
 				}
 			}
 		});
+
+		textField = new JTextField();
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				atualizar();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				atualizar();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				atualizar();
+			}
+
+			public void atualizar() {
+				ParcelaDao dao = new ParcelaDao();
+				if (textField.getText() == null || textField.getText().trim().isEmpty()) {
+					parcelas = dao.listarAtivas();
+				}
+
+				else {
+					try {
+						int codigoPedido = Integer.parseInt(textField.getText());
+						parcelas = dao.listarAtivasPedido(codigoPedido);
+
+					} catch (NumberFormatException ne) {
+						JOptionPane.showMessageDialog(null, "Erro: Por favor digite um valor válido (Apenas números)",
+								"Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+					}
+
+				}
+				resolver = new AnnotationResolver(Parcela.class);
+				ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
+						"alias,valor,vencimento,venda,status");
+				tableModel.setData(parcelas);
+				table.setModel(tableModel);
+				tableModel.fireTableDataChanged();
+				table.repaint();
+
+			}
+		});
+		textField.setColumns(10);
+
+		JLabel lblPedido = new JLabel("PEDIDO");
+		lblPedido.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(273)
-							.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(59, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(47)
-					.addComponent(btnSalvar)
-					.addGap(201))
-		);
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblPedido)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(textField, GroupLayout.PREFERRED_SIZE,
+												129, GroupLayout.PREFERRED_SIZE)
+										.addGap(42).addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108,
+												GroupLayout.PREFERRED_SIZE))
+								.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
+						.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGap(47)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(lblPedido)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+						.addGap(204)));
 		contentPane.setLayout(gl_contentPane);
-		binder = new AnnotatedBinder(this);
-		
+
 		table.addKeyListener(new KeyAdapter() {
+
 			@Override
 			public void keyPressed(KeyEvent arg0) {
+				/*
+				 * if (arg0.getKeyCode() == KeyEvent.VK_ENTER) { Object[]
+				 * options = { "Confirmar", "Cancelar" }; int resposta =
+				 * JOptionPane.showOptionDialog(null,
+				 * "Deseja realmente liberar a parcela " +
+				 * parcelaSelecionada.getAlias() + " ?", "Atenção",
+				 * JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+				 * null, options, options[0]); if (resposta == 0) {
+				 * parcelaSelecionada.setStatus(2); ParcelaDao dao = new
+				 * ParcelaDao(); dao.atualizar(parcelaSelecionada);
+				 * carregarParcelas(); }
+				 * 
+				 * }
+				 */
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-					Object[] options = { "Confirmar", "Cancelar" };
-					int resposta = JOptionPane.showOptionDialog(null,
-							"Deseja realmente liberar a parcela " + parcelaSelecionada.getAlias()+ " ?", "Atenção",
-							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-					if (resposta == 0) {
-						parcelaSelecionada.setStatus(2);
-						ParcelaDao dao = new ParcelaDao();
-						dao.atualizar(parcelaSelecionada);
-						carregarParcelas();
-					}
-					
+					telaParcela = new Tela_Parcela(parcelaSelecionada);
+					telaParcela.setVisible(true);
+
 				}
-				
+
 				else if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
 					Object[] options = { "Confirmar", "Cancelar" };
 					int resposta = JOptionPane.showOptionDialog(null,
-							"Deseja realmente voltar a parcela " + parcelaSelecionada.getAlias()+ " ?", "Atenção",
+							"Deseja realmente voltar a parcela " + parcelaSelecionada.getAlias() + " ?", "Atenção",
 							JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 					if (resposta == 0) {
 						parcelaSelecionada.setStatus(0);
@@ -242,16 +293,16 @@ public class Tela_Parcelas extends JFrame {
 						dao.atualizar(parcelaSelecionada);
 						carregarParcelas();
 					}
-					
+
 				}
-				
+
 			}
 		});
-		
+
 		table.requestFocus();
-		table.addRowSelectionInterval(0,0);
-	table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
+		table.addRowSelectionInterval(0, 0);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
 			public void valueChanged(ListSelectionEvent e) {
 				int indice = table.getSelectedRow();
 				if (indice != -1) {
@@ -259,25 +310,24 @@ public class Tela_Parcelas extends JFrame {
 				}
 			}
 		});
-		
-	if(parcelaSelecionada==null && parcelas!=null && parcelas.size()>0)
-	{
-		parcelaSelecionada=parcelas.get(0);
+
+		if (parcelaSelecionada == null && parcelas != null && parcelas.size() > 0) {
+			parcelaSelecionada = parcelas.get(0);
+		}
+		Tela_Cliente.installEscapeCloseOperation(this);
+
 	}
-	Tela_Cliente.installEscapeCloseOperation(this);
-	}
-	
+
 	private void salvarParcela() {
 		Parcela parcela = new Parcela();
-		binder.updateModel(parcela);
 		if (validado(parcela)) {
 			ParcelaDao dao = new ParcelaDao();
 			Object[] options = { "CONFIRMAR", "CANCELAR" };
 			int resposta = JOptionPane.showOptionDialog(null,
-					"Confirma a quitação da parcela  " + parcela.getAlias() + " ?", "Atenção", JOptionPane.DEFAULT_OPTION,
-					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					"Confirma a quitação da parcela  " + parcela.getAlias() + " ?", "Atenção",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if (resposta == 0) {
-					dao.atualizar(parcela);
+				dao.atualizar(parcela);
 				contentPane.setVisible(false);
 				dispose();
 			}
@@ -297,7 +347,7 @@ public class Tela_Parcelas extends JFrame {
 		tableModel.fireTableDataChanged();
 		table.repaint();
 	}
-	
+
 	public boolean validado(Parcela parcelas) {
 
 		return true;
