@@ -17,6 +17,7 @@ public class VendaDao extends Base_Dao {
 		return vendas;
 
 	}
+	
 
 	public Venda consultarCodigo(int codigo) {
 		return getGerenciadorEntidade().find(Venda.class, codigo);

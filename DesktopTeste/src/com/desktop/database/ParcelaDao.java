@@ -36,6 +36,13 @@ public class ParcelaDao extends Base_Dao {
 				.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0 and p.venda.pedido="+pedido);
 		return (ArrayList<Parcela>) query.getResultList();
 	}
+	
+	public Venda consultarParcela(int pedido) {
+		EntityManager gerente = getGerenciadorEntidade();
+		Query query = gerente
+				.createQuery("FROM " + Venda.class.getName() + " v where v.pedido="+pedido);
+		return (Venda) query.getSingleResult();
+	}
 
 	public ArrayList<Parcela> listarAtivas() {
 		EntityManager gerente = getGerenciadorEntidade();
@@ -46,6 +53,12 @@ public class ParcelaDao extends Base_Dao {
 	public ArrayList<Parcela> listarAtivasOrdenada() {
 		EntityManager gerente = getGerenciadorEntidade();
 		Query query = gerente.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0 ");
+		return (ArrayList<Parcela>) query.getResultList();
+	}
+	
+	public ArrayList<Parcela> listarAtivasCidadeOrdenada(String cidade) {
+		EntityManager gerente = getGerenciadorEntidade();
+		Query query = gerente.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0  and p.venda.cliente.cidade_estado.cidade='"+cidade+"'");
 		return (ArrayList<Parcela>) query.getResultList();
 	}
 

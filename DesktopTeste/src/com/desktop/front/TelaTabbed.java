@@ -69,6 +69,10 @@ import javax.swing.JFormattedTextField;
 
 public class TelaTabbed extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -231865686803564303L;
 	private Tela_Cliente telaCliente;
 	private Tela_Venda telaVenda;
 	private Tela_Parcelas telaParcelas;

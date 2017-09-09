@@ -504,6 +504,13 @@ public class Tela_Cliente extends JFrame {
 							JOptionPane.WARNING_MESSAGE);
 					return false;
 				}
+				
+				if((cliente.getCodigo()!=clienteIndice.getCodigo()) && (clienteIndice.getNome()!=null && clienteIndice.getNome().equalsIgnoreCase(cliente.getNome())))
+				{
+					JOptionPane.showMessageDialog(this, "Campo Nome não pode ser repetido! Usuário: "+clienteIndice.getNome()+" já possui este Nome", "Campos Obrigatórios",
+							JOptionPane.WARNING_MESSAGE);
+					return false;
+				}
 			}
 		}
 		

@@ -355,6 +355,7 @@ public class Tela_Parcela extends JFrame {
 					"Atenção", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 			if (resposta == 0) {
 					parcela.setCodigo(codigoParcela);
+					parcela.setVenda(dao.consultarParcela(Integer.parseInt(textField_3.getText())));
 					parcela = (Parcela) dao.atualizar(parcela);
 
 				Tela_Parcelas.carregarParcelas();
