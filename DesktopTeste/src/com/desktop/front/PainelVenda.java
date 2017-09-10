@@ -433,7 +433,7 @@ public class PainelVenda extends JPanel {
 
 	public static void removerParcelas(Venda venda) {
 		ParcelaDao dao = new ParcelaDao();
-		for (Parcela parcela : dao.listar(venda.getPedido())) {
+		for (Parcela parcela : dao.listar(venda.getCodigo())) {
 			dao.remover(parcela);
 		}
 

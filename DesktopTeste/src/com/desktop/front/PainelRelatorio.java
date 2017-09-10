@@ -114,7 +114,7 @@ public class PainelRelatorio extends JPanel {
 			e1.printStackTrace();
 		}
 
-		JButton btnGerarCobrana = new JButton("GERAR COBRAN\u00C7A");
+		final JButton btnGerarCobrana = new JButton("GERAR COBRAN\u00C7A");
 		btnGerarCobrana.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -333,6 +333,25 @@ public class PainelRelatorio extends JPanel {
 					if (textField.getText() != null && !textField.getText().isEmpty() ) {
 						CarneUtilitario.imprimirCarne(Integer.parseInt(textField.getText()));
 					}
+				}
+
+				else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if (TelaTabbed.tabbedPane.getSelectedIndex() < 3)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() + 1);
+				}
+
+				else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+					if (TelaTabbed.tabbedPane.getSelectedIndex() > 0)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() - 1);
+				}
+			}
+		});
+		
+		textField_1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+					btnGerarCobrana.doClick();
 				}
 
 				else if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
