@@ -125,7 +125,7 @@ public class PainelRelatorio extends JPanel {
 						ParcelaDao dao = new ParcelaDao();
 						File directory = new File("./DesktopTeste/relatorios/modelo1.jasper");
 						String arquivoJasper = directory.getAbsolutePath();
-						JRDataSource ds = new JRBeanCollectionDataSource(dao.listarAtivasOrdenada());
+						JRDataSource ds = new JRBeanCollectionDataSource(dao.listarAtivasCidadeOrdenada(""+comboBox.getSelectedItem()));
 						JasperPrint rel = JasperFillManager.fillReport(arquivoJasper, map, ds);
 						/*
 						 * Cria um JRViewer para exibir o relatório. Um JRViewer
@@ -177,7 +177,7 @@ public class PainelRelatorio extends JPanel {
 				try {
 					HashMap map = new HashMap();
 					ParcelaDao dao = new ParcelaDao();
-					File directory = new File("./DesktopTeste/relatorios/modelo1.jasper");
+					File directory = new File("modelo1.jasper");
 					String arquivoJasper = directory.getAbsolutePath();
 					JRDataSource ds = new JRBeanCollectionDataSource(dao.listarAtivasCidadeOrdenada(""+comboBox.getSelectedItem()));
 					JasperPrint rel = JasperFillManager.fillReport(arquivoJasper, map, ds);

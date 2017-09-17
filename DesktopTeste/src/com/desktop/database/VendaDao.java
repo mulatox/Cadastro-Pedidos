@@ -12,7 +12,7 @@ import com.desktop.model.Venda;
 public class VendaDao extends Base_Dao {
 
 	public ArrayList<Venda> listar() {
-		Query query = getGerenciadorEntidade().createQuery("FROM " + Venda.class.getName() + " v where v.status!=-1");
+		Query query = getGerenciadorEntidade().createQuery("FROM " + Venda.class.getName() + " v where v.status!=-1 order by v.pedido desc");
 		ArrayList<Venda> vendas = (ArrayList<Venda>) query.getResultList();
 		return vendas;
 

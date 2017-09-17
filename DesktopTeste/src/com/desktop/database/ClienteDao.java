@@ -11,7 +11,7 @@ public class ClienteDao extends Base_Dao {
 	
 	public ArrayList<Cliente> listar()
 	{
-		Query query = getGerenciadorEntidade().createQuery("FROM " + Cliente.class.getName()+"  c LEFT JOIN FETCH c.cidade_estado where c.status!=-1");
+		Query query = getGerenciadorEntidade().createQuery("FROM " + Cliente.class.getName()+"  c LEFT JOIN FETCH c.cidade_estado where c.status!=-1 order by c.nome ");
 		return (ArrayList<Cliente>) query.getResultList();
 	}
 	
