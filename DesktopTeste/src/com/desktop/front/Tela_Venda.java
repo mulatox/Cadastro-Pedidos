@@ -57,6 +57,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 @Form(Venda.class)
 public class Tela_Venda extends JFrame {
@@ -159,6 +161,19 @@ public class Tela_Venda extends JFrame {
 		textField.setColumns(10);
 
 		textField_2 = new JTextField();
+		textField_2.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				int i = 0;
+				for (Cliente client : PainelCliente.clientes) {
+					if((""+client.getCodigo()).equals(textField_2.getText())){
+						comboBox.setSelectedIndex(i+1);
+					}
+				
+					i++;
+				}
+			}
+		});
 		textField_2.setBounds(102, 60, 157, 25);
 		textField_2.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_2.setColumns(10);

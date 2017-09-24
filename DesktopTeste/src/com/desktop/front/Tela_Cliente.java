@@ -66,6 +66,8 @@ import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 @Form(Cliente.class)
 public class Tela_Cliente extends JFrame {
@@ -199,6 +201,19 @@ public class Tela_Cliente extends JFrame {
 		lblCidade.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		textField_3 = new JTextField();
+		textField_3.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				int i = 0;
+				for (CidadeEstado cidade : PainelCidades.cidades) {
+					
+					if((""+cidade.getCodigo()).equals(textField_3.getText())){
+						comboBox.setSelectedIndex(i+1);
+					}
+					i++;
+				}
+			}
+		});
 		textField_3.setBounds(105, 194, 147, 25);
 		textField_3.setFont(new Font("Dialog", Font.PLAIN, 16));
 		textField_3.setColumns(10);
