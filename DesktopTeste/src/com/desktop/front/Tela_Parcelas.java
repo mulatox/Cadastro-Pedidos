@@ -1,91 +1,53 @@
 package com.desktop.front;
 
-import java.awt.AWTKeyStroke;
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-
-import java.awt.FlowLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.AbstractDocument;
 import javax.swing.text.DocumentFilter;
-import javax.swing.text.MaskFormatter;
 import javax.swing.text.NumberFormatter;
+import org.apache.log4j.Logger;
 
-import com.desktop.database.ClienteDao;
+import com.desktop.database.Base_Dao;
 import com.desktop.database.ParcelaDao;
-import com.desktop.database.VendaDao;
-import com.desktop.front.Autocomplete.CommitAction;
-import com.desktop.model.Cliente;
 import com.desktop.model.Parcela;
-import com.desktop.model.Venda;
-import com.sun.xml.internal.ws.api.server.Container;
-import com.towel.bean.Formatter;
-import com.towel.bind.Binder;
-import com.towel.bind.annotation.AnnotatedBinder;
-import com.towel.bind.annotation.Bindable;
 import com.towel.bind.annotation.Form;
 import com.towel.el.annotation.AnnotationResolver;
 import com.towel.swing.table.ObjectTableModel;
-
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-
-import javax.swing.JButton;
-import java.awt.event.KeyAdapter;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JFormattedTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JTextArea;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-
 @Form(Parcela.class)
 public class Tela_Parcelas extends JFrame {
 
 	private static final String SALVAR = "salvar";
 	private static final String ALTERAR = "alterar";
 	private JPanel contentPane;
-	private JButton btnSalvar;
 	public static ArrayList<Parcela> parcelas;
 	public static Parcela parcelaSelecionada;
-
 	private Tela_Parcela telaParcela;
-
+	final static Logger LOGGER = Logger.getLogger(Base_Dao.class);
 	private int codigoParcela;
 
 	// Indica se esta no modo de salvar ou de alterar cliente
@@ -167,27 +129,6 @@ public class Tela_Parcelas extends JFrame {
 
 		scrollPane.setViewportView(table);
 		panel_2.setLayout(gl_panel_2);
-		btnSalvar = new JButton("QUITAR");
-		btnSalvar.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		btnSalvar.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (parcelaSelecionada != null) {
-						parcelaSelecionada.setStatus(2);
-						ParcelaDao dao = new ParcelaDao();
-						dao.atualizar(parcelaSelecionada);
-						carregarParcelas();
-
-					}
-				}
-			}
-		});
 
 		textField = new JTextField();
 		textField.getDocument().addDocumentListener(new DocumentListener() {
@@ -206,27 +147,29 @@ public class Tela_Parcelas extends JFrame {
 			public void atualizar() {
 				ParcelaDao dao = new ParcelaDao();
 				if (textField.getText() == null || textField.getText().trim().isEmpty()) {
-					parcelas = dao.listarAtivas();
+					carregarParcelas();
 				}
 
 				else {
 					try {
 						int codigoPedido = Integer.parseInt(textField.getText());
 						parcelas = dao.listarAtivasPedido(codigoPedido);
+						resolver = new AnnotationResolver(Parcela.class);
+						ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
+								"alias,valor,vencimento,venda,status");
+						tableModel.setData(parcelas);
+						table.setModel(tableModel);
+						tableModel.fireTableDataChanged();
+						table.repaint();
 
 					} catch (NumberFormatException ne) {
 						JOptionPane.showMessageDialog(null, "Erro: Por favor digite um valor válido (Apenas números)",
 								"Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
+						LOGGER.error(ne);
 					}
 
 				}
-				resolver = new AnnotationResolver(Parcela.class);
-				ObjectTableModel<Parcela> tableModel = new ObjectTableModel<Parcela>(resolver,
-						"alias,valor,vencimento,venda,status");
-				tableModel.setData(parcelas);
-				table.setModel(tableModel);
-				tableModel.fireTableDataChanged();
-				table.repaint();
+				
 
 			}
 		});
@@ -235,27 +178,29 @@ public class Tela_Parcelas extends JFrame {
 		JLabel lblPedido = new JLabel("PEDIDO");
 		lblPedido.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup().addComponent(lblPedido)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE,
-												129, GroupLayout.PREFERRED_SIZE)
-										.addGap(42).addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 108,
-												GroupLayout.PREFERRED_SIZE))
-								.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup().addContainerGap()
-						.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(47)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(lblPedido)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnSalvar, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-						.addGap(204)));
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(lblPedido)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
+						.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(47)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPedido)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+					.addGap(204))
+		);
 		contentPane.setLayout(gl_contentPane);
 
 		table.addKeyListener(new KeyAdapter() {

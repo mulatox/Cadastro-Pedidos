@@ -50,6 +50,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.text.MaskFormatter;
 
 import com.desktop.database.ClienteDao;
+import com.desktop.database.FabricaConexao;
 import com.desktop.database.VendaDao;
 import com.desktop.model.Cliente;
 import com.desktop.model.Venda;
@@ -97,6 +98,12 @@ public class TelaTabbed extends JFrame {
 					TelaTabbed window = new TelaTabbed();
 					window.setVisible(true);
 					window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					window.addWindowListener(new java.awt.event.WindowAdapter() {
+					    @Override
+					    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+					    	FabricaConexao.fecharConexao();
+					    }
+					});
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

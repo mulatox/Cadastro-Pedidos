@@ -507,6 +507,7 @@ public class Tela_Cliente extends JFrame {
 
 		if(cliente.getCodigo()==0)
 		{
+			PainelCliente.carregarClientes();
 			for(Cliente clienteIndice:PainelCliente.clientes)
 			{
 				if(tipoTela.equals(ALTERAR))

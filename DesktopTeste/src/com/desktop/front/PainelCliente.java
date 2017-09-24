@@ -49,6 +49,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import javax.swing.SwingConstants;
+import javax.swing.JPasswordField;
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 @Form(Cliente.class)
 public class PainelCliente extends JPanel {
@@ -72,6 +76,8 @@ public class PainelCliente extends JPanel {
 	JFormattedTextField formattedTextField_2;
 	
 	private Binder binder;
+	
+	static JCheckBox chckbxNewCheckBox;
 	
 	private Tela_Cliente telaCliente;
 	public static Cliente clienteSelecionado;
@@ -379,28 +385,52 @@ public class PainelCliente extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel("F1 NOVO PEDIDO  F3 NOVO CLIENTE  F5 QUITAR PARCELAS");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		chckbxNewCheckBox = new JCheckBox("CLIENTES PENDENTES");
+		chckbxNewCheckBox.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if(chckbxNewCheckBox.isSelected()){
+					carregarClientesPendentes();
+				}
+				
+				else{
+					carregarClientes();
+				}
+			}
+		});
+		chckbxNewCheckBox.setFont(new Font("Arial", Font.BOLD, 16));
+		chckbxNewCheckBox.setForeground(Color.RED);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(20)
-					.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(12)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 1020, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 1022, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 979, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(43, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(20)
+							.addComponent(button, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 979, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 1372, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(12)
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 1036, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(chckbxNewCheckBox)))
+					.addContainerGap(54, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(1)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(20)
+							.addComponent(chckbxNewCheckBox)))
 					.addGap(18)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -501,6 +531,20 @@ public class PainelCliente extends JPanel {
 				"codigo,nome,cpf,endereco,bairro,telefone");
 		ClienteDao dao = new ClienteDao();
 		clientes =dao.listar();
+		tableModel.setData(clientes);
+		table.setModel(tableModel);
+		tableModel.fireTableDataChanged();
+		table.repaint();
+		chckbxNewCheckBox.setSelected(false);
+	}
+	
+	public static void carregarClientesPendentes()
+	{
+		AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
+		ObjectTableModel<Cliente> tableModel = new ObjectTableModel<Cliente>(resolver,
+				"codigo,nome,cpf,endereco,bairro,telefone");
+		ClienteDao dao = new ClienteDao();
+		clientes =dao.listarPendentes();
 		tableModel.setData(clientes);
 		table.setModel(tableModel);
 		tableModel.fireTableDataChanged();
