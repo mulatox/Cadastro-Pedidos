@@ -129,7 +129,14 @@ public class PainelCliente extends JPanel {
 		table.setFont(new Font("Tahoma", Font.BOLD, 14));
 		table.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-
+				if (e.getClickCount() == 2) {
+					int indice = table.rowAtPoint(e.getPoint());
+					if (indice != INATIVO) {
+						telaCliente = new Tela_Cliente(clienteSelecionado);
+						telaCliente.setVisible(true);
+					}
+					
+				}
 			}
 
 			public void mousePressed(MouseEvent e) {

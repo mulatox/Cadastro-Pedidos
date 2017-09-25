@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 
 import com.desktop.database.Base_Dao;
 import com.desktop.database.ParcelaDao;
+import com.desktop.model.Cliente;
 import com.desktop.model.Parcela;
 import com.towel.bind.annotation.Form;
 import com.towel.el.annotation.AnnotationResolver;
@@ -126,7 +127,20 @@ public class Tela_Parcelas extends JFrame {
 		tableModel.setData(parcelas);
 		table = new JTable(tableModel);
 		table.setFont(new Font("Tahoma", Font.BOLD, 14));
-
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        if(evt.getClickCount()==2) {
+		        	int row = table.rowAtPoint(evt.getPoint());
+			        if (row != -1) {
+			        	parcelaSelecionada=parcelas.get(row);
+			        	telaParcela = new Tela_Parcela(parcelaSelecionada);
+						telaParcela.setVisible(true);
+			        }
+		        }
+		    	
+		    }
+		});
 		scrollPane.setViewportView(table);
 		panel_2.setLayout(gl_panel_2);
 
