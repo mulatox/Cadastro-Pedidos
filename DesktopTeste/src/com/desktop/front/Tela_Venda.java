@@ -165,7 +165,7 @@ public class Tela_Venda extends JFrame {
 			@Override
 			public void focusLost(FocusEvent e) {
 				int i = 0;
-				PainelCliente.carregarClientes();
+					PainelCliente.carregarClientes();
 				for (Cliente client : PainelCliente.clientes) {
 					if((""+client.getCodigo()).equals(textField_2.getText())){
 						comboBox.setSelectedIndex(i+1);
@@ -260,7 +260,7 @@ public class Tela_Venda extends JFrame {
 			}
 		});
 		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
-		PainelCliente.carregarClientes();
+			PainelCliente.carregarClientes();
 		String[] listaNomes = new String[PainelCliente.clientes.size() + 1];
 		listaNomes[0] = "Selecione Cliente";
 		int i = 1;

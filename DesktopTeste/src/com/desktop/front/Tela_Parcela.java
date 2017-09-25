@@ -242,7 +242,7 @@ public class Tela_Parcela extends JFrame {
 			}
 		});
 		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
-		PainelCliente.carregarClientes();
+			PainelCliente.carregarClientes();
 		String[] listaNomes = new String[PainelCliente.clientes.size() + 1];
 		listaNomes[0] = "Selecione Cliente";
 		int i = 1;

@@ -6,6 +6,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.MaskFormatter;
@@ -47,6 +49,8 @@ import javax.swing.KeyStroke;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -125,7 +129,12 @@ public class PainelRelatorio extends JPanel {
 						ParcelaDao dao = new ParcelaDao();
 						File directory = new File("./DesktopTeste/relatorios/modelo1.jasper");
 						String arquivoJasper = directory.getAbsolutePath();
-						JRDataSource ds = new JRBeanCollectionDataSource(dao.listarAtivasCidadeOrdenada(""+comboBox.getSelectedItem()));
+						JRDataSource ds = null;
+						if((textField_1.getText()==null || textField_1.getText().trim().isEmpty())){
+							ds = new JRBeanCollectionDataSource(dao.listarAtivas());
+						}else{
+							ds = new JRBeanCollectionDataSource(dao.listarAtivasCidadeOrdenada(textField_1.getText()));
+						}
 						JasperPrint rel = JasperFillManager.fillReport(arquivoJasper, map, ds);
 						/*
 						 * Cria um JRViewer para exibir o relatório. Um JRViewer
@@ -179,7 +188,13 @@ public class PainelRelatorio extends JPanel {
 					ParcelaDao dao = new ParcelaDao();
 					File directory = new File("modelo1.jasper");
 					String arquivoJasper = directory.getAbsolutePath();
-					JRDataSource ds = new JRBeanCollectionDataSource(dao.listarAtivasCidadeOrdenada(""+comboBox.getSelectedItem()));
+					JRDataSource ds = null;
+					if((textField_1.getText()==null || textField_1.getText().trim().isEmpty())){
+						ds = new JRBeanCollectionDataSource(dao.listarAtivas());
+					}else{
+						ds = new JRBeanCollectionDataSource(dao.listarAtivasCidadeOrdenada(textField_1.getText()));
+					}
+					
 					JasperPrint rel = JasperFillManager.fillReport(arquivoJasper, map, ds);
 					/*
 					 * Cria um JRViewer para exibir o relatório. Um JRViewer é
@@ -256,6 +271,21 @@ public class PainelRelatorio extends JPanel {
 		
 		textField_1 = new JTextField();
 		textField_1.setFont(new Font("Dialog", Font.BOLD, 16));
+		textField_1.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				int i = 0;
+				for (CidadeEstado cidade : PainelCidades.cidades) {
+					
+					if((""+cidade.getCodigo()).equals(textField_1.getText())){
+						comboBox.setSelectedIndex(i+1);
+						return;
+					}
+					i++;
+				}
+				comboBox.setSelectedIndex(0);
+			}
+		});
 		textField_1.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
@@ -314,7 +344,7 @@ public class PainelRelatorio extends JPanel {
 					.addContainerGap())
 		);
 
-		JButton btnGerarBoleto = new JButton("GERAR CARN\u00CA");
+		final JButton btnGerarBoleto = new JButton("GERAR CARN\u00CA");
 		btnGerarBoleto.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		btnGerarBoleto.addActionListener(new ActionListener() {
@@ -351,6 +381,8 @@ public class PainelRelatorio extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+
+				
 					btnGerarCobrana.doClick();
 				}
 
@@ -367,6 +399,16 @@ public class PainelRelatorio extends JPanel {
 		});
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					int i = 0;
+					btnGerarBoleto.doClick();
+				}
+				
+			}
+		});
 		textField.setFont(new Font("Dialog", Font.BOLD, 16));
 		textField.setColumns(10);
 		GroupLayout gl_panel = new GroupLayout(panel);

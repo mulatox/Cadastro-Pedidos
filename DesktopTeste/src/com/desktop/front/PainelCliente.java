@@ -11,9 +11,11 @@ import javax.swing.text.MaskFormatter;
 
 import com.desktop.database.CidadeEstadoDao;
 import com.desktop.database.ClienteDao;
+import com.desktop.database.ParcelaDao;
 import com.desktop.front.Tela_Venda.IntFormatter;
 import com.desktop.model.CidadeEstado;
 import com.desktop.model.Cliente;
+import com.desktop.model.Parcela;
 import com.towel.bean.Formatter;
 import com.towel.bind.Binder;
 import com.towel.bind.annotation.AnnotatedBinder;
@@ -52,6 +54,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JPasswordField;
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ChangeEvent;
 
 @Form(Cliente.class)
@@ -92,6 +96,7 @@ public class PainelCliente extends JPanel {
 	private JTextField textField_4;
 
 	private JPanel panel_1;
+	private JTextField textField_5;
 	/**
 	 * Create the panel.
 	 */
@@ -114,7 +119,7 @@ public class PainelCliente extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
+		final AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
 		ObjectTableModel<Cliente> tableModel = new ObjectTableModel<Cliente>(resolver,
 				"codigo,nome,cpf,endereco,telefone");
 		ClienteDao dao = new ClienteDao();
@@ -387,6 +392,7 @@ public class PainelCliente extends JPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		
 		chckbxNewCheckBox = new JCheckBox("CLIENTES PENDENTES");
+		chckbxNewCheckBox.setFocusable(false);
 		chckbxNewCheckBox.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if(chckbxNewCheckBox.isSelected()){
@@ -400,6 +406,62 @@ public class PainelCliente extends JPanel {
 		});
 		chckbxNewCheckBox.setFont(new Font("Arial", Font.BOLD, 16));
 		chckbxNewCheckBox.setForeground(Color.RED);
+		
+		textField_5 = new JTextField();
+		textField_5.setFont(new Font("Arial", Font.BOLD, 16));
+		textField_5.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+
+				if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+					if (TelaTabbed.tabbedPane.getSelectedIndex() < 3)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() + 1);
+				}
+
+				else if (arg0.getKeyCode() == KeyEvent.VK_LEFT) {
+					if (TelaTabbed.tabbedPane.getSelectedIndex() > 0)
+						TelaTabbed.tabbedPane.setSelectedIndex(TelaTabbed.tabbedPane.getSelectedIndex() - 1);
+				}
+			}
+		});
+		textField_5.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				atualizar();
+			}
+
+			public void removeUpdate(DocumentEvent e) {
+				atualizar();
+			}
+
+			public void insertUpdate(DocumentEvent e) {
+				atualizar();
+			}
+
+			public void atualizar() {
+				chckbxNewCheckBox.setSelected(false);
+				ClienteDao dao = new ClienteDao();
+				if (textField_5.getText() == null || textField_5.getText().trim().isEmpty()) {
+					carregarClientes();
+				}
+
+				else if(textField_5.getText().length()>3) {
+						clientes = dao.listarNome(textField_5.getText().toUpperCase());
+						AnnotationResolver resolver = new AnnotationResolver(Cliente.class);
+						ObjectTableModel<Cliente> tableModel = new ObjectTableModel<Cliente>(resolver,
+								"codigo,nome,cpf,endereco,bairro,telefone");
+						tableModel.setData(clientes);
+						table.setModel(tableModel);
+						tableModel.fireTableDataChanged();
+						table.repaint();
+				}
+				
+
+			}
+		});
+		textField_5.setColumns(10);
+		
+		JLabel lblNewLabel_1 = new JLabel("CONSULTAR NOME");
+		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 16));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -418,7 +480,10 @@ public class PainelCliente extends JPanel {
 							.addGap(12)
 							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 1036, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(chckbxNewCheckBox)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel_1)
+								.addComponent(chckbxNewCheckBox)
+								.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, 227, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap(54, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -430,7 +495,11 @@ public class PainelCliente extends JPanel {
 							.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(20)
-							.addComponent(chckbxNewCheckBox)))
+							.addComponent(chckbxNewCheckBox)
+							.addGap(47)
+							.addComponent(lblNewLabel_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textField_5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGap(18)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)

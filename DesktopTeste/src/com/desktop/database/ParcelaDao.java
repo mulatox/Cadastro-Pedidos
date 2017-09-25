@@ -56,9 +56,9 @@ public class ParcelaDao extends Base_Dao {
 		return (ArrayList<Parcela>) query.getResultList();
 	}
 	
-	public ArrayList<Parcela> listarAtivasCidadeOrdenada(String cidade) {
+	public ArrayList<Parcela> listarAtivasCidadeOrdenada(String codigoCidade) {
 		EntityManager gerente = getGerenciadorEntidade();
-		Query query = gerente.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0  and p.venda.cliente.cidade_estado.cidade='"+cidade+"'");
+		Query query = gerente.createQuery("FROM " + Parcela.class.getName() + " p where p.status>=0  and p.venda.cliente.cidade_estado.codigo="+codigoCidade+"");
 		return (ArrayList<Parcela>) query.getResultList();
 	}
 

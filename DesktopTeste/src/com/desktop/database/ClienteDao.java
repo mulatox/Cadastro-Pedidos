@@ -23,6 +23,13 @@ public class ClienteDao extends Base_Dao {
 		return (Cliente) query.getSingleResult();
 	}
 	
+	public ArrayList<Cliente> listarNome(String nome)
+	{
+		Query query = getGerenciadorEntidade().createQuery("FROM " + Cliente.class.getName()+" c where c.nome like :nomeParametro order by c.nome");
+		query.setParameter("nomeParametro", "%"+nome+"%");
+		return (ArrayList<Cliente>) query.getResultList();
+	}
+	
 	public Cliente consultarCodigo(int codigo) {
 		return getGerenciadorEntidade().find(Cliente.class, codigo);
 	}
